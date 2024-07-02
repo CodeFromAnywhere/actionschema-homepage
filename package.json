@@ -1,0 +1,14 @@
+{
+  "name": "homepage1",
+  "type": "module",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "start": "vercel dev"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.7",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {}
+}
