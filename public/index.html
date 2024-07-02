@@ -58,7 +58,7 @@
         .falling-logo {
             position: absolute;
             opacity: 0.5;
-            width: 30px;
+            width: 100px;
             height: auto;
         }
 
@@ -76,7 +76,6 @@
 
 <body class="bg-gray-900 text-white">
     <header class="bg-gray-800 py-4 relative">
-        <div class="logo-container" id="logoContainer"></div>
         <div class="container mx-auto px-4 flex items-center relative z-10">
             <svg class="h-8 w-8 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -86,8 +85,11 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <section class="mb-20 text-center flex flex-col items-center">
+    <main class="container mx-auto px-4 pb-8">
+
+        <section class="mb-20 text-center flex flex-col items-center relative">
+            <div class="logo-container" id="logoContainer"></div>
+
             <h1
                 class="text-6xl max-w-xl md:text-7xl lg:text-8xl font-bold my-28 text-green-300 animate-glow font-courier">
                 AI That Gets Shit Done
@@ -269,17 +271,17 @@
             logo.style.left = `${Math.random() * 100}%`;
             logo.style.animationName = 'fall';
             logo.style.animationTimingFunction = 'linear';
-            logo.style.animationDuration = `20s`;
-            logo.style.animationIterationCount = '10';
+            logo.style.animationDuration = `${Math.random() * 4 + 4}s`;
+            logo.style.animationIterationCount = '1';
 
             logoContainer.appendChild(logo);
 
-            // logo.addEventListener('animationend', () => {
-            //     logo.remove();
-            // });
+            logo.addEventListener('animationend', () => {
+                logo.remove();
+            });
         }
 
-        setInterval(createLogo, 300);
+        setInterval(createLogo, 2000);
     </script>
 </body>
 
