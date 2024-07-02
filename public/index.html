@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
     <style>
         @keyframes fadeIn {
             from {
@@ -38,10 +40,14 @@
         .animate-glow {
             animation: glow 3s ease-in-out infinite;
         }
+
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
     </style>
 </head>
 
-<body class="bg-gray-900 text-white font-sans">
+<body class="bg-gray-900 text-white">
     <header class="bg-gray-800 py-4">
         <div class="container mx-auto px-4 flex items-center">
             <svg class="h-8 w-8 text-blue-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -54,8 +60,7 @@
 
     <main class="container mx-auto px-4 py-8">
         <section class="mb-20 text-center"> <!-- Increased vertical margin -->
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold my-28 text-blue-300 animate-glow">
-                <!-- Increased bottom margin -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold my-28 text-blue-300 animate-glow font-courier">
                 Supercharge Your Development with AI
             </h2>
             <a href="https://cal.com/wkarsens"
