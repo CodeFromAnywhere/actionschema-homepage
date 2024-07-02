@@ -44,12 +44,40 @@
         body {
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
         }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-logo {
+            position: absolute;
+            opacity: 0.5;
+            width: 30px;
+            height: auto;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-50px) rotate(0deg);
+            }
+
+            to {
+                transform: translateY(100%) rotate(360deg);
+            }
+        }
     </style>
 </head>
 
 <body class="bg-gray-900 text-white">
-    <header class="bg-gray-800 py-4">
-        <div class="container mx-auto px-4 flex items-center">
+    <header class="bg-gray-800 py-4 relative">
+        <div class="logo-container" id="logoContainer"></div>
+        <div class="container mx-auto px-4 flex items-center relative z-10">
             <svg class="h-8 w-8 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -225,6 +253,34 @@
             &copy; 2024 ActionSchema. All rights reserved.
         </div>
     </footer>
+
+    <script>
+        const logoUrls = ['https://1000logos.net/wp-content/uploads/2021/04/WhatsApp-logo.png', 'https://www.pngmart.com/files/16/official-Google-Logo-PNG-Image.png', 'https://logosmarcas.net/wp-content/uploads/2020/11/Slack-Emblema.png', 'https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png'];
+
+        const logoContainer = document.getElementById('logoContainer');
+        const headerHeight = logoContainer.offsetHeight;
+
+        function createLogo() {
+            const logo = document.createElement('img');
+            const randomIndex = Math.floor(logoUrls.length * Math.random());
+
+            logo.src = logoUrls[randomIndex];
+            logo.classList.add('falling-logo');
+            logo.style.left = `${Math.random() * 100}%`;
+            logo.style.animationName = 'fall';
+            logo.style.animationTimingFunction = 'linear';
+            logo.style.animationDuration = `20s`;
+            logo.style.animationIterationCount = '10';
+
+            logoContainer.appendChild(logo);
+
+            // logo.addEventListener('animationend', () => {
+            //     logo.remove();
+            // });
+        }
+
+        setInterval(createLogo, 300);
+    </script>
 </body>
 
 </html>
