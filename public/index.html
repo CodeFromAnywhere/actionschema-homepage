@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ActionSchema - Raising the bar for AI Agents</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" href="icon.png">
     <style>
         @keyframes fadeIn {
@@ -52,11 +53,12 @@
     </header>
 
     <main class="container mx-auto px-4 py-8">
-        <section class="mb-12 text-center">
-            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-blue-300 animate-glow">
+        <section class="mb-20 text-center"> <!-- Increased vertical margin -->
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold my-28 text-blue-300 animate-glow">
+                <!-- Increased bottom margin -->
                 Supercharge Your Development with AI
             </h2>
-            <a href="https://cal.com/karsens"
+            <a href="https://cal.com/wkarsens"
                 class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
                 Request Early Access
             </a>
@@ -72,22 +74,25 @@
                 Our Products
             </h2>
             <div class="grid md:grid-cols-2 gap-8">
-                <div
-                    class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-shadow duration-300">
+                <a href="https://github.com/CodeFromAnywhere"
+                    class="block bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-blue-500/50 transition-shadow duration-300">
                     <h3 class="text-xl font-semibold text-blue-400 mb-2 flex items-center">
                         <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                         </svg>
-                        Large Action Model 1
+                        LAM1
                     </h3>
-                    <p class="mb-4">LAM1 is an LLM '/completion' endpoint that allows for executing actions on behalf of
-                        users.</p>
-                    <p class="text-sm text-gray-400">Includes a '/status' endpoint for per-user billing information.</p>
-                </div>
-                <div
-                    class="bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-green-500/50 transition-shadow duration-300">
+                    <p class="mb-4">LAM1 is an Large Action Model '/completion' endpoint that allows for executing
+                        actions on behalf of users.</p>
+                    <p class="text-sm text-gray-400">- Allows users to control hundreds of integrations out of the box.
+                    </p>
+                    <p class="text-sm text-gray-400">- Includes a '/status' endpoint for per-user billing information.
+                    </p>
+                </a>
+                <a href="https://github.com/CodeFromAnywhere/myelin"
+                    class="block bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-green-500/50 transition-shadow duration-300">
                     <h3 class="text-xl font-semibold text-green-400 mb-2 flex items-center">
                         <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
@@ -98,19 +103,20 @@
                     </h3>
                     <p class="mb-4">An endpoint that generates SDKs and serverless code based on your software
                         requirements.</p>
-                    <p class="text-sm text-gray-400">Finds the right APIs to implement your specifications.</p>
-                </div>
+                    <p class="text-sm text-gray-400">- Finds the right APIs to implement your specifications.</p>
+                    <p class="text-sm text-gray-400">- Control your GitHub Code and hosted APIs/Websites using chat.</p>
+                </a>
             </div>
         </section>
 
-        <section class="animate-fadeIn" style="animation-delay: 0.5s;">
+        <section class="animate-fadeIn mb-12" style="animation-delay: 0.5s;">
             <h2 class="text-2xl font-semibold mb-4 text-blue-300 flex items-center">
                 <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                 </svg>
-                Why Choose ActionSchema?
+                For Developers
             </h2>
             <ul class="space-y-2 text-gray-300">
                 <li class="flex items-center">
@@ -147,6 +153,56 @@
                 </li>
             </ul>
         </section>
+
+        <section class="animate-fadeIn" style="animation-delay: 0.7s;">
+            <h2 class="text-2xl font-semibold mb-4 text-blue-300 flex items-center">
+                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                For Companies
+            </h2>
+            <ul class="space-y-2 text-gray-300">
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Enterprise-grade security
+                </li>
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Scalable infrastructure
+                </li>
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Dedicated support team
+                </li>
+                <li class="flex items-center">
+                    <svg class="h-5 w-5 mr-2 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Customizable solutions for your business needs
+                </li>
+            </ul>
+        </section>
+
+        <a href="https://cal.com/wkarsens"
+            class="mt-20 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
+            Request Early Access
+        </a>
     </main>
 
     <footer class="bg-gray-800 py-4 mt-8">
