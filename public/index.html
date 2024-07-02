@@ -56,8 +56,9 @@
         }
 
         .falling-logo {
+            z-index: -1;
             position: absolute;
-            opacity: 0.5;
+            opacity: 0.25;
             width: 70px;
             height: auto;
         }
@@ -68,7 +69,7 @@
             }
 
             to {
-                transform: translateY(100%) rotate(360deg);
+                transform: translateY(500px) rotate(360deg);
             }
         }
     </style>
@@ -271,7 +272,7 @@
             logo.style.left = `${Math.random() * 100}%`;
             logo.style.animationName = 'fall';
             logo.style.animationTimingFunction = 'linear';
-            logo.style.animationDuration = `${Math.random() * 4 + 4}s`;
+            logo.style.animationDuration = `${Math.round(Math.random() * 4) + 20}s`;
             logo.style.animationIterationCount = '1';
 
             logoContainer.appendChild(logo);
@@ -281,7 +282,7 @@
             });
         }
 
-        setInterval(createLogo, 2000);
+        setInterval(createLogo, 4000);
     </script>
 </body>
 
