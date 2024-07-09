@@ -126,11 +126,10 @@
         }
 
         .prompt-button {
-
             background-color: #00ba40;
             color: white;
             padding: 10px 20px;
-            border: none;
+            border: 1px solid green;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -175,9 +174,22 @@
             </div>
 
             <form id="search" class="flex flex-row flex-wrap gap-2 justify-center" method="get" action="/search.html">
-                <input class="inputtext max-md:text-3xl max-md:py-4 px-4 placeholder:text-green-500" name="q"
-                    id="searchbar" type="text" placeholder="What to build next?" autofocus>
-                <input type="submit" value="Search" class="inputtext p-4 px-8 max-md:text-3xl" />
+                <input class="inputtext max-md:text-3xl max-md:py-4 px-4 placeholder:italic"
+                    style="border: 0.5px solid limegreen" name="q" id="searchbar" type="text"
+                    placeholder="What to build next?" autofocus>
+
+                <button type="submit" class="group flex items-center space-x-4 focus:outline-none px-4 rounded-md"
+                    style="border: 0.5px solid limegreen">
+                    <input type="submit" value="Search"
+                        class="inputtext border-none p-4 px-4 max-md:text-3xl cursor-pointer" />
+                    <div class="w-16 h-16 transition-transform duration-300 ease-in-out group-hover:rotate-90">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full">
+                            <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="lime"
+                                strokeWidth="8" fill="none" />
+                        </svg>
+                    </div>
+                </button>
+
             </form>
 
 
@@ -382,7 +394,7 @@
             const container = document.getElementById('buttonsContainer');
             prompts.forEach(prompt => {
                 const button = document.createElement('button');
-                button.className = 'prompt-button';
+                button.class = 'prompt-button';
                 button.textContent = prompt;
                 button.onclick = () => window.location.href = `search.html?q=${encodeURIComponent(prompt)}`;
                 container.appendChild(button);
