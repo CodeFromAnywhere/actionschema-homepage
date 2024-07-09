@@ -34,7 +34,7 @@
 
 <body class="bg-gray-900 text-white">
     <header class="bg-gray-800 py-4 relative">
-        <div class="container mx-auto px-4 flex items-center justify-between relative z-10">
+        <div class="container mx-auto px-4 flex items-center justify-between flex-wrap relative z-10">
             <a href="/" class="flex items-center">
                 <svg class="h-8 w-8 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24" stroke="currentColor">
@@ -43,8 +43,8 @@
                 </svg>
                 <h1 class="text-3xl font-bold text-green-400">ActionSchema</h1>
             </a>
-            <form id="search" class="flex flex-row" method="get" action="/search.html">
-                <input class="inputtext p-2" name="q" id="searchbar" type="text"
+            <form id="search" class="flex flex-row max-md:mt-6" method="get" action="/search.html">
+                <input class="inputtext p-2 max-md:max-w-52" name="q" id="searchbar" type="text"
                     placeholder="What do you want to build?" autofocus>
                 <input type="submit" value="Search"
                     class="inputtext p-2 px-4 bg-green-500 hover:bg-green-600 rounded-lg ml-2" />
@@ -52,7 +52,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto py-8">
+    <main class="container mx-auto py-8 px-2">
         <h2 class="text-2xl font-semibold mb-6 text-green-300">Search Results</h2>
 
         <div class="space-y-6">
