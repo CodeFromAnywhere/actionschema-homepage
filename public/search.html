@@ -29,6 +29,12 @@
             color: white;
             margin-bottom: 20px;
         }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
@@ -49,6 +55,8 @@
                 <input type="submit" value="Search"
                     class="inputtext p-2 px-4 bg-green-500 hover:bg-green-600 rounded-lg ml-2" />
             </form>
+
+
         </div>
     </header>
 
@@ -91,9 +99,64 @@
 
         <div class="mt-12 space-y-4">
             <h3 class="text-xl font-semibold mb-2 text-green-300">Code Snippets</h3>
-            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Request Code"></textarea>
-            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Response Code"></textarea>
-            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Example Usage"></textarea>
+
+            <div id="results"></div>
+
+            <script>
+                const apiBaseUrl = 'https://openapi-util.actionschema.com';
+                const resultsDiv = document.getElementById('results');
+
+                async function fetchEndpoint(endpoint, data) {
+                    const response = await fetch(`${apiBaseUrl}${endpoint}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    return response.json();
+                }
+
+                function displayResult(title, data) {
+                    const h2 = document.createElement('h2');
+                    h2.textContent = title;
+                    const textarea = document.createElement('textarea');
+                    textarea.value = JSON.stringify(data, null, 2);
+                    resultsDiv.appendChild(h2);
+                    resultsDiv.appendChild(textarea);
+                }
+
+                async function executeSequence() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const prompt = urlParams.get('q');
+
+                    if (!prompt) {
+                        resultsDiv.innerHTML = '<p>Please provide a prompt using the "q" query parameter.</p>';
+                        return;
+                    }
+
+                    try {
+                        // Step 1: Execute getOpenapiCombination
+                        const combinationResult = await fetchEndpoint('/getOpenapiCombination', { message: prompt });
+                        displayResult('1. getOpenapiCombination Result', combinationResult);
+
+                        // Step 2: Execute writeEndpoint
+                        const writeEndpointResult = await fetchEndpoint('/writeEndpoint', { message: prompt });
+                        displayResult('2. writeEndpoint Result (TypeScript Code)', writeEndpointResult);
+
+                        // Step 3a: Execute openapiCombinationToSdkConfig
+                        const sdkConfigResult = await fetchEndpoint('/openapiCombinationToSdkConfig', { combination: combinationResult });
+                        displayResult('3a. openapiCombinationToSdkConfig Result', sdkConfigResult);
+
+                        // Step 3b: Execute generateSdk
+                        const generateSdkResult = await fetchEndpoint('/generateSdk', { openapis: sdkConfigResult });
+                        displayResult('3b. generateSdk Result', generateSdkResult);
+
+                    } catch (error) {
+                        resultsDiv.innerHTML += `<p>Error: ${error.message}</p>`;
+                    }
+                }
+
+                executeSequence();
+            </script>
         </div>
     </main>
 
