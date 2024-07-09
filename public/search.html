@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ActionSchema - Search Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+
+        .inputtext {
+            font-size: 24px;
+            text-shadow: 0 0 15px rgba(0, 123, 255, 0.9),
+                0 0 30px rgba(0, 123, 255, 0.7),
+                0 0 45px rgba(0, 123, 255, 0.5);
+        }
+
+        input {
+            border: 2px solid white;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 py-4 relative">
+        <div class="container mx-auto px-4 flex items-center justify-between relative z-10">
+            <div class="flex items-center">
+                <svg class="h-8 w-8 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                <h1 class="text-3xl font-bold text-green-400">ActionSchema</h1>
+            </div>
+            <form id="search" class="flex flex-row" method="get" action="/search.html">
+                <input class="inputtext p-2" name="q" id="searchbar" type="text" placeholder="Find your APIs" autofocus>
+                <input type="submit" value="Search"
+                    class="inputtext p-2 px-4 bg-green-500 hover:bg-green-600 rounded-lg ml-2" />
+            </form>
+        </div>
+    </header>
+
+    <main class="container mx-auto py-8">
+        <h2 class="text-2xl font-semibold mb-6 text-green-300">Search Results</h2>
+
+        <div class="space-y-6">
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="text-xl font-semibold mb-2">Twitter API</h3>
+                <p><span class="font-bold">Operation:</span> POST /tweets</p>
+                <p><span class="font-bold">Summary:</span> Create a new tweet on behalf of the authenticated user.</p>
+                <button class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">More
+                    Info</button>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="text-xl font-semibold mb-2">Stripe API</h3>
+                <p><span class="font-bold">Operation:</span> POST /v1/charges</p>
+                <p><span class="font-bold">Summary:</span> Create a new charge for a specified amount.</p>
+                <button class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">More
+                    Info</button>
+            </div>
+
+            <div class="bg-gray-800 p-4 rounded-lg">
+                <h3 class="text-xl font-semibold mb-2">GitHub API</h3>
+                <p><span class="font-bold">Operation:</span> GET /repos/{owner}/{repo}</p>
+                <p><span class="font-bold">Summary:</span> Get details about a specific repository.</p>
+                <button class="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">More
+                    Info</button>
+            </div>
+        </div>
+
+        <div class="mt-12 space-y-4">
+            <h3 class="text-xl font-semibold mb-2 text-green-300">Code Snippets</h3>
+            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Request Code"></textarea>
+            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Response Code"></textarea>
+            <textarea class="w-full h-32 bg-gray-800 text-white p-2 rounded" placeholder="Example Usage"></textarea>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 py-4 mt-8">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            &copy; 2024 ActionSchema. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Set the search input value from URL parameter
+        window.onload = function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const q = urlParams.get('q');
+            if (q) {
+                document.getElementById('searchbar').value = q;
+
+                // Set cursor position to the end of the input
+                searchbar.setSelectionRange(q.length, q.length);
+                searchbar.focus();
+
+            }
+        }
+    </script>
+</body>
+
+</html>
