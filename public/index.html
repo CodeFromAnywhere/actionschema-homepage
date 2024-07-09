@@ -88,11 +88,11 @@
         }
 
         .inputtext {
-            font-size: 48px;
+            font-size: 42px;
 
-            text-shadow: 0 0 15px rgba(0, 123, 255, 0.9),
+            /*   text-shadow: 0 0 15px rgba(0, 123, 255, 0.9),
                 0 0 30px rgba(0, 123, 255, 0.7),
-                0 0 45px rgba(0, 123, 255, 0.5);
+                0 0 45px rgba(0, 123, 255, 0.5); */
         }
 
 
@@ -103,6 +103,41 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             margin-bottom: 20px;
+        }
+
+
+        /* examples section */
+        .expander {
+            transition: all 0.3s ease;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .buttons-container.expanded {
+            max-height: 500px;
+        }
+
+        .prompt-button {
+
+            background-color: #00ba40;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .prompt-button:hover {
+            background-color: #007f00;
         }
     </style>
 </head>
@@ -128,11 +163,23 @@
                 AI That Gets Shit Done
             </h1>
 
+            <div class="flex flex-row items-center">
+                <p class="py-2 px-4">Search and implement API Endpoints</p>
+                <button class="bg-gray-500 p-2 my-2 rounded-full text-xs expander"
+                    onclick="toggleButtons()">Examples</button>
+            </div>
+
+            <div class="py-4">
+                <div id="buttonsContainer" class="buttons-container"></div>
+            </div>
+
             <form id="search" class="flex flex-row flex-wrap gap-2 justify-center" method="get" action="/search.html">
-                <input class="inputtext max-md:text-3xl max-md:py-4" name="q" id="searchbar" type="text"
-                    placeholder="What to build next?" autofocus>
+                <input class="inputtext max-md:text-3xl max-md:py-4 px-4 placeholder:text-green-500" name="q"
+                    id="searchbar" type="text" placeholder="What to build next?" autofocus>
                 <input type="submit" value="Search" class="inputtext p-4 px-8 max-md:text-3xl" />
             </form>
+
+
 
             <!-- <a href="https://cal.com/karsens"
                 class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
@@ -324,6 +371,32 @@
         }
 
         setInterval(createLogo, 4000);
+    </script>
+
+    <script>
+        // Array of prompts (you can modify this array as needed)
+        const prompts = ['Make an endpoint that uploads a set of files to github via a PR.', 'Make an endpoint that calls the OpenAI Chat completion API to do math.', 'Create a CRUD for a TODO List App', 'Make an API that I can provide a search query "q" that responds with the top 10 google search results but in text format, so an LLM can process it with ease.'];
+
+        function createButtons() {
+            const container = document.getElementById('buttonsContainer');
+            prompts.forEach(prompt => {
+                const button = document.createElement('button');
+                button.className = 'prompt-button';
+                button.textContent = prompt;
+                button.onclick = () => window.location.href = `search.html?q=${encodeURIComponent(prompt)}`;
+                container.appendChild(button);
+            });
+        }
+
+        function toggleButtons() {
+            const container = document.getElementById('buttonsContainer');
+            container.classList.toggle('expanded');
+            const expander = document.querySelector('.expander');
+            expander.textContent = container.classList.contains('expanded') ? 'Collapse' : 'Examples';
+        }
+
+        // Create buttons when the page loads
+        createButtons();
     </script>
 </body>
 
