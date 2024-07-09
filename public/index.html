@@ -84,6 +84,7 @@
             align-items: center;
             width: 80%;
             max-width: 600px;
+            outline: none;
         }
 
         .inputtext {
@@ -127,10 +128,10 @@
                 AI That Gets Shit Done
             </h1>
 
-            <form id="search" class="flex flex-row" method="get" action="/search.html">
-                <input class="inputtext" name="q" id="searchbar" type="text" placeholder="What to build next?"
-                    autofocus>
-                <input type="submit" value="Search" class="inputtext p-4 px-8" />
+            <form id="search" class="flex flex-row flex-wrap gap-2 justify-center" method="get" action="/search.html">
+                <input class="inputtext max-md:text-3xl max-md:py-4" name="q" id="searchbar" type="text"
+                    placeholder="What to build next?" autofocus>
+                <input type="submit" value="Search" class="inputtext p-4 px-8 max-md:text-3xl" />
             </form>
 
             <!-- <a href="https://cal.com/karsens"
@@ -184,7 +185,7 @@
                             </svg>
                             <h3 class="font-semibold">API Search Engine</h3>
                         </div>
-                        <div class="bg-gray-500 p-2 rounded-full text-xs">Coming son</div>
+                        <div class="bg-gray-500 p-2 rounded-full text-xs">Coming soon</div>
                     </div>
 
                     <p class="mb-4">Find the endpoints needed for your next application.</p>
