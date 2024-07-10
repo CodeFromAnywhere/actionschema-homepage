@@ -25,10 +25,6 @@
             }
         }
 
-        .animate-fadeIn {
-            animation: fadeIn 1s ease-out forwards;
-        }
-
         @keyframes glow {
 
             0%,
@@ -126,10 +122,10 @@
         }
 
         .prompt-button {
-            background-color: #00ba40;
+            background-color: #008327;
             color: white;
             padding: 10px 20px;
-            border: 1px solid green;
+            /* border: 1px solid green; */
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
@@ -204,7 +200,7 @@
 
         <div class="flex flex-row flex-wrap justify-between items-start">
 
-            <section class="animate-fadeIn mb-12 px-2" style="animation-delay: 0.5s;">
+            <section class="mb-12 px-2" style="animation-delay: 0.5s;">
                 <h2 class="text-2xl font-semibold mb-4 text-green-300 flex items-center">
                     <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -270,55 +266,62 @@
                 <p class="text-sm text-gray-400">Read more on GitHub</p>
             </a>
         </div>
-        <section class="animate-fadeIn px-2 pt-8" style="animation-delay: 0.7s;">
-            <h2 class="text-2xl font-semibold mb-4 text-green-300 flex items-center">
-                <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-                For Companies
-            </h2>
-            <ul class="space-y-2 text-gray-300">
-                <li class="flex items-center">
-                    <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Enterprise-grade security
-                </li>
-                <li class="flex items-center">
-                    <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Scalable infrastructure
-                </li>
-                <li class="flex items-center">
-                    <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Dedicated support team
-                </li>
-                <li class="flex items-center">
-                    <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Customizable solutions for your business needs
-                </li>
-            </ul>
-        </section>
 
-        <div class="px-4"><a href="https://cal.com/karsens"
-                class="mt-20 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
-                Request Early Access
-            </a></div>
+
+        <div class="flex flex-row flex-wrap justify-between items-start">
+
+            <section class="px-2 pt-8" style="animation-delay: 0.7s;">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300 flex items-center">
+                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    For Companies
+                </h2>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        GDPR & SOC 2 compliant
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Enterprise API Access
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Up to 30.000 requests per second
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Dedicated support
+                    </li>
+                </ul>
+            </section>
+
+            <div class="px-4"><a href="https://cal.com/karsens"
+                    class="mt-8 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
+                    Request Early Access</a></div>
+        </div>
     </main>
 
     <footer class="bg-gray-800 py-4 mt-8">
