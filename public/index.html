@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Old Title: AI That Gets Shit Done -->
 
 <head>
     <meta charset="UTF-8">
-    <meta property="og:title" content="ActionSchema - AI That Gets Shit Done">
+    <meta property="og:title" content="ActionSchema - On-the-Fly Software">
     <meta property="og:description"
-        content="ActionSchema provides your business AI that gets shit done. Scalable, Secure, Reliable, and Modular.">
+        content="ActionSchema provides your business On-the-Fly Software. Scalable, Secure, Reliable, and Modular.">
     <meta property="og:image" content="https://actionschema.com/snapshot.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActionSchema - AI That Gets Shit Done</title>
+    <title>ActionSchema - On-the-Fly Software</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" href="icon.png">
@@ -103,37 +104,10 @@
         }
 
 
-        /* examples section */
-        .expander {
-            transition: all 0.3s ease;
-        }
-
         .buttons-container {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-
-        .buttons-container.expanded {
-            max-height: 500px;
-        }
-
-        .prompt-button {
-            background-color: #008327;
-            color: white;
-            padding: 10px 20px;
-            /* border: 1px solid green; */
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-
-        .prompt-button:hover {
-            background-color: #007f00;
         }
     </style>
 </head>
@@ -155,30 +129,23 @@
             <div class="logo-container" id="logoContainer"></div>
 
             <h1
-                class="px-4 text-6xl max-w-xl md:text-7xl lg:text-8xl font-bold my-20 text-green-300 animate-glow font-courier">
-                AI That Gets Shit Done
+                class="px-4 text-6xl max-w-2xl md:text-7xl lg:text-8xl font-bold my-40 text-green-300 animate-glow font-courier">
+                On-the-Fly Software
             </h1>
 
             <div class="flex flex-row items-center">
                 <p class="py-2 px-4">Search and implement API Endpoints</p>
-                <button class="bg-gray-500 p-2 my-2 rounded-full text-xs expander"
-                    onclick="toggleButtons()">Examples</button>
-            </div>
-
-            <div class="py-4">
-                <div id="buttonsContainer" class="buttons-container"></div>
             </div>
 
             <form id="search" class="flex flex-row flex-wrap gap-2 justify-center" method="get" action="/search.html">
-                <input class="inputtext max-md:text-3xl max-md:py-4 px-4 placeholder:italic"
-                    style="border: 0.5px solid limegreen" name="q" id="searchbar" type="text"
-                    placeholder="What to build next?" autofocus>
+                <input class="inputtext max-md:text-3xl max-md:py-4 px-4" style="border: 0.5px solid white" name="q"
+                    id="searchbar" type="text" placeholder="What to build next?" autofocus>
 
-                <button type="submit" class="group flex items-center space-x-4 focus:outline-none px-4 rounded-md"
-                    style="border: 0.5px solid limegreen">
-                    <input type="submit" value="Search"
-                        class="inputtext border-none p-4 px-4 max-md:text-3xl cursor-pointer" />
-                    <div class="w-16 h-16 transition-transform duration-300 ease-in-out group-hover:rotate-90">
+                <button type="submit" class="group flex items-center space-x-4 focus:outline-none p-4 rounded-md"
+                    style="border: 0.5px solid white">
+                    <!-- <input type="submit" value="Search"
+                        class="inputtext border-none p-4 px-4 max-md:text-3xl cursor-pointer" /> -->
+                    <div class="w-12 h-12 transition-transform duration-300 ease-in-out group-hover:rotate-90">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full">
                             <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="lime"
                                 strokeWidth="8" fill="none" />
@@ -189,13 +156,19 @@
             </form>
 
 
-
             <!-- <a href="https://cal.com/karsens"
                 class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
                 Request Early Access
             </a> -->
 
         </section>
+
+
+
+        <div class="pt-4 pb-20">
+            <h2 class="font-bold py-4 pl-2">Examples</h2>
+            <div id="buttonsContainer" class="buttons-container"></div>
+        </div>
 
 
         <div class="flex flex-row flex-wrap justify-between items-start">
@@ -362,26 +335,12 @@
         // Array of prompts (you can modify this array as needed)
         const prompts = ['Make an endpoint that uploads a set of files to github via a PR.', 'Make an endpoint that calls the OpenAI Chat completion API to do math.', 'Create a CRUD for a TODO List App', 'Make an API that I can provide a search query "q" that responds with the top 10 google search results but in text format, so an LLM can process it with ease.'];
 
-        function createButtons() {
-            const container = document.getElementById('buttonsContainer');
-            prompts.forEach(prompt => {
-                const button = document.createElement('button');
-                button.class = 'prompt-button';
-                button.textContent = prompt;
-                button.onclick = () => window.location.href = `search.html?q=${encodeURIComponent(prompt)}`;
-                container.appendChild(button);
-            });
-        }
+        const container = document.getElementById('buttonsContainer');
+        buttonsHtml = prompts.map(prompt => {
+            return `<a class="p-2 bg-gray-500/20 rounded-md" href="search.html?q=${encodeURIComponent(prompt)}">${prompt}</a>`
+        }).join("\n");
+        container.innerHTML = buttonsHtml;
 
-        function toggleButtons() {
-            const container = document.getElementById('buttonsContainer');
-            container.classList.toggle('expanded');
-            const expander = document.querySelector('.expander');
-            expander.textContent = container.classList.contains('expanded') ? 'Collapse' : 'Examples';
-        }
-
-        // Create buttons when the page loads
-        createButtons();
     </script>
 </body>
 
