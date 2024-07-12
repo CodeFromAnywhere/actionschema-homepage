@@ -2,6 +2,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
+      "source": "/:path*.(png|svg|jpg)",
+      "destination": "/_vercel/image?url=/:path*&w=2048&q=100"
+    },
+    {
       "source": "/:path*",
       "destination": "/api/:path*"
     }
