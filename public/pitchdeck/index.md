@@ -112,9 +112,9 @@ The "AI SWE" category (AI Software Engineer) is a mixture between this...
 
 # Our Mission
 
-"As accessible as Zapier, as scalable as the product you’d get from a software development startup studio"
+> "As accessible as Zapier, as scalable as the product you’d get from a software development startup studio"
 
-# Go-to-Market
+# Traction
 
 **2023**:
 
@@ -126,7 +126,14 @@ The "AI SWE" category (AI Software Engineer) is a mixture between this...
 - 50+ stars on GitHub
 - Onboarded 5 Companies ready for pilot with their developers
 
-**2024 - Q3 + Q4**:
+# GTM
 
-- Launch Demo at https://actionschema.com
+**2024 - Q3 + Q4**
+
+- Launch Free Demo at https://actionschema.com
 - Create buzz by blogs and social media
+- Retain thousands of users
+
+**2025**
+
+- Onboard first enterprise customer
