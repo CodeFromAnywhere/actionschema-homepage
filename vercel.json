@@ -6,6 +6,11 @@
       "destination": "/api/:path*"
     }
   ],
+  "images": {
+    "dangerouslyAllowSVG": true,
+    "sizes": [256, 640, 1080, 2048, 3840],
+    "remotePatterns": []
+  },
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 60,
