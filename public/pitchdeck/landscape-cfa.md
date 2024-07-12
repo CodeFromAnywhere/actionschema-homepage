@@ -19,7 +19,7 @@ In order to get the best of both worlds, we created an **AI SWE that can create,
 >
 > The goal: “As accessible as Zapier, as scalable as the product you’d get from a software development startup studio
 
-![bg right contain](landscape-cfa.drawio.svg)
+![bg right contain](landscape-cfa.drawio.png)
 
 # Customer: Startup Studio
 
