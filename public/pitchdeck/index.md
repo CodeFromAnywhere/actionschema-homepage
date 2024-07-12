@@ -30,6 +30,8 @@ section {
 
 In order to get the best of both worlds, we created an **AI SWE that can create, deploy, and maintain scalable systems, built using code that developers love**. This will reduce the cost of useful systems 100X.
 
+![bg right contain](dev-cycle.drawio.svg)
+
 #
 
 ![width:900px](landscape-cfa.drawio.svg)
