@@ -19,7 +19,7 @@ In order to get the best of both worlds, we created an **AI SWE that can create,
 >
 > The goal: “As accessible as Zapier, as scalable as the product you’d get from a software development startup studio
 
-![bg right contain](/_vercel/image?url=pitchdeck/landscape.drawio.png&w=2048&q=100)
+![bg right contain](/_vercel/image?url=pitchdeck/landscape-cfa.drawio.png&w=2048&q=100)
 
 # Customer: Startup Studio
 
@@ -31,7 +31,7 @@ In order to get the best of both worlds, we created an **AI SWE that can create,
 
 # Product: Docs RAG
 
-![](/_vercel/image?url=pitchdeck/docs-rag.svg&w=2048&q=100)
+![](/_vercel/image?url=pitchdeck/docs-rag.drawio.svg&w=2048&q=100)
 
 # Product: Scalable Deployment
 
