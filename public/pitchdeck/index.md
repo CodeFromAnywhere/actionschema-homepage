@@ -116,6 +116,17 @@ The "AI SWE" category (AI Software Engineer) is a mixture between this...
 
 # Go-to-Market
 
+**2023**:
+
+- Built & Launched v0 with €2000 ATTR
 - Talked with 50+ software developers, startup founders, software agency owners
+
+**2024 - Q1 + Q2**
+
 - 50+ stars on GitHub
 - Onboarded 5 Companies ready for pilot with their developers
+
+**2024 - Q3 + Q4**:
+
+- Launch Demo at https://actionschema.com
+- Create buzz by blogs and social media
