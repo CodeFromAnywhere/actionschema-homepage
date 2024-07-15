@@ -12,11 +12,15 @@
             font-family: 'Cinzel Decorative', cursive;
             background: linear-gradient(135deg, #8B5CF6, #3B82F6);
         }
+
+        .fade-transition {
+            transition: opacity 2s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="min-h-screen flex flex-col">
-    <div id="question" class="h-screen flex items-center justify-center">
+    <div id="question" class="h-screen flex items-center justify-center fade-transition">
         <div class="text-center">
             <h1 class="text-6xl font-bold text-white mb-12">What is your favourite language?</h1>
             <div class="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
@@ -33,7 +37,8 @@
             </div>
         </div>
     </div>
-    <div id="english-question" class="hidden min-h-screen flex flex-col items-center justify-start pt-24">
+    <div id="english-question"
+        class="hidden min-h-screen flex flex-col items-center justify-start pt-24 fade-transition opacity-0">
         <p id="chosen-language" class="text-2xl text-white mb-4"></p>
         <h1 class="text-6xl font-bold text-white mb-12">What about English?</h1>
         <div class="w-full max-w-4xl bg-white bg-opacity-10 rounded-lg p-8 overflow-auto max-h-[60vh]">
@@ -71,23 +76,45 @@
             { input: "Calculate factorial", code: 'def factorial(n):\n    return 1 if n == 0 else n * factorial(n-1)' }
         ];
 
+        function typeCode(element, code) {
+            let i = 0;
+            function typeChar() {
+                if (i < code.length) {
+                    element.textContent += code.charAt(i);
+                    i++;
+                    setTimeout(typeChar, 50);  // Adjust the typing speed here
+                }
+            }
+            typeChar();
+        }
+
         function populateExamples() {
             const tableBody = document.getElementById('example-table');
-            examples.forEach(example => {
+            examples.forEach((example, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td class="p-2 border-b border-white">${example.input}</td>
-                    <td class="p-2 border-b border-white"><pre><code>${example.code}</code></pre></td>
+                    <td class="p-2 border-b border-white"><pre><code id="code-${index}"></code></pre></td>
                 `;
                 tableBody.appendChild(row);
+                setTimeout(() => typeCode(document.getElementById(`code-${index}`), example.code), index * 1000);
             });
         }
 
         function showEnglishQuestion(language) {
-            document.getElementById('question').classList.add('hidden');
-            document.getElementById('english-question').classList.remove('hidden');
-            document.getElementById('chosen-language').textContent = `${language} is cool... but...`;
-            populateExamples();
+            const questionDiv = document.getElementById('question');
+            const englishQuestionDiv = document.getElementById('english-question');
+
+            questionDiv.style.opacity = '0';
+            setTimeout(() => {
+                questionDiv.classList.add('hidden');
+                englishQuestionDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    englishQuestionDiv.style.opacity = '1';
+                    document.getElementById('chosen-language').textContent = `${language} is cool... but...`;
+                    populateExamples();
+                }, 50);
+            }, 2000);
         }
 
         document.querySelectorAll('.language-btn').forEach(btn => {
