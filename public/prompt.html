@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourite Language</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cinzel Decorative', cursive;
+            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <div id="question" class="h-screen flex items-center justify-center">
+        <div class="text-center">
+            <h1 class="text-6xl font-bold text-white mb-12">What is your favourite language?</h1>
+            <div class="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <button
+                    class="language-btn bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-4xl py-12 rounded-lg transition duration-300">TypeScript</button>
+                <button
+                    class="language-btn bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-4xl py-12 rounded-lg transition duration-300">Rust</button>
+                <button
+                    class="language-btn bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-4xl py-12 rounded-lg transition duration-300">Python</button>
+                <div class="relative">
+                    <input id="other-language" type="text" placeholder="Other"
+                        class="w-full h-full bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-4xl py-12 px-4 rounded-lg transition duration-300 placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="english-question" class="hidden min-h-screen flex flex-col items-center justify-start pt-24">
+        <p id="chosen-language" class="text-2xl text-white mb-4"></p>
+        <h1 class="text-6xl font-bold text-white mb-12">What about English?</h1>
+        <div class="w-full max-w-4xl bg-white bg-opacity-10 rounded-lg p-8 overflow-auto max-h-[60vh]">
+            <table class="w-full text-white mb-8">
+                <thead>
+                    <tr>
+                        <th class="text-left p-2 border-b border-white">Your Input</th>
+                        <th class="text-left p-2 border-b border-white">Resulting Code</th>
+                    </tr>
+                </thead>
+                <tbody id="example-table">
+                    <!-- Examples will be inserted here -->
+                </tbody>
+            </table>
+            <div class="text-center mt-12">
+                <p class="text-white text-lg mb-4">ActionSchema converts your idea into working code</p>
+                <button id="try-button"
+                    class="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-3xl py-4 px-8 rounded-lg transition duration-300">Let
+                    me try!</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const examples = [
+            { input: "Hello, World!", code: 'print("Hello, World!")' },
+            { input: "Calculate sum", code: 'def sum(a, b):\n    return a + b' },
+            { input: "Reverse a string", code: 'def reverse(s):\n    return s[::-1]' },
+            { input: "Check if palindrome", code: 'def is_palindrome(s):\n    return s == s[::-1]' },
+            { input: "Generate Fibonacci", code: 'def fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        yield a\n        a, b = b, a + b' },
+            { input: "Count words", code: 'def count_words(text):\n    return len(text.split())' },
+            { input: "Find max number", code: 'def find_max(numbers):\n    return max(numbers)' },
+            { input: "Remove duplicates", code: 'def remove_duplicates(lst):\n    return list(set(lst))' },
+            { input: "Sort a list", code: 'def sort_list(lst):\n    return sorted(lst)' },
+            { input: "Calculate factorial", code: 'def factorial(n):\n    return 1 if n == 0 else n * factorial(n-1)' }
+        ];
+
+        function populateExamples() {
+            const tableBody = document.getElementById('example-table');
+            examples.forEach(example => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-2 border-b border-white">${example.input}</td>
+                    <td class="p-2 border-b border-white"><pre><code>${example.code}</code></pre></td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function showEnglishQuestion(language) {
+            document.getElementById('question').classList.add('hidden');
+            document.getElementById('english-question').classList.remove('hidden');
+            document.getElementById('chosen-language').textContent = `${language} is cool... but...`;
+            populateExamples();
+        }
+
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', () => showEnglishQuestion(btn.textContent));
+        });
+
+        const otherInput = document.getElementById('other-language');
+        otherInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && otherInput.value.trim() !== '') {
+                showEnglishQuestion(otherInput.value.trim());
+            }
+        });
+        otherInput.addEventListener('click', () => {
+            if (otherInput.value.trim() !== '') {
+                showEnglishQuestion(otherInput.value.trim());
+            }
+        });
+
+        // Set focus to the input when the page loads
+        window.addEventListener('load', () => otherInput.focus());
+
+        // Add event listener for the "Let me try!" button
+        document.getElementById('try-button').addEventListener('click', () => {
+            alert('Ready to try ActionSchema!');
+            // You can replace this with the actual action you want to perform
+        });
+    </script>
+</body>
+
+</html>
