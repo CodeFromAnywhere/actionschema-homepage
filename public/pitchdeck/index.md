@@ -15,27 +15,28 @@ Devs will love actionschema
 
 Positioning slide: splits op in 1 voordeel per slide
 
-Maarten volgende week Nexler+AI-IFY+Milan
+Maarten volgende week Nexler + AI-IFY + Milan
 
 DEMO 1: is CRUDDY + GITHUB LOGIN
 
 Maak een demo van het aanmaken van een nieuwe app
 
-
 INVESTOR DEMO
 
-
 CUSTOMER DEMO
+
 - werken met klant data: CSV, excel, DBs, CRM
--
 
 USER/DEV DEMO
+
 -
 
 EARLY ACCESS VRAGEN
 
 - Where do you want to host things???? Vercel / Azure / AWS / Etc.
-- meeting plannen -->
+- meeting plannen
+
+-->
 
 <style>
 section {
