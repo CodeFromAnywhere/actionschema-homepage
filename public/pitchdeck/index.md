@@ -7,9 +7,8 @@ footer: Code From Anywhere
 
 <!-- notes july 17th, 2024 (milan/maarten/wijnand meeting 1)
 
-Problem : dieper er op in gaan in slide
+Problem: Dieper er op in gaan in slide
 Van 1% naar 10%?
-
 
 Devs will love actionschema
 
@@ -59,9 +58,9 @@ section {
 - No-code solutions have hard limits in its capability, security, scalability, vendor lock-in, and lack of ownership.
 - Highly Custom Tech Products have Long Time to market and are expensive to build.
 
-# ActionSchema makes it as easy as ABC
+# ActionSchema writes code developers love
 
-In order to get the best of both worlds, we created an **AI SWE that can create, deploy, and maintain scalable systems, built using code that developers love**. This will reduce the cost of useful systems 100X.
+Our AI SWE writes highly reliable and secure production code.
 
 ![bg right contain](dev-cycle.drawio.svg)
 
@@ -69,9 +68,9 @@ In order to get the best of both worlds, we created an **AI SWE that can create,
 
 ![width:900px](landscape-cfa.drawio.svg)
 
-# Customer: Startup Studio
+# Customer: Companies Building Tools
 
-![bg right contain](triangle.drawio.svg)
+![bg right contain](user.drawio.svg)
 
 # Product: Iteration
 
@@ -127,7 +126,7 @@ The "AI SWE" category (AI Software Engineer) is a mixture between this...
 - Reduced time to market
 - Reduced development capacity required
 - Build highly scalable products (both agents and apps)
-- Both dev-time tools and prod-time SDK/API gateway -->
+- Both dev-time tools and prod-time SDK/API gateway
 
 # What we don't do
 
@@ -141,7 +140,7 @@ The "AI SWE" category (AI Software Engineer) is a mixture between this...
 - ✅ API-based Program Search & Composition
 - ✅ Modular Systems Created in English
 - ✅ Scalable Deployment
-- ✅ Enterprise-grade Security
+- ✅ Enterprise-grade Security -->
 
 # Our Mission
 
