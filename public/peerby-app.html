@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peerby - Maak eenvoudig websites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen font-sans text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-center">Peerby</h1>
+        <p class="text-xl text-center mb-8">Maak eenvoudig websites voor je buurt met één foto!</p>
+
+        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+            <video id="camera-stream" class="w-full h-64 object-cover" autoplay></video>
+            <div class="p-4">
+                <button id="capture-btn"
+                    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105 animate-pulse">
+                    Neem een foto
+                </button>
+            </div>
+        </div>
+
+        <div id="result" class="mt-8 text-center hidden">
+            <h2 class="text-2xl font-bold mb-4">Geweldig! Je website wordt gemaakt.</h2>
+            <p class="text-lg">We sturen het binnenkort naar de eigenaar.</p>
+        </div>
+    </div>
+
+    <script>
+        const cameraStream = document.getElementById('camera-stream');
+        const captureBtn = document.getElementById('capture-btn');
+        const result = document.getElementById('result');
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraStream.srcObject = stream;
+            } catch (err) {
+                console.error("Kan de camera niet openen:", err);
+                alert("Kan de camera niet openen. Controleer je apparaatinstellingen.");
+            }
+        }
+
+        captureBtn.addEventListener('click', () => {
+            // Hier zou je normaal gesproken de foto verwerken en naar de server sturen
+            // Voor deze POC simuleren we alleen het proces
+            captureBtn.classList.remove('animate-pulse');
+            captureBtn.textContent = 'Verwerken...';
+            captureBtn.disabled = true;
+
+            setTimeout(() => {
+                result.classList.remove('hidden');
+                result.scrollIntoView({ behavior: 'smooth' });
+            }, 2000);
+        });
+
+        startCamera();
+    </script>
+</body>
+
+</html>
