@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peerby - Maak eenvoudig websites voor jouw buurt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen font-sans">
+    <header class="container mx-auto px-4 py-6">
+        <nav class="flex justify-between items-center">
+            <h1 class="text-3xl font-bold text-blue-600">peerby</h1>
+            <ul class="flex space-x-4">
+                <li><a href="#" class="text-blue-600 hover:text-blue-800">Home</a></li>
+                <li><a href="#" class="text-blue-600 hover:text-blue-800">Hoe het werkt</a></li>
+                <li><a href="#" class="text-blue-600 hover:text-blue-800">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <section class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Maak eenvoudig websites voor jouw buurt</h2>
+            <p class="text-xl mb-8">Met AI-technologie en Nederlandse taal</p>
+            <button id="createWebsite"
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition duration-300">Start
+                nu</button>
+        </section>
+
+        <section class="grid md:grid-cols-2 gap-8 items-center mb-16">
+            <div>
+                <h3 class="text-2xl font-semibold mb-4">Hoe het werkt</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        Beschrijf je idee in het Nederlands
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        Of maak een foto van een bedrijf
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        Onze AI maakt een passende website
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-green-500 mr-2">✓</span>
+                        Gratis verzending naar de eigenaar
+                    </li>
+                </ul>
+            </div>
+            <div class="relative">
+                <img src="/api/placeholder/500/300" alt="Website creation process" class="rounded-lg shadow-lg">
+                <div class="absolute inset-0 bg-blue-600 opacity-20 rounded-lg"></div>
+            </div>
+        </section>
+
+        <section class="text-center">
+            <h3 class="text-2xl font-semibold mb-4">Klaar om te beginnen?</h3>
+            <p class="mb-8">Maak nu je eerste website en help je buurt online te gaan!</p>
+            <button id="getStarted"
+                class="bg-green-500 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-600 transition duration-300">Begin
+                nu</button>
+        </section>
+    </main>
+
+    <footer class="bg-blue-600 text-white py-4 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Peerby. Alle rechten voorbehouden.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.from('header', { opacity: 0, y: -50, duration: 1, ease: 'power3.out' });
+            gsap.from('main section', { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: 'power3.out' });
+
+            const createWebsiteBtn = document.getElementById('createWebsite');
+            const getStartedBtn = document.getElementById('getStarted');
+
+            [createWebsiteBtn, getStartedBtn].forEach(btn => {
+                btn.addEventListener('click', () => {
+                    alert('Geweldig! Je bent op weg om je eigen website te maken. Deze functie is nog in ontwikkeling.');
+                });
+
+                btn.addEventListener('mouseover', () => {
+                    gsap.to(btn, { scale: 1.05, duration: 0.2 });
+                });
+
+                btn.addEventListener('mouseout', () => {
+                    gsap.to(btn, { scale: 1, duration: 0.2 });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
