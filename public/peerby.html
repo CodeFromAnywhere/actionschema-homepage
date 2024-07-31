@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peerby - Maak eenvoudig websites in het Nederlands</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-100 to-green-100 min-h-screen font-sans">
+    <header class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-blue-600">Peerby</h1>
+        <p class="text-xl text-center text-gray-600 mt-2">Maak eenvoudig websites voor jou en je omgeving</p>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+            <div class="p-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Hoe het werkt</h2>
+                <ol class="list-decimal list-inside space-y-4 text-gray-600">
+                    <li class="transform hover:scale-105 transition-transform duration-300">Beschrijf je idee in het
+                        Nederlands</li>
+                    <li class="transform hover:scale-105 transition-transform duration-300">Onze AI begrijpt je concept
+                    </li>
+                    <li class="transform hover:scale-105 transition-transform duration-300">We genereren de code voor
+                        jouw website</li>
+                    <li class="transform hover:scale-105 transition-transform duration-300">Jouw website is klaar voor
+                        gebruik!</li>
+                </ol>
+            </div>
+            <div class="bg-blue-500 p-8 text-white">
+                <h2 class="text-2xl font-semibold mb-4">Probeer het nu!</h2>
+                <textarea id="idea-input" class="w-full p-2 rounded text-gray-800 mb-4" rows="4"
+                    placeholder="Beschrijf hier je website-idee..."></textarea>
+                <button id="generate-btn"
+                    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition-colors duration-300">Genereer
+                    Mijn Website</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container mx-auto px-4 py-8 text-center text-gray-600">
+        <p>&copy; 2024 Peerby. Alle rechten voorbehouden.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const generateBtn = document.getElementById('generate-btn');
+            const ideaInput = document.getElementById('idea-input');
+
+            generateBtn.addEventListener('click', () => {
+                if (ideaInput.value.trim() !== '') {
+                    gsap.to(generateBtn, {
+                        scale: 1.1,
+                        duration: 0.2,
+                        yoyo: true,
+                        repeat: 1,
+                        onComplete: () => {
+                            alert('Geweldig! We gaan nu je website maken op basis van je idee: "' + ideaInput.value + '". In een echte applicatie zou dit het AI-proces starten.');
+                        }
+                    });
+                } else {
+                    alert('Voer alsjeblieft eerst je idee in!');
+                }
+            });
+
+            // Animate elements on page load
+            gsap.from('header h1', { opacity: 0, y: -50, duration: 1, ease: 'power3.out' });
+            gsap.from('header p', { opacity: 0, y: -30, duration: 1, delay: 0.3, ease: 'power3.out' });
+            gsap.from('main .bg-white', { opacity: 0, y: 30, duration: 1, delay: 0.6, ease: 'power3.out' });
+        });
+    </script>
+</body>
+
+</html>

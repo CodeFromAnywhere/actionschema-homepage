@@ -10,13 +10,7 @@ footer: Code From Anywhere
 Problem: Dieper er op in gaan in slide
 Van 1% naar 10%?
 
-Devs will love actionschema
-
-Positioning slide: splits op in 1 voordeel per slide
-
 Maarten volgende week Nexler + AI-IFY + Milan
-
-DEMO 1: is CRUDDY + GITHUB LOGIN
 
 Maak een demo van het aanmaken van een nieuwe app
 
@@ -24,16 +18,12 @@ INVESTOR DEMO
 
 CUSTOMER DEMO
 
-- werken met klant data: CSV, excel, DBs, CRM
+- Werken met klant data: CSV, excel, DBs, CRM
 
 USER/DEV DEMO
 
--
+- ActionSchema Data: nieuwe api -> nieuwe frontend met claude
 
-EARLY ACCESS VRAGEN
-
-- Where do you want to host things???? Vercel / Azure / AWS / Etc.
-- meeting plannen
 
 -->
 
@@ -55,8 +45,8 @@ section {
 
 # Quality Software is Hard
 
-- No-code solutions have hard limits in its capability, security, scalability, vendor lock-in, and lack of ownership.
 - Highly Custom Tech Products have Long Time to market and are expensive to build.
+- No-code solutions have hard limits in its capability, security, scalability, vendor lock-in, and lack of ownership.
 
 # ActionSchema writes code developers love
 
