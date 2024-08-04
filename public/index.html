@@ -48,6 +48,7 @@
             transition: transform 0.3s ease;
             z-index: 5;
             filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+            cursor: pointer;
         }
 
         .logo:hover {
@@ -162,37 +163,39 @@
         let isRecording = false;
 
         const isMobile = window.innerWidth < 1024;
-        const desktopLogos = isMobile ? [] : [{ icon: 'fa-pinterest', color: '#BD081C' },
-        { icon: 'fa-snapchat', color: '#FFFC00' },
-        { icon: 'fa-tiktok', color: '#000000' },
-        { icon: 'fa-reddit', color: '#FF4500' },
-        { icon: 'fa-twitch', color: '#9146FF' },
-        { icon: 'fa-paypal', color: '#00457C' },
-        { icon: 'fa-ethereum', color: '#3C3C3D' },
-        { icon: 'fa-bitcoin', color: '#F7931A' },
-        { icon: 'fa-dropbox', color: '#0061FF' },
-        { icon: 'fa-slack', color: '#4A154B' },
-        { icon: 'fa-jira', color: '#0052CC' },
-        { icon: 'fa-trello', color: '#0052CC' },
-        { icon: 'fa-android', color: '#3DDC84' },
-        { icon: 'fa-docker', color: '#2496ED' },
-        { icon: 'fa-aws', color: '#232F3E' },
-        { icon: 'fa-npm', color: '#CB3837' },
-        { icon: 'fa-unity', color: '#000000' }];
+        const desktopLogos = isMobile ? [] : [
+            { icon: 'fa-pinterest', color: '#BD081C', placeholder: 'Find DIY project ideas' },
+            { icon: 'fa-snapchat', color: '#FFFC00', placeholder: 'Create a custom AR filter' },
+            { icon: 'fa-tiktok', color: '#000000', placeholder: 'Start a dance challenge' },
+            { icon: 'fa-reddit', color: '#FF4500', placeholder: 'Ask for advice on r/AskReddit' },
+            { icon: 'fa-twitch', color: '#9146FF', placeholder: 'Start streaming your gameplay' },
+            { icon: 'fa-paypal', color: '#00457C', placeholder: 'Send money to a friend' },
+            { icon: 'fa-ethereum', color: '#3C3C3D', placeholder: 'Check ETH gas fees' },
+            { icon: 'fa-bitcoin', color: '#F7931A', placeholder: 'Convert BTC to USD' },
+            { icon: 'fa-dropbox', color: '#0061FF', placeholder: 'Share a large file' },
+            { icon: 'fa-slack', color: '#4A154B', placeholder: 'Create a new channel' },
+            { icon: 'fa-jira', color: '#0052CC', placeholder: 'Create a new sprint' },
+            { icon: 'fa-trello', color: '#0052CC', placeholder: 'Add a new card to board' },
+            { icon: 'fa-android', color: '#3DDC84', placeholder: 'Download latest Android update' },
+            { icon: 'fa-docker', color: '#2496ED', placeholder: 'Pull latest image' },
+            { icon: 'fa-aws', color: '#232F3E', placeholder: 'Launch an EC2 instance' },
+            { icon: 'fa-npm', color: '#CB3837', placeholder: 'Install a package' },
+            { icon: 'fa-unity', color: '#000000', placeholder: 'Import 3D model' }
+        ];
         const logos = [
-            { icon: 'fa-google', color: '#4285F4' },
-            { icon: 'fa-apple', color: '#A2AAAD' },
-            { icon: 'fa-microsoft', color: '#00A4EF' },
-            { icon: 'fa-amazon', color: '#FF9900' },
-            { icon: 'fa-facebook', color: '#1877F2' },
-            { icon: 'fa-twitter', color: '#1DA1F2' },
-            { icon: 'fa-instagram', color: '#E4405F' },
-            { icon: 'fa-linkedin', color: '#0A66C2' },
-            { icon: 'fa-youtube', color: '#FF0000' },
-            { icon: 'fa-whatsapp', color: '#25D366' },
-            { icon: 'fa-spotify', color: '#1ED760' },
-            { icon: 'fa-stripe-s', color: '#008CDD' },
-            { icon: 'fa-github', color: '#181717' },
+            { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for nearby restaurants' },
+            { icon: 'fa-apple', color: '#A2AAAD', placeholder: 'Check iPhone battery health' },
+            { icon: 'fa-microsoft', color: '#00A4EF', placeholder: 'Schedule a Teams meeting' },
+            { icon: 'fa-amazon', color: '#FF9900', placeholder: 'Track my package' },
+            { icon: 'fa-facebook', color: '#1877F2', placeholder: 'Create a new event' },
+            { icon: 'fa-twitter', color: '#1DA1F2', placeholder: 'Tweet about #TechTrends' },
+            { icon: 'fa-instagram', color: '#E4405F', placeholder: 'Edit photo with new filter' },
+            { icon: 'fa-linkedin', color: '#0A66C2', placeholder: 'Update my work experience' },
+            { icon: 'fa-youtube', color: '#FF0000', placeholder: 'Upload a new video' },
+            { icon: 'fa-whatsapp', color: '#25D366', placeholder: 'Start a group video call' },
+            { icon: 'fa-spotify', color: '#1ED760', placeholder: 'Create a workout playlist' },
+            { icon: 'fa-stripe-s', color: '#008CDD', placeholder: 'Set up recurring payments' },
+            { icon: 'fa-github', color: '#181717', placeholder: 'Create a new repository' },
             ...desktopLogos
         ];
 
@@ -206,7 +209,16 @@
             logoElement.style.left = `${x}px`;
             logoElement.style.top = `${y}px`;
             logoElement.style.color = logo.color;
+            logoElement.setAttribute('data-placeholder', logo.placeholder);
             container.appendChild(logoElement);
+
+            logoElement.addEventListener('mouseenter', () => {
+                searchInput.placeholder = logo.placeholder;
+            });
+
+            logoElement.addEventListener('mouseleave', () => {
+                searchInput.placeholder = "Type your request";
+            });
         }
 
         function createCurves() {
@@ -297,8 +309,6 @@
 
         function stopRecording() {
             if (mediaRecorder && isRecording) {
-
-
                 mediaRecorder.addEventListener("stop", () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                     sendAudioToServer(audioBlob);
@@ -310,7 +320,6 @@
                 clearInterval(timerInterval);
                 timer.style.display = 'none';
                 micButton.innerHTML = '<i class="fas fa-microphone"></i>';
-
             }
         }
 
@@ -386,6 +395,7 @@
 
             // Start with auto animation
             autoAnimate(curves);
+
             // Add event listener for search input
             searchInput.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
