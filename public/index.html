@@ -94,6 +94,25 @@
         const container = document.getElementById('container');
         const svg = document.querySelector('svg');
         const center = document.getElementById('center');
+
+        const isMobile = window.innerWidth < 1024;
+        const desktopLogos = isMobile ? [] : [{ icon: 'fa-pinterest', color: '#BD081C' },
+        { icon: 'fa-snapchat', color: '#FFFC00' },
+        { icon: 'fa-tiktok', color: '#000000' },
+        { icon: 'fa-reddit', color: '#FF4500' },
+        { icon: 'fa-twitch', color: '#9146FF' },
+        { icon: 'fa-paypal', color: '#00457C' },
+        { icon: 'fa-ethereum', color: '#3C3C3D' },
+        { icon: 'fa-bitcoin', color: '#F7931A' },
+        { icon: 'fa-dropbox', color: '#0061FF' },
+        { icon: 'fa-slack', color: '#4A154B' },
+        { icon: 'fa-jira', color: '#0052CC' },
+        { icon: 'fa-trello', color: '#0052CC' },
+        { icon: 'fa-android', color: '#3DDC84' },
+        { icon: 'fa-docker', color: '#2496ED' },
+        { icon: 'fa-aws', color: '#232F3E' },
+        { icon: 'fa-npm', color: '#CB3837' },
+        { icon: 'fa-unity', color: '#000000' }];
         const logos = [
             { icon: 'fa-google', color: '#4285F4' },
             { icon: 'fa-apple', color: '#A2AAAD' },
@@ -104,27 +123,11 @@
             { icon: 'fa-instagram', color: '#E4405F' },
             { icon: 'fa-linkedin', color: '#0A66C2' },
             { icon: 'fa-youtube', color: '#FF0000' },
-            { icon: 'fa-pinterest', color: '#BD081C' },
-            { icon: 'fa-snapchat', color: '#FFFC00' },
-            { icon: 'fa-tiktok', color: '#000000' },
-            { icon: 'fa-reddit', color: '#FF4500' },
             { icon: 'fa-whatsapp', color: '#25D366' },
             { icon: 'fa-spotify', color: '#1ED760' },
-            { icon: 'fa-twitch', color: '#9146FF' },
-            { icon: 'fa-github', color: '#181717' },
             { icon: 'fa-stripe-s', color: '#008CDD' },
-            { icon: 'fa-paypal', color: '#00457C' },
-            { icon: 'fa-ethereum', color: '#3C3C3D' },
-            { icon: 'fa-bitcoin', color: '#F7931A' },
-            { icon: 'fa-dropbox', color: '#0061FF' },
-            { icon: 'fa-slack', color: '#4A154B' },
-            { icon: 'fa-jira', color: '#0052CC' },
-            { icon: 'fa-trello', color: '#0052CC' },
-            { icon: 'fa-android', color: '#3DDC84' },
-            { icon: 'fa-docker', color: '#2496ED' },
-            { icon: 'fa-aws', color: '#232F3E' },
-            { icon: 'fa-npm', color: '#CB3837' },
-            { icon: 'fa-unity', color: '#000000' }
+            { icon: 'fa-github', color: '#181717' },
+            ...desktopLogos
         ];
 
         let animationFrame;
