@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Old Title: AI That Gets Shit Done -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="ActionSchema - On-the-Fly Software">
+    <meta property="og:description"
+        content="ActionSchema provides your business On-the-Fly Software. Scalable, Secure, Reliable, and Modular.">
+    <meta property="og:image" content="https://actionschema.com/snapshot.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ActionSchema - On-the-Fly Software</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 0px #acfec5, 0 0 2px #acfec5, 0 0 2px #acfec5;
+            }
+
+            50% {
+                text-shadow: 0 0 2px #acfec5, 0 0 2px #acfec5, 0 0 5px #acfec5;
+            }
+        }
+
+        .animate-glow {
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .falling-logo {
+            z-index: -1;
+            position: absolute;
+            opacity: 0.25;
+            width: 70px;
+            height: auto;
+        }
+
+        @keyframes fall {
+            from {
+                transform: translateY(-50px) rotate(0deg);
+            }
+
+            to {
+                transform: translateY(500px) rotate(360deg);
+            }
+        }
+
+
+
+        #searchbar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 80%;
+            max-width: 600px;
+            outline: none;
+        }
+
+        .inputtext {
+            font-size: 42px;
+
+            /*   text-shadow: 0 0 15px rgba(0, 123, 255, 0.9),
+                0 0 30px rgba(0, 123, 255, 0.7),
+                0 0 45px rgba(0, 123, 255, 0.5); */
+        }
+
+
+        input {
+
+            border: 2px solid white;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-bottom: 20px;
+        }
+
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white">
+    <header class="bg-gray-800 py-4 relative">
+        <div class="container mx-auto px-4 flex items-center relative z-10">
+            <svg class="h-8 w-8 text-green-400 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="currentColor"
+                    stroke-width="8" fill="none" />
+            </svg>
+            <h1 class="text-3xl font-bold text-green-400">ActionSchema</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto pb-8">
+
+        <section class="mb-20 text-center flex flex-col items-center relative">
+            <div class="logo-container" id="logoContainer"></div>
+
+            <h1
+                class="px-4 text-6xl max-w-2xl md:text-7xl lg:text-8xl font-bold my-40 text-green-300 animate-glow font-courier">
+                On-the-Fly Software
+            </h1>
+
+            <div class="flex flex-row items-center">
+                <p class="py-2 px-4">Search and implement API Endpoints</p>
+            </div>
+
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform"
+                style="text-decoration: none;">
+                <div class="group flex items-center justify-between space-x-4 focus:outline-none p-4 rounded-md"
+                    style="border: 0.5px solid white; display: inline-flex; min-width: 250px;">
+                    <span class="max-md:text-2xl whitespace-nowrap">Request Early Access</span>
+                    <div class="w-12 h-12 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                            class="w-full h-full transition-transform duration-300 ease-in-out group-hover:rotate-90">
+                            <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="lime"
+                                stroke-width="8" fill="none" />
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- <form id="search" class="flex flex-row flex-wrap gap-2 justify-center" method="get" action="/search.html">
+                <input class="inputtext max-md:text-3xl max-md:py-4 px-4" style="border: 0.5px solid white" name="q"
+                    id="searchbar" type="text" placeholder="What to build next?" autofocus>
+
+                <button type="submit" class="group flex items-center space-x-4 focus:outline-none p-4 rounded-md"
+                    style="border: 0.5px solid white">
+                     <input type="submit" value="Search"
+                        class="inputtext border-none p-4 px-4 max-md:text-3xl cursor-pointer" /> 
+            <div class="w-12 h-12 transition-transform duration-300 ease-in-out group-hover:rotate-90">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="lime"
+                        strokeWidth="8" fill="none" />
+                </svg>
+            </div>
+            </button>
+
+            </form> -->
+
+
+            <!-- <a href="https://cal.com/karsens"
+                class="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
+                Request Early Access
+            </a> -->
+
+        </section>
+
+
+
+        <!-- <div class="pt-4 pb-20">
+            <h2 class="font-bold py-4 pl-2">Examples</h2>
+            <div id="buttonsContainer" class="buttons-container"></div>
+        </div> -->
+
+
+        <div class="flex flex-row flex-wrap justify-between items-start">
+
+            <section class="mb-12 px-2" style="animation-delay: 0.5s;">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300 flex items-center">
+                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                    For Developers
+                </h2>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Quickest way to build new apps
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Open Source
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        No lock-in
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Hundreds of integrations out of the box
+                    </li>
+                </ul>
+
+
+            </section>
+
+            <a href="https://github.com/CodeFromAnywhere"
+                class="block bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-green-500/50 transition-shadow duration-300">
+
+
+                <div class="mb-2 flex items-center justify-between">
+                    <div class="flex flex-row text-red-400"><svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                        <h3 class="font-semibold">OpenAPI Building Blocks</h3>
+                    </div>
+                    <div class="bg-gray-500 p-2 rounded-full text-xs">Open Source</div>
+                </div>
+
+                <p class="mb-4">A toolkit of building blocks for more modular, scalable agent systems.</p>
+                <p class="text-sm text-gray-400">Read more on GitHub</p>
+            </a>
+        </div>
+
+
+        <div class="flex flex-row flex-wrap justify-between items-start">
+
+            <section class="px-2 pt-8" style="animation-delay: 0.7s;">
+                <h2 class="text-2xl font-semibold mb-4 text-green-300 flex items-center">
+                    <svg class="h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    For Companies
+                </h2>
+                <ul class="space-y-2 text-gray-300">
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        GDPR & SOC 2 compliant
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Enterprise API Access
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Up to 30.000 requests per second
+                    </li>
+
+                    <li class="flex items-center">
+                        <svg class="h-5 w-5 mr-2 text-green-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Dedicated support
+                    </li>
+                </ul>
+            </section>
+
+            <div class="px-4"><a href="https://cal.com/karsens"
+                    class="mt-8 inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 text-lg">
+                    Request Early Access</a></div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 py-4 mt-8">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            &copy; 2024 ActionSchema. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        const logoUrls = ['whatsapp.png', 'google.png', 'slack.png', 'discord.png', 'mail.png', 'x.png', 'youtube.png', 'icon.png', 'github.png', 'vercel.png'];
+
+        const logoContainer = document.getElementById('logoContainer');
+        const headerHeight = logoContainer.offsetHeight;
+
+        function createLogo() {
+            const logo = document.createElement('img');
+            const randomIndex = Math.floor(logoUrls.length * Math.random());
+
+            logo.src = logoUrls[randomIndex];
+            logo.classList.add('falling-logo');
+            logo.style.left = `${Math.random() * 100}%`;
+            logo.style.animationName = 'fall';
+            logo.style.animationTimingFunction = 'linear';
+            logo.style.animationDuration = `${Math.round(Math.random() * 4) + 20}s`;
+            logo.style.animationIterationCount = '1';
+
+            logoContainer.appendChild(logo);
+
+            logo.addEventListener('animationend', () => {
+                logo.remove();
+            });
+        }
+
+        setInterval(createLogo, 4000);
+    </script>
+
+    <script>
+        // Array of prompts (you can modify this array as needed)
+        const prompts = ['Make an endpoint that uploads a set of files to github via a PR.', 'Make an endpoint that calls the OpenAI Chat completion API to do math.', 'Create a CRUD for a TODO List App', 'Make an API that I can provide a search query "q" that responds with the top 10 google search results but in text format, so an LLM can process it with ease.'];
+
+        const container = document.getElementById('buttonsContainer');
+        buttonsHtml = prompts.map(prompt => {
+            return `<a class="p-2 bg-gray-500/20 rounded-md" href="search.html?q=${encodeURIComponent(prompt)}">${prompt}</a>`
+        }).join("\n");
+        container.innerHTML = buttonsHtml;
+
+    </script>
+</body>
+
+</html>
