@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActionSchema Visualization</title>
+    <title>ActionSchema</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body,
@@ -14,7 +14,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #f0f0f0;
+            background-color: #ffffff;
             font-family: Arial, sans-serif;
         }
 
@@ -22,13 +22,14 @@
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
         }
 
         #center {
-            position: absolute;
+            position: relative;
             width: 150px;
             height: 150px;
             display: flex;
@@ -38,6 +39,7 @@
             background-color: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .logo {
@@ -73,27 +75,42 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
             z-index: 1;
         }
+
+        #search-input {
+            width: 300px;
+            height: 40px;
+            font-size: 16px;
+            padding: 5px 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            outline: none;
+            z-index: 20;
+        }
+
+        #search-input:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
     </style>
 </head>
 
 <body>
-    <a href="home.html">
-        <div id="container">
-            <svg></svg>
-            <div id="outer-glow"></div>
-            <div id="center">
-                <svg class="h-16 w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                    <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="#4CAF50"
-                        stroke-width="12" fill="none" />
-                </svg>
-            </div>
+    <div id="container">
+        <svg></svg>
+        <div id="outer-glow"></div>
+        <div id="center">
+            <svg class="h-16 w-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="#4CAF50"
+                    stroke-width="12" fill="none" />
+            </svg>
         </div>
-    </a>
+        <input type="text" id="search-input" placeholder="Type your request" autofocus>
+    </div>
 
     <script>
         const container = document.getElementById('container');
         const svg = document.querySelector('svg');
         const center = document.getElementById('center');
+        const searchInput = document.getElementById('search-input');
 
         const isMobile = window.innerWidth < 1024;
         const desktopLogos = isMobile ? [] : [{ icon: 'fa-pinterest', color: '#BD081C' },
@@ -247,6 +264,14 @@
 
             // Start with auto animation
             autoAnimate(curves);
+
+            // Add event listener for search input
+            searchInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const query = encodeURIComponent(this.value);
+                    window.location.href = `search.html?q=${query}`;
+                }
+            });
         }
 
         init();
