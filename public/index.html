@@ -297,16 +297,20 @@
 
         function stopRecording() {
             if (mediaRecorder && isRecording) {
-                mediaRecorder.stop();
-                isRecording = false;
-                clearInterval(timerInterval);
-                timer.style.display = 'none';
-                micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+
 
                 mediaRecorder.addEventListener("stop", () => {
                     const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                     sendAudioToServer(audioBlob);
                 });
+
+                mediaRecorder.stop();
+
+                isRecording = false;
+                clearInterval(timerInterval);
+                timer.style.display = 'none';
+                micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+
             }
         }
 
@@ -321,20 +325,23 @@
             const formData = new FormData();
             formData.append('audio', audioBlob, 'recording.wav');
 
-            fetch('search.html', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = response.url;
-                    } else {
-                        console.error('Error sending audio to server');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            // Create a form element
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'search.html';
+
+            // Append the FormData to the form
+            for (let [key, value] of formData.entries()) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            }
+
+            // Append the form to the body and submit it
+            document.body.appendChild(form);
+            form.submit();
         }
 
         function init() {
