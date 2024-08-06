@@ -411,11 +411,30 @@
             // Start with auto animation
             autoAnimate(curves);
 
+            const isQuerySearchableValidator = (q) => {
+                return true;
+            }
             // Add event listener for search input
-            searchInput.addEventListener('keypress', function (e) {
+            searchInput.addEventListener('keypress', async function (e) {
                 if (e.key === 'Enter') {
                     handleSearch();
                 }
+
+                if (isQuerySearchableValidator(searchInput.value)) {
+                    // Do prefetch search
+                    const q = encodeURIComponent(searchInput.value).toLowerCase();
+                    const localStorageKey = `search.${q}`;
+                    const already = localStorage.getItem(localStorageKey);
+                    if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
+                        const result = await fetch(`https://search.actionscheam.com/search?q=${q}`, { method: "post" }).then(res => res.json())
+                        localStorage.setItem(localStorageKey, JSON.stringify(result));
+                        console.log(`searched and found` + q);
+                    } else {
+                        console.log("already have " + q);
+                    }
+                }
+
+
             });
 
             // Add event listener for microphone button
