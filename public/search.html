@@ -114,7 +114,7 @@
                             ${value.categoryStack ? `<p><span class="font-semibold">Category Stack:</span> ${value.categoryStack.join(' > ')}</p>` : ''}
                             <p><span class="font-semibold">Has OAuth2:</span> ${value.hasOauth2 ? 'Yes' : 'No'}</p>
                             ${value.docsUrl ? `<p><a href="${value.docsUrl}" target="_blank" class="text-blue-500 hover:underline">Documentation</a></p>` : ''}
-                            ${value.openapiUrl ? `<p><a href="${value.openapiUrl}" target="_blank" class="text-blue-500 hover:underline">OpenAPI Specification</a></p>` : ''}
+                            ${value.openapiUrl ? `<p><a href="reference.html?openapiUrl=${value.openapiUrl}" target="_blank" class="text-blue-500 hover:underline">OpenAPI</a></p>` : ''}
                         </div>
                     `;
                     resultsContainer.appendChild(resultElement);
