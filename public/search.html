@@ -60,13 +60,28 @@
                 }
             });
 
-            function performSearch(query) {
+            async function getSearch(query) {
                 const storageKey = `search.${encodeURIComponent(query)}`;
-                const storedResult = localStorage.getItem(storageKey);
+                const already = localStorage.getItem(storageKey);
 
-                if (storedResult) {
-                    const parsedResult = JSON.parse(storedResult);
-                    displayResults(parsedResult.result);
+                if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
+                    const result = await fetch(`https://search.actionschema.com/api/search?q=${q}`).then(res => res.json())
+                    localStorage.setItem(localStorageKey, JSON.stringify(result));
+                    // console.log(`searched and found: ` + q);
+                    return result;
+                }
+
+                return JSON.parse(already);
+
+            }
+
+            async function performSearch(query) {
+                const result = await getSearch(query);
+
+                const hasResults = Object.keys(result.result).length > 0;
+
+                if (hasResults) {
+                    displayResults(result.result);
                 } else {
                     displayNoResults();
                 }
@@ -79,20 +94,19 @@
                     return;
                 }
 
-                console.log({ results })
                 for (const [key, value] of Object.entries(results)) {
-                    console.log(key)
+
                     const resultElement = document.createElement('div');
                     resultElement.className = 'bg-white rounded-lg shadow-md p-6';
                     resultElement.innerHTML = `
                         <h2 class="text-2xl font-bold text-gray-800 mb-2">${key}</h2>
-                        <p class="text-gray-600 mb-4">${value.description}</p>
+                        ${value.description ? `<p class="text-gray-600 mb-4">${value.description}</p>` : ""}
                         <div class="space-y-2">
-                            ${value.categories ? `<p><span class="font-semibold">Categories:</span> ${value.categories.join(', ')}</p>` : null}
-                            ${value.categoryStack ? `<p><span class="font-semibold">Category Stack:</span> ${value.categoryStack.join(' > ')}</p>` : null}
+                            ${value.categories ? `<p><span class="font-semibold">Categories:</span> ${value.categories.join(', ')}</p>` : ''}
+                            ${value.categoryStack ? `<p><span class="font-semibold">Category Stack:</span> ${value.categoryStack.join(' > ')}</p>` : ''}
                             <p><span class="font-semibold">Has OAuth2:</span> ${value.hasOauth2 ? 'Yes' : 'No'}</p>
-                            <p><a href="${value.docsUrl}" target="_blank" class="text-blue-500 hover:underline">Documentation</a></p>
-                            <p><a href="${value.openapiUrl}" target="_blank" class="text-blue-500 hover:underline">OpenAPI Specification</a></p>
+                            ${value.docsUrl ? `<p><a href="${value.docsUrl}" target="_blank" class="text-blue-500 hover:underline">Documentation</a></p>` : ''}
+                            ${value.openapiUrl ? `<p><a href="${value.openapiUrl}" target="_blank" class="text-blue-500 hover:underline">OpenAPI Specification</a></p>` : ''}
                         </div>
                     `;
                     resultsContainer.appendChild(resultElement);
