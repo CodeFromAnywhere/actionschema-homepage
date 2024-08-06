@@ -61,12 +61,13 @@
             });
 
             async function getSearch(query) {
-                const storageKey = `search.${encodeURIComponent(query)}`;
+                const q = encodeURIComponent(query)
+                const storageKey = `search.${q}`;
                 const already = localStorage.getItem(storageKey);
 
                 if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
                     const result = await fetch(`https://search.actionschema.com/api/search?q=${q}`).then(res => res.json())
-                    localStorage.setItem(localStorageKey, JSON.stringify(result));
+                    localStorage.setItem(storageKey, JSON.stringify(result));
                     // console.log(`searched and found: ` + q);
                     return result;
                 }
