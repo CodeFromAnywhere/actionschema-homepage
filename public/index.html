@@ -323,14 +323,17 @@
             }
         }
 
+        // Meta is Command on Mac and Windows key on Windows
+        const triggerKeys = ['Control', 'Alt', 'Meta'];
+
         document.addEventListener('keydown', function (event) {
-            if (event.key === 'Control' && !isRecording) {
+            if (triggerKeys.includes(event.key) && !isRecording) {
                 startRecording();
             }
         });
 
         document.addEventListener('keyup', function (event) {
-            if (event.key === 'Control' && isRecording) {
+            if (triggerKeys.includes(event.key) && isRecording) {
                 stopRecording();
             }
         });
