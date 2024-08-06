@@ -73,7 +73,7 @@
                 const already = localStorage.getItem(storageKey);
 
                 if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-                    const result = await fetch(`https://search.actionschema.com/api/search?q=${q}`).then(res => res.json())
+                    const result = await fetch(`https://search.actionschema.com/api/search/providers?q=${q}`).then(res => res.json())
                     localStorage.setItem(storageKey, JSON.stringify(result));
                     // console.log(`searched and found: ` + q);
                     return result;
