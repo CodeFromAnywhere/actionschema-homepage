@@ -422,6 +422,7 @@
                 }
                 const isLetter = 'abcdefghijklmnopqrstuvwxyz'.split("").find(k => k === e.key.toLowerCase())
 
+
                 if (isQuerySearchableValidator(searchInput.value)) {
                     // Do prefetch search
                     const q = encodeURIComponent(searchInput.value + e.key).toLowerCase();
@@ -430,9 +431,9 @@
                     if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
                         const result = await fetch(`https://search.actionschema.com/api/search?q=${q}`).then(res => res.json())
                         localStorage.setItem(localStorageKey, JSON.stringify(result));
-                        console.log(`searched and found` + q);
+                        // console.log(`searched and found: ` + q);
                     } else {
-                        console.log("already have " + q);
+                        // console.log("already have: " + q);
                     }
                 }
 
