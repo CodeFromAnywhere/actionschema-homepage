@@ -418,11 +418,13 @@
             searchInput.addEventListener('keypress', async function (e) {
                 if (e.key === 'Enter') {
                     handleSearch();
+                    return;
                 }
+                const isLetter = 'abcdefghijklmnopqrstuvwxyz'.split("").find(k => k === e.key.toLowerCase())
 
                 if (isQuerySearchableValidator(searchInput.value)) {
                     // Do prefetch search
-                    const q = encodeURIComponent(searchInput.value).toLowerCase();
+                    const q = encodeURIComponent(searchInput.value + e.key).toLowerCase();
                     const localStorageKey = `search.${q}`;
                     const already = localStorage.getItem(localStorageKey);
                     if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
