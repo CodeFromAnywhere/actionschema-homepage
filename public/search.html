@@ -75,50 +75,48 @@
                 if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
                     const result = await fetch(`https://search.actionschema.com/api/search/providers?q=${q}`).then(res => res.json())
                     localStorage.setItem(storageKey, JSON.stringify(result));
-                    // console.log(`searched and found: ` + q);
                     return result;
                 }
 
                 return JSON.parse(already);
-
             }
 
             async function performSearch(query) {
                 const result = await getSearch(query);
 
-                const hasResults = Object.keys(result.result).length > 0;
-
-                if (hasResults) {
-                    displayResults(result.result);
+                if (result.actions && result.actions.length > 0) {
+                    displayResults(result.actions);
                 } else {
                     displayNoResults();
                 }
             }
 
-            function displayResults(results) {
+            function displayResults(actions) {
                 resultsContainer.innerHTML = '';
-                if (Object.keys(results).length === 0) {
-                    displayNoResults();
-                    return;
-                }
 
-                for (const [key, value] of Object.entries(results)) {
-
-                    const resultElement = document.createElement('div');
-                    resultElement.className = 'bg-white rounded-lg shadow-md p-6';
-                    resultElement.innerHTML = `
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">${key}</h2>
-                        ${value.description ? `<p class="text-gray-600 mb-4">${value.description}</p>` : ""}
-                        <div class="space-y-2">
-                            ${value.categories ? `<p><span class="font-semibold">Categories:</span> ${value.categories.join(', ')}</p>` : ''}
-                            ${value.categoryStack ? `<p><span class="font-semibold">Category Stack:</span> ${value.categoryStack.join(' > ')}</p>` : ''}
-                            <p><span class="font-semibold">Has OAuth2:</span> ${value.hasOauth2 ? 'Yes' : 'No'}</p>
-                            ${value.docsUrl ? `<p><a href="${value.docsUrl}" target="_blank" class="text-blue-500 hover:underline">Documentation</a></p>` : ''}
-                            ${value.openapiUrl ? `<p><a href="reference.html?openapiUrl=${value.openapiUrl}" target="_blank" class="text-blue-500 hover:underline">OpenAPI</a></p>` : ''}
+                actions.forEach(action => {
+                    const actionElement = document.createElement('div');
+                    actionElement.className = 'bg-white rounded-lg shadow-md p-6 mb-4';
+                    actionElement.innerHTML = `
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">${action.actionDescription}</h2>
+                        <p class="text-gray-600 mb-4">Segment: ${action.segment}</p>
+                        <div class="space-y-4">
+                            ${action.providers.map(provider => `
+                                <div class="border-t pt-4">
+                                    <h3 class="text-xl font-semibold text-gray-700">${provider.provider.name}</h3>
+                                    <p class="text-gray-600">Slug: ${provider.providerSlug}</p>
+                                    <h4 class="text-lg font-semibold text-gray-700 mt-2">Operations:</h4>
+                                    <ul class="list-disc list-inside">
+                                        ${provider.operations.map(op => `
+                                            <li>${op.summary || op.operationId} (Likelihood: ${op.likelihood.toFixed(2)})</li>
+                                        `).join('')}
+                                    </ul>
+                                </div>
+                            `).join('')}
                         </div>
                     `;
-                    resultsContainer.appendChild(resultElement);
-                }
+                    resultsContainer.appendChild(actionElement);
+                });
             }
 
             function displayNoResults() {
