@@ -48,7 +48,7 @@
     </footer>
 
     <script>
-        const baseUrl = `https://search.actionschema.com`;//"http://localhost:3001";
+        const baseUrl = `https://search.actionschema.com`;
         const dummyData = {
             "query": "create a new GitHub repository and send an email notification then post a message on Slack and create a Jira issue",
             "actions": [
@@ -341,25 +341,21 @@
                 const query = urlParams.get('q');
                 const isBeta = urlParams.get('beta') === "true";
 
-                const openapiUrl = op.provider.openapiUrl;
-                const referenceUrl = `reference.html?openapiUrl=${openapiUrl}#/operations/${op.operationId}`;
-                const loginUrl = `https://auth.actionschema.com/provider/authorize?client_id=&providerSlug=${op.providerSlug}&redirect_uri=${encodeURIComponent(`https://actionschema.com/search.html?q=${query}`)}&selectScopes=1`
-                const prunedOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${openapiUrl}&operationIds=${op.operationId}&dereference=true`;
+                const { providerSlug, operationId, summary, loginUrl, referenceUrl, prunedOpenapiUrl, buildUrl } = op;
 
-                const buildUrl = `https://eval.actionschema.com/new.html?context=${encodeURIComponent(prunedOpenapiUrl)}&q=Please+build+me+a+Vercel+serverless+endpoint+that+uses+this&send=false`;
+                const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200";
 
-                const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200"
                 return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
                                     <div class="flex items-center justify-between">
-                                        <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${op.providerSlug}</h3>
+                                        <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${providerSlug}</h3>
                                         ${isBeta ? `<label class="flex items-center space-x-2">
                                             <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
-                                                   ${selectedOperations[op.providerSlug]?.includes(op.operationId) ? 'checked' : ''} onclick="toggleOperation('${op.providerSlug}', '${op.operationId}')"></input>
+                                                   ${selectedOperations[providerSlug]?.includes(operationId) ? 'checked' : ''} onclick="toggleOperation('${providerSlug}', '${operationId}')"></input>
                                             <span class="text-sm text-gray-700">Select</span>
                                         </label>`: ''}
                                     </div>
-                                    <p class="text-sm text-gray-600">${op.operationId}</p>
-                                    <p class="mt-2">${op.summary || 'No summary available'}</p>
+                                    <p class="text-sm text-gray-600">${operationId}</p>
+                                    <p class="mt-2">${summary || 'No summary available'}</p>
                                     <div class="flex items-center justify-start gap-2 -ml-2">
                                     <p class="mt-4"><a href="${loginUrl}" target="_blank" class="${linkClass}">Login</a></p>
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
