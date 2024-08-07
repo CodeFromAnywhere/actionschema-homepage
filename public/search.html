@@ -355,8 +355,10 @@
                                     </div>
                                     <p class="text-sm text-gray-600">${op.operationId}</p>
                                     <p class="mt-2">${op.summary || 'No summary available'}</p>
+                                    <div class="flex items-center justify-between">
                                     <p class="mt-4"><a href="${loginUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Login</a></p>
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Try it</a></p>
+                                    </div>
                                 </li>
                             `;
             }).join('') : 'No actions found for your query'}
