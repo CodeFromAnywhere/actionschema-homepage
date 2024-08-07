@@ -4,49 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ActionSchema - Search Results</title>
+    <title>Reactify.js Search Page</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://reactify-js.vercel.app"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center">
-                    <svg class="h-8 w-8 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                        <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="currentColor"
-                            stroke-width="8" fill="none" />
-                    </svg>
-                    <h1 class="text-2xl font-bold text-gray-800">ActionSchema</h1>
-                </a>
-                <form id="search-form" class="flex-grow max-w-2xl mx-4">
-                    <input type="text" id="search-input" name="q" placeholder="What do you want to build?"
-                        class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </form>
-            </div>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-4 py-8 flex-grow">
-        <div id="renderRoot"></div>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto px-4 text-center">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform"
-                target="_blank" class="hover:underline">API</a>
-        </div>
-    </footer>
+<body class="bg-gray-100">
+    <div id="renderRoot"></div>
 
     <script>
-        const baseUrl = `https://search.actionschema.com`;//"http://localhost:3001";
+        // Dummy data
         const dummyData = {
             "query": "create a new GitHub repository and send an email notification then post a message on Slack and create a Jira issue",
             "actions": [
@@ -178,53 +145,33 @@
                 }
             ]
         }
+
         const [getData, setData] = useState(dummyData);
         const [getHoveredOperation, setHoveredOperation] = useState(null);
         const [getHoveredSegment, setHoveredSegment] = useState(null);
 
-        async function getSearch(query) {
-            const q = encodeURIComponent(query).toLowerCase();
-            const storageKey = `search.${q}`;
-            const already = localStorage.getItem(storageKey);
-
-            if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-                const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
-                console.log(result)
-                localStorage.setItem(storageKey, JSON.stringify(result));
-                return result;
-            }
-
-            return JSON.parse(already);
-        }
-
-        async function performSearch(query) {
-            const result = await getSearch(query);
-            setData(result);
-        }
-
         function handleSearch(event) {
             event.preventDefault();
-            const query = event.target.elements.q.value;
-            performSearch(query);
-            window.history.pushState({}, '', `?q=${encodeURIComponent(query)}`);
+            const query = event.target.elements.search.value;
+            window.location.href = `?q=${encodeURIComponent(query)}`;
         }
 
-        function highlightSegments(query, actions, hoveredOperationIndex) {
+        function highlightSegments(query, segments, hoveredOperationIndex) {
             let result = [];
             let lastIndex = 0;
 
-            const hoveredOperation = getData().operations && getData().operations[hoveredOperationIndex];
+            const hoveredOperation = getData().operations[hoveredOperationIndex]
 
-            actions.forEach((action, index) => {
-                const startIndex = query.indexOf(action.querySegment, lastIndex);
+            segments.forEach((segment, index) => {
+                const startIndex = query.indexOf(segment.querySegment, lastIndex);
                 if (startIndex > lastIndex) {
                     result.push(query.substring(lastIndex, startIndex));
                 }
 
-                const isHighlighted = !hoveredOperation || hoveredOperation.actions.some(op => op.querySegment === action.querySegment);
+                const isHighlighted = !hoveredOperation || hoveredOperation.actions.some(action => action.querySegment === segment.querySegment);
                 const segmentClass = isHighlighted ? 'bg-yellow-200 cursor-pointer' : '';
-                result.push(`<span class="${segmentClass}" onmouseover="setHoveredSegment(${index})" onmouseout="setHoveredSegment(null)">${action.querySegment}</span>`);
-                lastIndex = startIndex + action.querySegment.length;
+                result.push(`<span class="${segmentClass}" onmouseover="setHoveredSegment(${index})" onmouseout="setHoveredSegment(null)">${segment.querySegment}</span>`);
+                lastIndex = startIndex + segment.querySegment.length;
             });
 
             if (lastIndex < query.length) {
@@ -239,66 +186,56 @@
             const hoveredOperation = getHoveredOperation();
             const hoveredSegment = getHoveredSegment();
 
-            if (!data.query) {
-                return '';
-            }
-
             return `
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-1/3">
-                        <h2 class="text-xl font-bold mb-4">Operations</h2>
-                        <ul class="space-y-4">
-                            ${data.operations ? data.operations.map((op, index) => `
-                                <li class="p-4 bg-white rounded shadow-md hover:shadow-lg transition-shadow duration-200"
-                                    onmouseover="setHoveredOperation(${index})"
-                                    onmouseout="setHoveredOperation(null)">
-                                    <h3 class="font-semibold">${op.providerSlug}</h3>
-                                    <p class="text-sm text-gray-600">${op.operationId}</p>
-                                    <p class="mt-2">${op.summary || 'No summary available'}</p>
-                                </li>
-                            `).join('') : ''}
-                        </ul>
-                    </div>
+                <div class="container mx-auto px-4 py-8">
+                    <header class="mb-8">
+                        <form onsubmit="handleSearch(event)" class="flex justify-center">
+                            <input type="text" name="search" placeholder="Enter your query" value="${data.query}" class="w-full max-w-2xl px-4 py-2 rounded-l-lg border-2 border-blue-500 focus:outline-none">
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-r-lg hover:bg-blue-600 focus:outline-none">Search</button>
+                        </form>
+                    </header>
 
-                    <div class="w-full md:w-2/3">
-                        <h2 class="text-xl font-bold mb-4">Query Breakdown</h2>
-                        <div class="p-4 bg-white rounded shadow-md">
-                            <p class="text-lg mb-4">
-                                ${data.actions ? highlightSegments(data.query, data.actions, hoveredOperation) : ''}
-                            </p>
-                            ${hoveredSegment !== null && data.actions ? `
-                                <div class="mt-4 p-4 bg-gray-100 rounded">
-                                    <h3 class="font-semibold mb-2">Segment: "${data.actions[hoveredSegment].querySegment}"</h3>
-                                    <ul class="list-disc list-inside">
-                                        ${data.actions[hoveredSegment].providers.map(provider => `
-                                            <li>
-                                                ${provider.providerSlug}: 
-                                                ${provider.operations.map(op => `${op.operationId} (${op.summary || 'No summary'})`).join(', ')}
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                                </div>
-                            ` : ''}
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="w-full md:w-1/3">
+                            <h2 class="text-xl font-bold mb-4">Operations</h2>
+                            <ul class="space-y-4">
+                                ${data.operations.map((op, index) => `
+                                    <li class="p-4 bg-white rounded shadow-md hover:shadow-lg transition-shadow duration-200"
+                                        onmouseover="setHoveredOperation(${index})"
+                                        onmouseout="setHoveredOperation(null)">
+                                        <h3 class="font-semibold">${op.providerSlug}</h3>
+                                        <p class="text-sm text-gray-600">${op.operationId}</p>
+                                        <p class="mt-2">${op.summary || 'No summary available'}</p>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="w-full md:w-2/3">
+                            <h2 class="text-xl font-bold mb-4">Query Breakdown</h2>
+                            <div class="p-4 bg-white rounded shadow-md">
+                                <p class="text-lg mb-4">
+                                    ${highlightSegments(data.query, data.actions, hoveredOperation)}
+                                </p>
+                                ${hoveredSegment !== null ? `
+                                    <div class="mt-4 p-4 bg-gray-100 rounded">
+                                        <h3 class="font-semibold mb-2">Segment: "${data.actions[hoveredSegment].querySegment}"</h3>
+                                        <ul class="list-disc list-inside">
+                                            ${data.actions[hoveredSegment].providers.map(provider => `
+                                                <li>
+                                                    ${provider.providerSlug}: 
+                                                    ${provider.operations.map(op => `${op.operationId} (${op.summary || 'No summary'})`).join(', ')}
+                                                </li>
+                                            `).join('')}
+                                        </ul>
+                                    </div>
+                                ` : ''}
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
         }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-
-            if (query) {
-                searchInput.value = query;
-                performSearch(query);
-            }
-
-            searchForm.addEventListener('submit', handleSearch);
-        });
 
         reactify();
     </script>
