@@ -339,6 +339,7 @@
                             ${data.operations?.length ? data.operations.map((op, index) => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const query = urlParams.get('q');
+                const isBeta = urlParams.get('beta') === "true";
 
                 const openapiUrl = op.provider.openapiUrl;
                 const referenceUrl = `reference.html?openapiUrl=${openapiUrl}#/operations/${op.operationId}`;
@@ -348,11 +349,11 @@
                 return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
                                     <div class="flex items-center justify-between">
                                         <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${op.providerSlug}</h3>
-                                        <label class="flex items-center space-x-2">
+                                        ${isBeta ? `<label class="flex items-center space-x-2">
                                             <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
                                                    ${selectedOperations[op.providerSlug]?.includes(op.operationId) ? 'checked' : ''} onclick="toggleOperation('${op.providerSlug}', '${op.operationId}')"></input>
                                             <span class="text-sm text-gray-700">Select</span>
-                                        </label>
+                                        </label>`: ''}
                                     </div>
                                     <p class="text-sm text-gray-600">${op.operationId}</p>
                                     <p class="mt-2">${op.summary || 'No summary available'}</p>
