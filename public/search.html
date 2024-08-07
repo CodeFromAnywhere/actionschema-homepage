@@ -45,6 +45,8 @@
     </footer>
 
     <script>
+
+        const baseUrl = `https://search.actionschema.com`;//`http://localhost:3001`;
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('search-input');
             const resultsContainer = document.getElementById('results');
@@ -73,7 +75,7 @@
                 const already = localStorage.getItem(storageKey);
 
                 if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-                    const result = await fetch(`https://search.actionschema.com/api/search/providers?q=${q}`).then(res => res.json())
+                    const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
                     console.log(result)
                     localStorage.setItem(storageKey, JSON.stringify(result));
                     return result;
@@ -100,7 +102,7 @@
                     actionElement.className = 'bg-white rounded-lg shadow-md p-6 mb-4';
                     actionElement.innerHTML = `
                         <h2 class="text-2xl font-bold text-gray-800 mb-2">${action.actionDescription}</h2>
-                        <p class="text-gray-600 mb-4">Segment: ${action.segment}</p>
+                        <p class="text-gray-600 mb-4">Segment: ${action.querySegment}</p>
                         <div class="space-y-4">
                             ${action.providers.filter(x => x.operations.length).map(provider => `
                                 <div class="border-t pt-4">
