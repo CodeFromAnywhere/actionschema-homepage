@@ -341,7 +341,7 @@
                 const query = urlParams.get('q');
                 const isBeta = urlParams.get('beta') === "true";
 
-                const { providerSlug, operationId, summary, loginUrl, referenceUrl, prunedOpenapiUrl, buildUrl } = op;
+                const { providerSlug, operationId, summary, loginUrl, referenceUrl, prunedOpenapiUrl, buildUrl, providerUrl } = op;
 
                 const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200";
 
@@ -361,6 +361,7 @@
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
                                     <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>
                                     <p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
+                                    <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
                                     </div>
                                 </li>
                             `;

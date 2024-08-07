@@ -23,9 +23,16 @@ export const GET = async (request: Request) => {
   const template = await fetch(url.origin + "/provider.html").then((res) =>
     res.text(),
   );
-  const data = provider;
+  const data = { providerSlug, ...provider };
   const dataString = `const data = ${JSON.stringify(data, undefined, 0)}`;
-  const html = template.replace(`const data = {};`, dataString);
+  const html = template
+    .replace(`const data = {};`, dataString)
+    .replace(
+      `<title></title>`,
+      `<title>${
+        providerSlug.slice(0, 1).toUpperCase() + providerSlug.slice(1)
+      } - ActionSchema</title>`,
+    );
 
   return new Response(html, {
     status: 200,

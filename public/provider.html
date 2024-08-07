@@ -1,11 +1,86 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<body>
-    <h1>hey</h1>
-    <div id="root"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'github-blue': '#0366d6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-white text-gray-800 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <h1 id="title" class="text-4xl font-bold text-github-blue mb-8"></h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-blue-50 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold text-github-blue mb-4">General Information</h2>
+                <p id="description" class="mb-4"></p>
+                <p class="mb-2"><strong>Documentation:</strong> <a id="docsUrl" href="#" target="_blank"
+                        class="text-github-blue hover:underline"></a></p>
+                <p class="mb-2"><strong>OpenAPI Spec:</strong> <a id="openapiUrl" href="#" target="_blank"
+                        class="text-github-blue hover:underline"></a></p>
+                <p class="mb-2"><strong>Create OAuth App:</strong> <a id="createOauthAppUrl" href="#" target="_blank"
+                        class="text-github-blue hover:underline"></a></p>
+            </div>
+
+            <div class="bg-blue-50 p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold text-github-blue mb-4">OAuth 2.0 Information</h2>
+                <p class="mb-2"><strong>Has OAuth 2.0:</strong> <span id="hasOauth2"></span></p>
+                <p class="mb-2"><strong>Authorization URL:</strong> <span id="authorizationUrl"
+                        class="break-all"></span></p>
+                <p class="mb-2"><strong>Token URL:</strong> <span id="tokenUrl" class="break-all"></span></p>
+                <p class="mb-2"><strong>Scopes Info:</strong> <a id="scopesUrl" href="#" target="_blank"
+                        class="text-github-blue hover:underline"></a></p>
+            </div>
+        </div>
+
+        <div class="mt-8">
+            <h2 class="text-2xl font-semibold text-github-blue mb-4">Available Scopes</h2>
+            <div id="scopes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </div>
+    </div>
+
     <script>
         const data = {};
-        document.getElementById("root").innerHTML = JSON.stringify(data);
+
+        const providerSlug = window.location.pathname.split("/").pop();
+        const providerName = providerSlug.slice(0, 1).toUpperCase() + providerSlug.slice(1);
+        document.getElementById('description').textContent = data.description;
+        document.getElementById('title').textContent = providerName;
+        document.getElementById('docsUrl').textContent = 'API Documentation';
+        document.getElementById('docsUrl').href = data.docsUrl;
+        document.getElementById('openapiUrl').textContent = 'OpenAPI Specification';
+        document.getElementById('openapiUrl').href = data.openapiUrl;
+        document.getElementById('createOauthAppUrl').textContent = 'Create OAuth App';
+        document.getElementById('createOauthAppUrl').href = data.createOauthAppUrl;
+        document.getElementById('hasOauth2').textContent = data.hasOauth2 ? 'Yes' : 'No';
+        document.getElementById('authorizationUrl').textContent = data.authorization_url;
+        document.getElementById('tokenUrl').textContent = data.token_url;
+        document.getElementById('scopesUrl').textContent = 'Scopes Documentation';
+        document.getElementById('scopesUrl').href = data.scopesUrl;
+
+        const scopesContainer = document.getElementById('scopes');
+        Object.entries(data.scopes).forEach(([scope, description]) => {
+            const scopeElement = document.createElement('div');
+            scopeElement.className = 'bg-white p-4 rounded-lg shadow-md';
+            scopeElement.innerHTML = `
+                <h3 class="font-semibold text-github-blue mb-2">${scope || '(default)'}</h3>
+                <p class="text-sm">${description}</p>
+            `;
+            scopesContainer.appendChild(scopeElement);
+        });
     </script>
 </body>
 
