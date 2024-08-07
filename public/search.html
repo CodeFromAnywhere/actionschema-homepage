@@ -7,6 +7,8 @@
     <title>ActionSchema - Search Results</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://reactify-js.vercel.app"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -127,7 +129,7 @@
                 {
                     "operationId": "createRepo",
                     "providerSlug": "github",
-                    "provider": {},
+                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
                     "summary": "Create a new repository",
                     "actions": [
                         {
@@ -140,7 +142,7 @@
                 {
                     "operationId": "sendEmail",
                     "providerSlug": "email",
-                    "provider": {},
+                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
                     "summary": "Send email notification",
                     "actions": [
                         {
@@ -153,7 +155,7 @@
                 {
                     "operationId": "postMessage",
                     "providerSlug": "slack",
-                    "provider": {},
+                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
                     "summary": "Post message to channel",
                     "actions": [
                         {
@@ -166,7 +168,7 @@
                 {
                     "operationId": "createIssue",
                     "providerSlug": "jira",
-                    "provider": {},
+                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
                     "summary": "Create issue",
                     "actions": [
                         {
@@ -178,9 +180,13 @@
                 }
             ]
         }
-        const [getData, setData] = useState(dummyData);
+        const [getData, setData] = useState({});
+        const [getLoading, setLoading] = useState(true);
+        const [getError, setError] = useState(null);
+
         const [getHoveredOperation, setHoveredOperation] = useState(null);
         const [getHoveredSegment, setHoveredSegment] = useState(null);
+        const [getSelectedOperations, setSelectedOperations] = useState({});
 
         async function getSearch(query) {
             const q = encodeURIComponent(query).toLowerCase();
@@ -188,11 +194,25 @@
             const already = localStorage.getItem(storageKey);
 
             if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-                const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
-                console.log(result)
-                localStorage.setItem(storageKey, JSON.stringify(result));
-                return result;
+
+                setLoading(true);
+
+                try {
+                    const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
+
+                    setLoading(false);
+
+                    console.log(result)
+                    localStorage.setItem(storageKey, JSON.stringify(result));
+                    return result;
+                } catch (e) {
+                    setError("Query could not be carried out")
+                    setLoading(false);
+                }
             }
+
+            setLoading(false);
+
 
             return JSON.parse(already);
         }
@@ -234,29 +254,109 @@
             return result.join('');
         }
 
+        function toggleOperation(providerSlug, operationId) {
+
+            console.log({ providerSlug, operationId })
+            const selectedOperations = getSelectedOperations();
+            const newSelectedOperations = { ...selectedOperations };
+
+            if (!newSelectedOperations[providerSlug]) {
+                newSelectedOperations[providerSlug] = [];
+            }
+
+            const index = newSelectedOperations[providerSlug].indexOf(operationId);
+            if (index > -1) {
+                newSelectedOperations[providerSlug].splice(index, 1);
+            } else {
+                newSelectedOperations[providerSlug].push(operationId);
+            }
+
+            if (newSelectedOperations[providerSlug].length === 0) {
+                delete newSelectedOperations[providerSlug];
+            }
+
+            console.log({ newSelectedOperations })
+
+            setSelectedOperations(newSelectedOperations);
+        }
+
+        function getSelectedOperationsCount() {
+            return Object.values(getSelectedOperations()).reduce((sum, arr) => sum + arr.length, 0);
+        }
+
+        function getSelectionString() {
+            const selectedOperations = getSelectedOperations();
+            return Object.entries(selectedOperations)
+                .map(([providerSlug, operationIds]) => `${providerSlug}:${operationIds.join(',')}`)
+                .join('&selection=');
+        }
+
+        function getSdkConfig() {
+            const selectedOperations = getSelectedOperations();
+            const data = getData();
+
+            const openapis = Object.entries(selectedOperations).map(([providerSlug, operationIds]) => {
+                const provider = data.operations.find(x => x.providerSlug === providerSlug)?.provider?.openapiUrl;
+
+                return {
+                    openapiUrl: provider?.openapiUrl || "NOT FOUND",
+                    operationIds
+                };
+            });
+
+            return { openapis }
+        }
+
+        function copySdkConfigToClipboard() {
+            const sdkConfig = getSdkConfig();
+
+            window.navigator.clipboard.writeText(JSON.stringify(sdkConfig, undefined, 2))
+            console.log({ sdkConfig })
+        }
+
         function renderRoot() {
             const data = getData();
             const hoveredOperation = getHoveredOperation();
             const hoveredSegment = getHoveredSegment();
+            const selectedOperations = getSelectedOperations();
+            const selectedCount = getSelectedOperationsCount();
 
-            if (!data.query) {
-                return '';
+            if (getLoading()) {
+                return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`
             }
 
+            if (getError()) {
+                return `<div><i class="fas fa-error"></i>${getError()}</div>`
+            }
+
+            // onmouseover="setHoveredOperation(${index})"
+            // onmouseout="setHoveredOperation(null)"
             return `
                 <div class="flex flex-col md:flex-row gap-8">
                     <div class="w-full md:w-1/3">
                         <h2 class="text-xl font-bold mb-4">Operations</h2>
                         <ul class="space-y-4">
-                            ${data.operations ? data.operations.map((op, index) => `
-                                <li class="p-4 bg-white rounded shadow-md hover:shadow-lg transition-shadow duration-200"
-                                    onmouseover="setHoveredOperation(${index})"
-                                    onmouseout="setHoveredOperation(null)">
-                                    <h3 class="font-semibold">${op.providerSlug}</h3>
+                            ${data.operations?.length ? data.operations.map((op, index) => {
+
+                const openapiUrl = op.provider.openapiUrl;
+                const referenceUrl = `reference.html?openapiUrl=${openapiUrl}#/operations/${op.operationId}`;
+
+
+                return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
+                                    <div class="flex items-center justify-between">
+                                        <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${op.providerSlug}</h3>
+                                        <label class="flex items-center space-x-2">
+                                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                                   ${selectedOperations[op.providerSlug]?.includes(op.operationId) ? 'checked' : ''} onclick="toggleOperation('${op.providerSlug}', '${op.operationId}')"></input>
+                                            <span class="text-sm text-gray-700">Select</span>
+                                        </label>
+                                    </div>
                                     <p class="text-sm text-gray-600">${op.operationId}</p>
                                     <p class="mt-2">${op.summary || 'No summary available'}</p>
+                                    <p class="mt-4"><a href="${referenceUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Try it</a></p>
                                 </li>
-                            `).join('') : ''}
+                            `;
+            }).join('') : 'No actions found for your query'}
                         </ul>
                     </div>
 
@@ -279,6 +379,24 @@
                                     </ul>
                                 </div>
                             ` : ''}
+                        </div>
+
+                        <div class="mt-8">
+                            ${selectedCount === 0 ? '' : `<h2 class="text-xl font-bold mb-4">Selected Operations: ${selectedCount}</h2>
+                            <div class="space-y-4">
+                                <a href="https://auth.actionschema.com/client/create?selection=${getSelectionString()}" 
+                                   class="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200">
+                                    Create New Client or Add to Existing
+                                </a>
+                                <a href="https://openapi-util.actionschema.com/generateSdk?selection=${getSelectionString()}" 
+                                   class="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200">
+                                    Generate SDK
+                                </a>
+                                <button onclick="copySdkConfigToClipboard()" 
+                                                    class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors duration-200">
+                                    Copy Config for ActionSchema-migrate
+                                </button>
+                            </div>`}
                         </div>
                     </div>
                 </div>
