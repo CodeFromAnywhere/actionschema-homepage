@@ -343,6 +343,7 @@
                 const openapiUrl = op.provider.openapiUrl;
                 const referenceUrl = `reference.html?openapiUrl=${openapiUrl}#/operations/${op.operationId}`;
                 const loginUrl = `https://auth.actionschema.com/provider/authorize?client_id=&providerSlug=${op.providerSlug}&redirect_uri=${encodeURIComponent(`https://actionschema.com/search.html?q=${query}`)}&selectScopes=1`
+                const prunedOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${openapiUrl}&operationIds=${op.operationId}&dereference=true`;
 
                 return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
                                     <div class="flex items-center justify-between">
@@ -355,9 +356,10 @@
                                     </div>
                                     <p class="text-sm text-gray-600">${op.operationId}</p>
                                     <p class="mt-2">${op.summary || 'No summary available'}</p>
-                                    <div class="flex items-center justify-between">
+                                    <div class="flex items-center justify-start gap-4">
                                     <p class="mt-4"><a href="${loginUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Login</a></p>
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Try it</a></p>
+                                    <p class="mt-4"><a href="${definitionUrl}" target="_blank" class=" px-4 py-2 bg-gray-100 text-black rounded hover:bg-gray-100 transition-colors duration-200">Definition</a></p>
                                     </div>
                                 </li>
                             `;
