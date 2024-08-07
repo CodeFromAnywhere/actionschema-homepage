@@ -1,0 +1,51 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ActionSchema Integrations API",
+    "description": "API for retrieving integrations for a specific provider on ActionSchema",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://www.actionschema.com"
+    }
+  ],
+  "paths": {
+    "/apps/{providerSlug}/integrations": {
+      "get": {
+        "summary": "Get integrations for a provider",
+        "description": "Retrieves information for a specific provider",
+        "parameters": [
+          {
+            "name": "providerSlug",
+            "in": "path",
+            "required": true,
+            "description": "The slug of the provider to get integrations for",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "text/html": { "schema": { "type": "string" } },
+              "application/json": {
+                "schema": {
+                  "$ref": "https://auth.actionschema.com/data/provider.json"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Provider not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}

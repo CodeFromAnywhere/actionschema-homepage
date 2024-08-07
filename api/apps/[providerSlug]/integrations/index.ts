@@ -5,6 +5,7 @@ export const config = {
 export const GET = async (request: Request) => {
   const url = new URL(request.url);
   const providerSlug = url.searchParams.get("providerSlug");
+  const needJson = request.headers.get("accept") === "application/json";
 
   if (!providerSlug) {
     return new Response("Not found");
@@ -19,11 +20,19 @@ export const GET = async (request: Request) => {
   if (!provider) {
     return new Response("Not found");
   }
+  const data = { providerSlug, ...provider };
+
+  if (needJson) {
+    // Good for programmable use of this
+    return new Response(JSON.stringify(data, undefined, 2), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 
   const template = await fetch(url.origin + "/provider.html").then((res) =>
     res.text(),
   );
-  const data = { providerSlug, ...provider };
   const dataString = `const data = ${JSON.stringify(data, undefined, 0)}`;
   const html = template
     .replace(`const data = {};`, dataString)
