@@ -345,6 +345,9 @@
                 const referenceUrl = `reference.html?openapiUrl=${openapiUrl}#/operations/${op.operationId}`;
                 const loginUrl = `https://auth.actionschema.com/provider/authorize?client_id=&providerSlug=${op.providerSlug}&redirect_uri=${encodeURIComponent(`https://actionschema.com/search.html?q=${query}`)}&selectScopes=1`
                 const prunedOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${openapiUrl}&operationIds=${op.operationId}&dereference=true`;
+
+                const buildUrl = `https://eval.actionschema.com/new.html?context=${encodeURIComponent(prunedOpenapiUrl)}&q=Please+build+me+a+Vercel+serverless+endpoint+that+uses+this&send=false`;
+
                 const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200"
                 return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
                                     <div class="flex items-center justify-between">
@@ -361,6 +364,7 @@
                                     <p class="mt-4"><a href="${loginUrl}" target="_blank" class="${linkClass}">Login</a></p>
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
                                     <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>
+                                    <p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
                                     </div>
                                 </li>
                             `;
