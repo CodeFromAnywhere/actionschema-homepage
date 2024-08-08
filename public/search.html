@@ -345,6 +345,9 @@
 
                 const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200";
 
+                // Bring it back after ActionSchema serverless
+                //<p class="mt-4"><a href="${loginUrl}" target="_blank" class="${linkClass}">Login</a></p>
+                //<p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
                 return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
                                     <div class="flex items-center justify-between">
                                         <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${providerSlug}</h3>
@@ -357,10 +360,9 @@
                                     <p class="text-sm text-gray-600">${operationId}</p>
                                     <p class="mt-2">${summary || 'No summary available'}</p>
                                     <div class="flex items-center justify-start gap-2 -ml-2">
-                                    <p class="mt-4"><a href="${loginUrl}" target="_blank" class="${linkClass}">Login</a></p>
+                                    
                                     <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
                                     <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>
-                                    <p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
                                     <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
                                     </div>
                                 </li>

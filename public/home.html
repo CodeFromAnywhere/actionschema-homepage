@@ -352,7 +352,7 @@
 
         const container = document.getElementById('buttonsContainer');
         buttonsHtml = prompts.map(prompt => {
-            return `<a class="p-2 bg-gray-500/20 rounded-md" href="search.html?q=${encodeURIComponent(prompt)}">${prompt}</a>`
+            return `<a class="p-2 bg-gray-500/20 rounded-md" href="search/index.html?q=${encodeURIComponent(prompt)}">${prompt}</a>`
         }).join("\n");
         container.innerHTML = buttonsHtml;
 
