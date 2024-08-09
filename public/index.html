@@ -289,6 +289,10 @@
         }
 
         function startRecording() {
+            // show a loading indicator
+            micButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            timer.style.display = 'inline';
+
             navigator.mediaDevices.getUserMedia({ audio: true, })
                 .then(stream => {
                     mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/mp4" });
@@ -306,10 +310,14 @@
                     timerInterval = setInterval(updateTimer, 1000);
 
                     micButton.innerHTML = '<i class="fas fa-stop"></i>';
-                    timer.style.display = 'inline';
+
                 })
                 .catch(error => {
                     console.error('Error accessing microphone:', error);
+
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    timer.style.display = 'none';
+
                 });
         }
 

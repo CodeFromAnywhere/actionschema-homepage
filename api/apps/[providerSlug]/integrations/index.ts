@@ -2,7 +2,12 @@ export const config = {
   runtime: "edge",
 };
 
+
 export const GET = async (request: Request) => {
+
+  request
+
+
   const url = new URL(request.url);
   const providerSlug = url.searchParams.get("providerSlug");
   const needJson = request.headers.get("accept") === "application/json";

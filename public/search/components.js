@@ -4,7 +4,7 @@ function renderRoot() {
   const hoveredSegment = getHoveredSegment();
   const selectedOperations = getSelectedOperations();
   const selectedCount = getSelectedOperationsCount();
-
+ 
   if (getLoading()) {
     return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`;
   }

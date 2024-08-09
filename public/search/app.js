@@ -1,3 +1,5 @@
+// TODO: unfortunatley ///reference doesn't work yet with remote definitions for some reason... it'd be great to either find an editor that supports this better or make it work in here.
+
 const baseUrl = `https://search.actionschema.com`;
 const [getData, setData] = useState({});
 const [getLoading, setLoading] = useState(true);
