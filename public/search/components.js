@@ -4,9 +4,14 @@ function renderRoot() {
   const hoveredSegment = getHoveredSegment();
   const selectedOperations = getSelectedOperations();
   const selectedCount = getSelectedOperationsCount();
+
+  const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get("beta") === "true") {
     window.localStorage.setItem("beta", "true");
+  } else if (urlParams.get("beta") === "false") {
+    window.localStorage.setItem("beta", "false");
   }
+
   if (getLoading()) {
     return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`;
   }
@@ -59,7 +64,6 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
   const beta = window.localStorage.getItem("beta") === "true";
   return data.operations
     .map((op, index) => {
-      const urlParams = new URLSearchParams(window.location.search);
       const {
         providerSlug,
         operationId,
