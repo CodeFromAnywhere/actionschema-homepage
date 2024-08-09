@@ -4,7 +4,9 @@ function renderRoot() {
   const hoveredSegment = getHoveredSegment();
   const selectedOperations = getSelectedOperations();
   const selectedCount = getSelectedOperationsCount();
-
+  if (urlParams.get("beta") === "true") {
+    window.localStorage.setItem("beta", "true");
+  }
   if (getLoading()) {
     return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`;
   }
@@ -54,10 +56,10 @@ function renderRoot() {
 function renderOperations(data, hoveredOperation, selectedOperations) {
   if (!data.operations?.length) return "No actions found for your query";
 
+  const beta = window.localStorage.getItem("beta") === "true";
   return data.operations
     .map((op, index) => {
       const urlParams = new URLSearchParams(window.location.search);
-      const beta = urlParams.get("beta") === "true";
       const {
         providerSlug,
         operationId,
