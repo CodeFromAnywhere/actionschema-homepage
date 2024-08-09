@@ -4,7 +4,7 @@ function renderRoot() {
   const hoveredSegment = getHoveredSegment();
   const selectedOperations = getSelectedOperations();
   const selectedCount = getSelectedOperationsCount();
- 
+
   if (getLoading()) {
     return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`;
   }
@@ -57,7 +57,7 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
   return data.operations
     .map((op, index) => {
       const urlParams = new URLSearchParams(window.location.search);
-      const isBeta = urlParams.get("beta") === "true";
+      const beta = urlParams.get("beta") === "true";
       const {
         providerSlug,
         operationId,
@@ -65,7 +65,10 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
         referenceUrl,
         prunedOpenapiUrl,
         providerUrl,
+        loginUrl,
+        buildUrl,
       } = op;
+
       const linkClass =
         "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200";
 
@@ -75,7 +78,7 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
             <div class="flex items-center justify-between">
                 <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${providerSlug}</h3>
                 ${
-                  isBeta
+                  beta
                     ? `<label class="flex items-center space-x-2">
                     <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
                            ${
@@ -94,8 +97,18 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
             <p class="mt-2">${summary || "No summary available"}</p>
             <div class="flex items-center justify-start gap-2 -ml-2">
                 <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
-                <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>
                 <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
+
+                ${
+                  beta
+                    ? `
+<p class="mt-4"><a href="${loginUrl}" class="${linkClass}">Login</a></p>
+<p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
+<p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>`
+                    : `
+<p class="mt-4"><div onclick="let yes = confirm('Build will allow developers to write code using their collected APIs. This feature is only availble through our pilot program. Are you interested?'); if(yes){ window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform'; }" class="${linkClass}">Build</a></p>
+`
+                }
             </div>
         </li>`;
     })
