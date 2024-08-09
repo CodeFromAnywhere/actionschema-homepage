@@ -96,8 +96,8 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
             <p class="text-sm text-gray-600">${operationId}</p>
             <p class="mt-2">${summary || "No summary available"}</p>
             <div class="flex items-center justify-start gap-2 -ml-2">
-                <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
-                <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
+                <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try</a></p>
+
 
                 ${
                   beta
@@ -109,6 +109,9 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
 <p class="mt-4"><a href="#" onclick="let yes = confirm('Build will allow developers to write code using their collected APIs. This feature is only availble through our pilot program. Are you interested?'); if(yes){ window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform'; }" class="${linkClass}">Build</a></p>
 `
                 }
+                <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
+
+                
             </div>
         </li>`;
     })
