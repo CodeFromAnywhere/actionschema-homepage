@@ -106,7 +106,7 @@ function renderOperations(data, hoveredOperation, selectedOperations) {
 <p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
 <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>`
                     : `
-<p class="mt-4"><a href="#" onclick="let yes = confirm('With \"Build\" developers can write code using their collected APIs using our LLM. \n\nTo get early access, you may apply to the pilot program. \n\nAre you interested?'); if(yes){ window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform'; }" class="${linkClass}">Build</a></p>
+<p class="mt-4"><a href="#" onclick="let yes = confirm('With BUILD developers can write code using their collected APIs using our LLM. \n\nTo get early access, you may apply to the pilot program. \n\nAre you interested?'); if(yes){ window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform'; }" class="${linkClass}">Build</a></p>
 `
                 }
                 <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
