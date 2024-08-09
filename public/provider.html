@@ -55,7 +55,9 @@
     <script>
         const data = {};
 
-        const providerSlug = window.location.pathname.split("/").pop();
+        const chunks = window.location.pathname.split("/")
+        chunks.pop()
+        const providerSlug = chunks.pop()
         const providerName = providerSlug.slice(0, 1).toUpperCase() + providerSlug.slice(1);
         document.getElementById('description').textContent = data.description;
         document.getElementById('title').textContent = providerName;
