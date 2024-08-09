@@ -350,7 +350,7 @@
         }
 
         // Meta is Command on Mac and Windows key on Windows
-        const triggerKeys = ['Control', 'Alt', 'Meta'];
+        const triggerKeys = ['Control'];//, 'Alt', 'Meta'];
 
         document.addEventListener('keydown', function (event) {
             if (triggerKeys.includes(event.key) && !isRecording) {
