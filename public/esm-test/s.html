@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-Server Redirect Example</title>
+</head>
+
+<body>
+    <h1>Auto-Server Redirect Example</h1>
+    <div id="output">Loading...</div>
+
+    <script>
+        if (window.location.protocol === 'file:') {
+            // We're running from a file:// URL, so we need to start a server
+            document.body.innerHTML = 'Starting server... Please wait.';
+
+            // Use a service like ngrok to create a temporary public URL
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/ngrok@4.3.3/ngrok.min.js';
+            script.onload = async () => {
+                try {
+                    const url = await ngrok.connect(8080);
+                    window.location.href = url;
+                } catch (err) {
+                    document.body.innerHTML = `Error starting server: ${err.message}`;
+                }
+            };
+            document.head.appendChild(script);
+        } else {
+            // We're already running from a server, so load the content
+            const script = document.createElement('script');
+            script.type = 'module';
+            script.textContent = `
+                import { greet } from './module.js';
+                document.getElementById('output').textContent = greet('World');
+            `;
+            document.body.appendChild(script);
+        }
+    </script>
+</body>
+
+</html>
