@@ -81,12 +81,12 @@ function getSdkConfig() {
 
   const openapis = Object.entries(selectedOperations).map(
     ([providerSlug, operationIds]) => {
-      const provider = data.operations.find(
+      const openapiUrl = data.operations.find(
         (x) => x.providerSlug === providerSlug,
-      )?.provider?.openapiUrl;
+      )?.openapiUrl;
 
       return {
-        openapiUrl: provider?.openapiUrl || "NOT FOUND",
+        openapiUrl: openapiUrl || null,
         operationIds,
       };
     },

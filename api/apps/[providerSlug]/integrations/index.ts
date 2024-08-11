@@ -2,12 +2,7 @@ export const config = {
   runtime: "edge",
 };
 
-
 export const GET = async (request: Request) => {
-
-  request
-
-
   const url = new URL(request.url);
   const providerSlug = url.searchParams.get("providerSlug");
   const needJson = request.headers.get("accept") === "application/json";
@@ -17,7 +12,7 @@ export const GET = async (request: Request) => {
   }
 
   const providers = await fetch(
-    "https://search.actionschema.com/providers.json",
+    `https://search.actionschema.com/${process.env.DATA_SECRET}/providers.json`,
   ).then((res) => res.json());
 
   const provider = providers[providerSlug] as {} | undefined;
