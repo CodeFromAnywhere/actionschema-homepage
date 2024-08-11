@@ -7,8 +7,7 @@
     "start": "vercel dev"
   },
   "devDependencies": {
-    "@types/node": "^20.14.7",
+    "@types/node": "^20.14.15",
     "typescript": "^5.4.5"
-  },
-  "dependencies": {}
+  }
 }
