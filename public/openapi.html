@@ -23,6 +23,7 @@
             const apiViewer = document.createElement('elements-api');
             apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
             apiViewer.setAttribute('router', 'hash');
+            // todo: add tryItCorsProxy - Pass the URL of a CORS proxy used to send requests to the Try It feature. The provided URL is pre-pended to the URL of an actual request.
 
             document.getElementById('api-viewer').appendChild(apiViewer);
         });
