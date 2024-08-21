@@ -3,433 +3,216 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>ActionSchema - Search Results</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://reactify-js.vercel.app"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="search-results.js"></script>
+    <script src="chat-component.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #1f2937;
+        }
+
+        .logo svg {
+            height: 2rem;
+            width: 2rem;
+            margin-right: 0.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        #search-form {
+            flex-grow: 1;
+            max-width: 32rem;
+            margin: 0 1rem;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid #d1d5db;
+        }
+
+        #search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        .tabcontent {
+            display: none;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            #search-form {
+                margin: 1rem 0;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <header class="bg-white shadow-md">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="/" class="flex items-center">
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
                     <svg class="h-8 w-8 text-blue-500 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                         <path d="M10 90 L50 10 L90 90 M50 75 A5 5 0 1 1 50 85 A5 5 0 1 1 50 75" stroke="currentColor"
                             stroke-width="8" fill="none" />
                     </svg>
-                    <h1 class="text-2xl font-bold text-gray-800">ActionSchema</h1>
+                    <h1>ActionSchema</h1>
                 </a>
-                <form id="search-form" class="flex-grow max-w-2xl mx-4">
-                    <input type="text" id="search-input" name="q" placeholder="What do you want to build?"
-                        class="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <form id="search-form">
+                    <input type="text" id="search-input" name="q" placeholder="What do you want to build?">
                 </form>
             </div>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8 flex-grow">
-        <div id="renderRoot"></div>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto px-4 text-center">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform"
-                target="_blank" class="hover:underline">API</a>
+    <div class="container">
+        <div class="tab">
+            <button id="defaultOpen" class="tablinks" onclick="openTab(event, 'SearchResults')">Search Results</button>
+            <button class="tablinks" onclick="openTab(event, 'Chat')">Chat</button>
+            <button class="tablinks" onclick="openTab(event, 'ElementsAPI')">Reference</button>
         </div>
-    </footer>
+
+        <div id="SearchResults" class="tabcontent">
+            <h3>Search Results</h3>
+            <search-results />
+        </div>
+
+        <div id="ElementsAPI" class="tabcontent">
+            <div id="api-viewer"></div>
+        </div>
+
+        <div id="Chat" class="tabcontent">
+            <chat-component model="openai.gpt-4-mini"></chat-component>
+        </div>
+    </div>
 
     <script>
-        const baseUrl = `https://search.actionschema.com`;
-        const dummyData = {
-            "query": "create a new GitHub repository and send an email notification then post a message on Slack and create a Jira issue",
-            "actions": [
-                {
-                    "providers": [
-                        {
-                            "providerSlug": "github",
-                            "operations": [
-                                {
-                                    "summary": "Create a new repository",
-                                    "operationId": "createRepo",
-                                    "likelihood": 0.95
-                                }
-                            ],
-                            "provider": {}
-                        }
-                    ],
-                    "error": undefined,
-                    "querySegment": "create a new GitHub repository",
-                    "actionDescription": "Create a new repository on GitHub"
-                },
-                {
-                    "providers": [
-                        {
-                            "providerSlug": "email",
-                            "operations": [
-                                {
-                                    "summary": "Send email notification",
-                                    "operationId": "sendEmail",
-                                    "likelihood": 0.9
-                                }
-                            ],
-                            "provider": {}
-                        }
-                    ],
-                    "error": undefined,
-                    "querySegment": "send an email notification",
-                    "actionDescription": "Send an email notification about the new repository"
-                },
-                {
-                    "providers": [
-                        {
-                            "providerSlug": "slack",
-                            "operations": [
-                                {
-                                    "summary": "Post message to channel",
-                                    "operationId": "postMessage",
-                                    "likelihood": 0.85
-                                }
-                            ],
-                            "provider": {}
-                        }
-                    ],
-                    "error": undefined,
-                    "querySegment": "post a message on Slack",
-                    "actionDescription": "Post a message on Slack about the new repository"
-                },
-                {
-                    "providers": [
-                        {
-                            "providerSlug": "jira",
-                            "operations": [
-                                {
-                                    "summary": "Create issue",
-                                    "operationId": "createIssue",
-                                    "likelihood": 0.8
-                                }
-                            ],
-                            "provider": {}
-                        }
-                    ],
-                    "error": undefined,
-                    "querySegment": "create a Jira issue",
-                    "actionDescription": "Create a Jira issue for the new repository"
-                }
-            ],
-            "operations": [
-                {
-                    "operationId": "createRepo",
-                    "providerSlug": "github",
-                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
-                    "summary": "Create a new repository",
-                    "actions": [
-                        {
-                            "likelihood": 0.95,
-                            "querySegment": "create a new GitHub repository",
-                            "actionDescription": "Create a new repository on GitHub"
-                        }
-                    ]
-                },
-                {
-                    "operationId": "sendEmail",
-                    "providerSlug": "email",
-                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
-                    "summary": "Send email notification",
-                    "actions": [
-                        {
-                            "likelihood": 0.9,
-                            "querySegment": "send an email notification",
-                            "actionDescription": "Send an email notification about the new repository"
-                        }
-                    ]
-                },
-                {
-                    "operationId": "postMessage",
-                    "providerSlug": "slack",
-                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
-                    "summary": "Post message to channel",
-                    "actions": [
-                        {
-                            "likelihood": 0.85,
-                            "querySegment": "post a message on Slack",
-                            "actionDescription": "Post a message on Slack about the new repository"
-                        }
-                    ]
-                },
-                {
-                    "operationId": "createIssue",
-                    "providerSlug": "jira",
-                    "provider": { openapiUrl: "https://data.actionschema.com/openapi.json" },
-                    "summary": "Create issue",
-                    "actions": [
-                        {
-                            "likelihood": 0.8,
-                            "querySegment": "create a Jira issue",
-                            "actionDescription": "Create a Jira issue for the new repository"
-                        }
-                    ]
-                }
-            ]
-        }
-        const [getData, setData] = useState({});
-        const [getLoading, setLoading] = useState(true);
-        const [getError, setError] = useState(null);
-
-        const [getHoveredOperation, setHoveredOperation] = useState(null);
-        const [getHoveredSegment, setHoveredSegment] = useState(null);
-        const [getSelectedOperations, setSelectedOperations] = useState({});
-
-        async function getSearch(query) {
-            const q = encodeURIComponent(query).toLowerCase();
-            const storageKey = `search.${q}`;
-            const already = localStorage.getItem(storageKey);
-
-            if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-
-                setLoading(true);
-
-                try {
-                    const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
-
-                    setLoading(false);
-
-                    console.log(result)
-                    localStorage.setItem(storageKey, JSON.stringify(result));
-                    return result;
-                } catch (e) {
-                    setError("Query could not be carried out")
-                    setLoading(false);
-                }
-            }
-
-            setLoading(false);
-
-
-            return JSON.parse(already);
-        }
-
-        async function performSearch(query) {
-            const result = await getSearch(query);
-            setData(result);
-        }
-
-        function handleSearch(event) {
-            event.preventDefault();
-            const query = event.target.elements.q.value;
-            performSearch(query);
-            window.history.pushState({}, '', `?q=${encodeURIComponent(query)}`);
-        }
-
-        function highlightSegments(query, actions, hoveredOperationIndex) {
-            let result = [];
-            let lastIndex = 0;
-
-            const hoveredOperation = getData().operations && getData().operations[hoveredOperationIndex];
-
-            actions.forEach((action, index) => {
-                const startIndex = query.indexOf(action.querySegment, lastIndex);
-                if (startIndex > lastIndex) {
-                    result.push(query.substring(lastIndex, startIndex));
-                }
-
-                const isHighlighted = !hoveredOperation || hoveredOperation.actions.some(op => op.querySegment === action.querySegment);
-                const segmentClass = isHighlighted ? 'bg-yellow-200 cursor-pointer' : '';
-                result.push(`<span class="${segmentClass}" onmouseover="setHoveredSegment(${index})" onmouseout="setHoveredSegment(null)">${action.querySegment}</span>`);
-                lastIndex = startIndex + action.querySegment.length;
-            });
-
-            if (lastIndex < query.length) {
-                result.push(query.substring(lastIndex));
-            }
-
-            return result.join('');
-        }
-
-        function toggleOperation(providerSlug, operationId) {
-
-            console.log({ providerSlug, operationId })
-            const selectedOperations = getSelectedOperations();
-            const newSelectedOperations = { ...selectedOperations };
-
-            if (!newSelectedOperations[providerSlug]) {
-                newSelectedOperations[providerSlug] = [];
-            }
-
-            const index = newSelectedOperations[providerSlug].indexOf(operationId);
-            if (index > -1) {
-                newSelectedOperations[providerSlug].splice(index, 1);
-            } else {
-                newSelectedOperations[providerSlug].push(operationId);
-            }
-
-            if (newSelectedOperations[providerSlug].length === 0) {
-                delete newSelectedOperations[providerSlug];
-            }
-
-            console.log({ newSelectedOperations })
-
-            setSelectedOperations(newSelectedOperations);
-        }
-
-        function getSelectedOperationsCount() {
-            return Object.values(getSelectedOperations()).reduce((sum, arr) => sum + arr.length, 0);
-        }
-
-        function getSelectionString() {
-            const selectedOperations = getSelectedOperations();
-            return Object.entries(selectedOperations)
-                .map(([providerSlug, operationIds]) => `${providerSlug}:${operationIds.join(',')}`)
-                .join('&selection=');
-        }
-
-        function getSdkConfig() {
-            const selectedOperations = getSelectedOperations();
-            const data = getData();
-
-            const openapis = Object.entries(selectedOperations).map(([providerSlug, operationIds]) => {
-                const provider = data.operations.find(x => x.providerSlug === providerSlug)?.provider?.openapiUrl;
-
-                return {
-                    openapiUrl: provider?.openapiUrl || "NOT FOUND",
-                    operationIds
-                };
-            });
-
-            return { openapis }
-        }
-
-        function copySdkConfigToClipboard() {
-            const sdkConfig = getSdkConfig();
-
-            window.navigator.clipboard.writeText(JSON.stringify(sdkConfig, undefined, 2))
-            console.log({ sdkConfig })
-        }
-
-        function renderRoot() {
-            const data = getData();
-            const hoveredOperation = getHoveredOperation();
-            const hoveredSegment = getHoveredSegment();
-            const selectedOperations = getSelectedOperations();
-            const selectedCount = getSelectedOperationsCount();
-
-            if (getLoading()) {
-                return `<div><i class="fas fa-spinner fa-spin"></i> Finding Your Actions</div>`
-            }
-
-            if (getError()) {
-                return `<div><i class="fas fa-error"></i>${getError()}</div>`
-            }
-
-            // onmouseover="setHoveredOperation(${index})"
-            // onmouseout="setHoveredOperation(null)"
-            return `
-                <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-1/3">
-                        <h2 class="text-xl font-bold mb-4">Operations</h2>
-                        <ul class="space-y-4">
-                            ${data.operations?.length ? data.operations.map((op, index) => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const query = urlParams.get('q');
-                const isBeta = urlParams.get('beta') === "true";
-
-                const { providerSlug, operationId, summary, loginUrl, referenceUrl, prunedOpenapiUrl, buildUrl, providerUrl } = op;
-
-                const linkClass = "px-2 py-2 text-blue-600 hover:bg-blue-100 transition-bg text-xs duration-200";
-
-                // Bring it back after ActionSchema serverless
-                //<p class="mt-4"><a href="${loginUrl}" target="_blank" class="${linkClass}">Login</a></p>
-                //<p class="mt-4"><a href="${buildUrl}" target="_blank" class="${linkClass}">Build</a></p>
-                return `<li class="p-4 ${getHoveredOperation() === index ? "bg-gray-200" : "bg-white"} rounded shadow-md hover:shadow-lg transition-shadow duration-200">
-                                    <div class="flex items-center justify-between">
-                                        <h3 onclick="setHoveredOperation(${index})" class="cursor-pointer hover:text-gray-600 font-semibold">${providerSlug}</h3>
-                                        ${isBeta ? `<label class="flex items-center space-x-2">
-                                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
-                                                   ${selectedOperations[providerSlug]?.includes(operationId) ? 'checked' : ''} onclick="toggleOperation('${providerSlug}', '${operationId}')"></input>
-                                            <span class="text-sm text-gray-700">Select</span>
-                                        </label>`: ''}
-                                    </div>
-                                    <p class="text-sm text-gray-600">${operationId}</p>
-                                    <p class="mt-2">${summary || 'No summary available'}</p>
-                                    <div class="flex items-center justify-start gap-2 -ml-2">
-                                    
-                                    <p class="mt-4"><a href="${referenceUrl}" target="_blank" class="${linkClass}">Try it</a></p>
-                                    <p class="mt-4"><a href="${prunedOpenapiUrl}" target="_blank" class="${linkClass}">Definition</a></p>
-                                    <p class="mt-4"><a href="${providerUrl}" target="_blank" class="${linkClass}">${providerSlug}</a></p>
-                                    </div>
-                                </li>
-                            `;
-            }).join('') : 'No actions found for your query'}
-                        </ul>
-                    </div>
-
-                    <div class="w-full md:w-2/3">
-                        <h2 class="text-xl font-bold mb-4">Query Breakdown</h2>
-                        <div class="p-4 bg-white rounded shadow-md">
-                            <p class="text-lg mb-4">
-                                ${data.actions ? highlightSegments(data.query, data.actions, hoveredOperation) : ''}
-                            </p>
-                            ${hoveredSegment !== null && data.actions ? `
-                                <div class="mt-4 p-4 bg-gray-100 rounded">
-                                    <h3 class="font-semibold mb-2">Segment: "${data.actions[hoveredSegment].querySegment}"</h3>
-                                    <ul class="list-disc list-inside">
-                                        ${data.actions[hoveredSegment].providers.map(provider => `
-                                            <li>
-                                                ${provider.providerSlug}: 
-                                                ${provider.operations.map(op => `${op.operationId} (${op.summary || 'No summary'})`).join(', ')}
-                                            </li>
-                                        `).join('')}
-                                    </ul>
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="mt-8">
-                            ${selectedCount === 0 ? '' : `<h2 class="text-xl font-bold mb-4">Selected Operations: ${selectedCount}</h2>
-                            <div class="space-y-4">
-                                <a href="https://auth.actionschema.com/client/create?selection=${getSelectionString()}" 
-                                   class="inline-block px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-200">
-                                    Create New Client or Add to Existing
-                                </a>
-                                <a href="https://openapi-util.actionschema.com/generateSdk?selection=${getSelectionString()}" 
-                                   class="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors duration-200">
-                                    Generate SDK
-                                </a>
-                                <button onclick="copySdkConfigToClipboard()" 
-                                                    class="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 transition-colors duration-200">
-                                    Copy Config for ActionSchema-migrate
-                                </button>
-                            </div>`}
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchForm = document.getElementById('search-form');
-            const searchInput = document.getElementById('search-input');
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-
-            if (query) {
-                searchInput.value = query;
-                performSearch(query);
-            }
-
-            searchForm.addEventListener('submit', handleSearch);
+        const searchComponent = document.querySelector('search-results');
+        searchComponent.addEventListener('searchCompleted', (event) => {
+            const results = event.detail;
+            console.log('Search results:', results);
         });
 
-        reactify();
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const openapiUrl = urlParams.get('openapiUrl');
+            const searchQuery = urlParams.get('q');
+
+            if (openapiUrl) {
+                const apiViewer = document.createElement('elements-api');
+                apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
+                apiViewer.setAttribute('router', 'hash');
+                document.getElementById('api-viewer').appendChild(apiViewer);
+
+                const chat = document.getElementsByTagName('chat-component').item(0)
+
+                chat.setAttribute("openapiUrl", openapiUrl)
+                chat.setAttribute("threadId", Date.now())
+
+            }
+
+            if (searchQuery) {
+                document.getElementById('search-input').value = searchQuery;
+                searchComponent.setAttribute('q', searchQuery);
+            }
+
+            // Open the default tab
+            document.getElementById("defaultOpen").click();
+        });
+
+        // Update URL when search is performed
+        document.getElementById('search-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const searchQuery = document.getElementById('search-input').value;
+            const currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('q', searchQuery);
+            window.location.href = currentUrl.toString()
+        });
     </script>
 </body>
 

@@ -333,7 +333,7 @@
                     );
                     const transcript = await translateAudio(audioFile);
                     const query = encodeURIComponent(transcript);
-                    window.location.href = `search/index.html?q=${query}`;
+                    window.location.href = `search.html?q=${query}`;
 
                     micButton.innerHTML = '<i class="fas fa-microphone"></i>';
 
@@ -498,7 +498,7 @@
 
         function handleSearch() {
             const query = encodeURIComponent(searchInput.value);
-            window.location.href = `search/index.html?q=${query}`;
+            window.location.href = `search.html?q=${query}`;
         }
 
         init();
