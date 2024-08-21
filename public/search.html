@@ -224,6 +224,7 @@
             const searchQuery = document.getElementById('search-input').value;
             const currentUrl = new URL(window.location);
             currentUrl.searchParams.set('q', searchQuery);
+            currentUrl.searchParams.set('tab', 'search');
             window.location.href = currentUrl.toString()
         });
     </script>
