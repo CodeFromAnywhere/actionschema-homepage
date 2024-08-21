@@ -99,6 +99,20 @@ class SearchResults extends HTMLElement {
     this.shadowRoot.innerHTML = html;
   }
 
+  async openChat(baseUrl, prunedOpenapiUrl) {
+    const openapiString = await fetch(prunedOpenapiUrl).then((res) =>
+      res.text(),
+    );
+
+    const q = encodeURIComponent(
+      `Consider the following spec: \n\n\`\`\`\n${openapiString}\n\`\`\`
+      
+Can you implement a html website that renders a form that, once submitted, uses fetch with this api?`,
+    );
+
+    window.open(`${baseUrl}?q=${q}`, "_blank");
+  }
+
   renderOperation(op, beta) {
     const {
       providerSlug,
@@ -124,7 +138,8 @@ class SearchResults extends HTMLElement {
                 <div class="operation-links">
                     <a href="search.html?openapiUrl=${encodeURIComponent(
                       prunedOpenapiUrl,
-                    )}" target="_blank" class="operation-link">Reference</a>
+                    )}#/operations/${operationId}" target="_blank" class="operation-link">Reference</a>
+                    <a href="#" onClick="openChat('https://claude.ai/new','${prunedOpenapiUrl}')" target="_blank" class="operation-link">Prompt</a>
                     ${
                       beta
                         ? `
