@@ -155,7 +155,7 @@ class SearchResults extends HTMLElement {
       this.performSearch(query);
     } else {
       this.shadowRoot.innerHTML =
-        '<div style="margin:20px"><p>No search query provided.</p></div>';
+        '<div style="margin-left:20px;margin-right:20px;"><p>No search query provided.</p></div>';
     }
   }
 
