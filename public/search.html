@@ -138,22 +138,23 @@
 
     <div class="container">
         <div class="tab">
-            <button id="defaultOpen" class="tablinks" onclick="openTab(event, 'SearchResults')">Search Results</button>
-            <button class="tablinks" onclick="openTab(event, 'Chat')">Chat</button>
-            <button class="tablinks" onclick="openTab(event, 'ElementsAPI')">Reference</button>
+            <button id="defaultOpen" class="tablinks" onclick="openTab('search')">Search Results</button>
+            <button class="tablinks" onclick="openTab('chat')">Chat</button>
+            <button class="tablinks" onclick="openTab('reference')">Reference</button>
         </div>
 
-        <div id="SearchResults" class="tabcontent">
-            <h3>Search Results</h3>
+        <div id="search" class="tabcontent">
+            <span></span>
             <search-results />
         </div>
 
-        <div id="ElementsAPI" class="tabcontent">
+        <div id="reference" class="tabcontent">
             <div id="api-viewer"></div>
         </div>
 
-        <div id="Chat" class="tabcontent">
-            <chat-component model="openai.gpt-4-mini"></chat-component>
+        <div id="chat" class="tabcontent">
+            <chat-component model="openai.gpt-4-mini">
+            </chat-component>
         </div>
     </div>
 
@@ -164,7 +165,7 @@
             console.log('Search results:', results);
         });
 
-        function openTab(evt, tabName) {
+        function openTab(tabName) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tabcontent");
             for (i = 0; i < tabcontent.length; i++) {
@@ -175,13 +176,27 @@
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
             document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
+
+            // Find the button for this tab and make it active
+            var button = document.querySelector(`.tablinks[onclick*="${tabName}"]`);
+            if (button) {
+                button.className += " active";
+            }
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const openapiUrl = urlParams.get('openapiUrl');
+            const tab = urlParams.get('tab');
             const searchQuery = urlParams.get('q');
+
+            if (tab) {
+                openTab(tab)
+            } else {
+                // Open the default tab
+                document.getElementById("defaultOpen").click();
+            }
 
             if (openapiUrl) {
                 const apiViewer = document.createElement('elements-api');
@@ -201,8 +216,6 @@
                 searchComponent.setAttribute('q', searchQuery);
             }
 
-            // Open the default tab
-            document.getElementById("defaultOpen").click();
         });
 
         // Update URL when search is performed

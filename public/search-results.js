@@ -84,10 +84,13 @@ class SearchResults extends HTMLElement {
                     padding: 1rem;
                     transition: box-shadow 0.2s;
                 }
+             
                 /* Add more styles as needed */
             </style>
-            <div>
+            <div style="padding:20px;">
+
                 <h2>Operations</h2>
+
                 <ul class="operations-list">
                     ${operations
                       .map((op) => this.renderOperation(op, beta))
@@ -97,20 +100,6 @@ class SearchResults extends HTMLElement {
         `;
 
     this.shadowRoot.innerHTML = html;
-  }
-
-  async openChat(baseUrl, prunedOpenapiUrl) {
-    const openapiString = await fetch(prunedOpenapiUrl).then((res) =>
-      res.text(),
-    );
-
-    const q = encodeURIComponent(
-      `Consider the following spec: \n\n\`\`\`\n${openapiString}\n\`\`\`
-      
-Can you implement a html website that renders a form that, once submitted, uses fetch with this api?`,
-    );
-
-    window.open(`${baseUrl}?q=${q}`, "_blank");
   }
 
   renderOperation(op, beta) {
@@ -136,10 +125,15 @@ Can you implement a html website that renders a form that, once submitted, uses 
                   summary || "No summary available"
                 }</p>
                 <div class="operation-links">
-                    <a href="search.html?openapiUrl=${encodeURIComponent(
+                    <a href="search.html?tab=chat&openapiUrl=${encodeURIComponent(
+                      prunedOpenapiUrl,
+                    )}#/operations/${operationId}" target="_blank" class="operation-link">Chat</a>
+                    <a href="search.html?tab=reference&openapiUrl=${encodeURIComponent(
                       prunedOpenapiUrl,
                     )}#/operations/${operationId}" target="_blank" class="operation-link">Reference</a>
-                    <a href="#" onClick="openChat('https://claude.ai/new','${prunedOpenapiUrl}')" target="_blank" class="operation-link">Prompt</a>
+
+                    <a href="${prunedOpenapiUrl}" target="_blank" class="operation-link">Source</a>
+
                     ${
                       beta
                         ? `
@@ -147,12 +141,11 @@ Can you implement a html website that renders a form that, once submitted, uses 
                             <a href="${buildUrl}" target="_blank" class="operation-link">Build</a>
                             <a href="${prunedOpenapiUrl}" target="_blank" class="operation-link">Definition</a>
                         `
-                        : `
-                            <a href="#" onclick="let yes = confirm('With BUILD developers can write code using their collected APIs using our LLM. To get early access, you may apply to the pilot program. Are you interested?'); if(yes){ window.location.href = 'https://docs.google.com/forms/d/e/1FAIpQLSckizJWBSb9i-sGiqL6-19JwnhB09LKyWaFXO7bYKXvEFo2Ug/viewform'; }" class="operation-link">Build</a>
-                        `
+                        : ``
                     }
                 </div>
             </li>
+            
         `;
   }
 
@@ -161,7 +154,8 @@ Can you implement a html website that renders a form that, once submitted, uses 
     if (query) {
       this.performSearch(query);
     } else {
-      this.shadowRoot.innerHTML = "<p>No search query provided.</p>";
+      this.shadowRoot.innerHTML =
+        '<p style="padding:20px">No search query provided.</p>';
     }
   }
 

@@ -54,7 +54,7 @@ class ChatComponent extends HTMLElement {
         }
         #chat-container {
           flex-grow: 1;
-          width: 100%;
+          width: 95%;
           padding-top: 64px;
           padding-left: 16px;
           padding-right: 16px;
