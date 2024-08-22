@@ -1,10 +1,10 @@
-```
 ---
 date: 2024-08-22
 ---
-```
 
 # ActionSchema is building an automated Search Engine for the AI Internet
+
+> by Wijnand Karsens, August 22nd, 2024.
 
 The internet is full of useful products. Most of them are directly oriented to people via a GUI. Some of them however, have an API. APIs were already great. By using powerful APIs, developers can stand upon the shoulders of giants and build amazing new things.
 
