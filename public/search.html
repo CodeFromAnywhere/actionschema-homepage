@@ -202,6 +202,8 @@
                 const apiViewer = document.createElement('elements-api');
                 apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
                 apiViewer.setAttribute('router', 'hash');
+                apiViewer.setAttribute('layout', 'responsive');
+
                 document.getElementById('api-viewer').appendChild(apiViewer);
 
                 const chat = document.getElementsByTagName('chat-component').item(0)
