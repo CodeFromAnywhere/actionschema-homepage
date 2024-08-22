@@ -181,7 +181,9 @@
             </div>
 
             <div id="reference" class="tabcontent">
-                <div id="api-viewer"></div>
+                <div id="api-viewer">
+                    <p>Please select an operation reference to view first from your search result.</p>
+                </div>
             </div>
 
             <div id="chat" class="tabcontent">
@@ -233,7 +235,7 @@
                 apiViewer.setAttribute('layout', 'responsive');
                 apiViewer.setAttribute('hideTryIt', 'true');
 
-                document.getElementById('api-viewer').appendChild(apiViewer);
+                document.getElementById('api-viewer').replaceChild(apiViewer);
 
                 const chat = document.getElementsByTagName('chat-component').item(0)
 
