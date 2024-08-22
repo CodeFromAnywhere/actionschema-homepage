@@ -167,6 +167,7 @@
     </div>
 
     <script>
+        const defaultPlaceholder = "Search 5822+ Tools";
         const container = document.getElementById('container');
         const svg = document.querySelector('svg');
         const center = document.getElementById('center');
@@ -240,7 +241,7 @@
             });
 
             logoElement.addEventListener('mouseleave', () => {
-                searchInput.placeholder = "Type your request";
+                searchInput.placeholder = defaultPlaceholder;
             });
         }
 
