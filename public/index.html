@@ -49,7 +49,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #ffffff;
+            background-color: #fff;
             font-family: Arial, sans-serif;
         }
 
@@ -114,12 +114,11 @@
 
         #search-container {
             position: relative;
-            width: 300px;
+            max-width: 300px;
             z-index: 20;
         }
 
         #search-input {
-            width: 100%;
             height: 40px;
             font-size: 16px;
             padding: 5px 10px 5px 10px;
@@ -134,7 +133,7 @@
 
         #mic-button {
             position: absolute;
-            right: -10px;
+            right: 10px;
             top: 50%;
             transform: translateY(-50%);
             width: 30px;
@@ -201,25 +200,9 @@
         let mimeType;
 
         const isMobile = window.innerWidth < 1024;
-        const desktopLogos = isMobile ? [] : [
-            //{ icon: 'fa-pinterest', color: '#BD081C', placeholder: 'Find DIY project ideas' },
-            //{ icon: 'fa-snapchat', color: '#FFFC00', placeholder: 'Create a custom AR filter' },
-            //{ icon: 'fa-tiktok', color: '#000000', placeholder: 'Start a dance challenge' },
-            //{ icon: 'fa-reddit', color: '#FF4500', placeholder: 'Ask for advice on r/AskReddit' },
-            //{ icon: 'fa-twitch', color: '#9146FF', placeholder: 'Start streaming your gameplay' },
-            //{ icon: 'fa-paypal', color: '#00457C', placeholder: 'Send money to a friend' },
-            ///{ icon: 'fa-ethereum', color: '#3C3C3D', placeholder: 'Check ETH gas fees' },
-            //{ icon: 'fa-bitcoin', color: '#F7931A', placeholder: 'Convert BTC to USD' },
-            //{ icon: 'fa-dropbox', color: '#0061FF', placeholder: 'Share a large file' },
-            //{ icon: 'fa-android', color: '#3DDC84', placeholder: 'Download latest Android update' },
-            //{ icon: 'fa-docker', color: '#2496ED', placeholder: 'Pull latest image' },
-            //{ icon: 'fa-unity', color: '#000000', placeholder: 'Import 3D model' },
-            //{ icon: 'fa-facebook', color: '#1877F2', placeholder: 'Create a new event' },
-            //{ icon: 'fa-instagram', color: '#E4405F', placeholder: 'Edit photo with new filter' },
 
-        ];
 
-        const logos = [
+        const logos = isMobile ? [] : [
             { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for nearby restaurants' },
             { icon: 'fa-apple', color: '#A2AAAD', placeholder: 'Check iPhone battery health' },
             { icon: 'fa-microsoft', color: '#00A4EF', placeholder: 'Schedule a Teams meeting' },
@@ -236,8 +219,7 @@
             { icon: 'fa-spotify', color: '#1ED760', placeholder: 'Create a workout playlist' },
             { icon: 'fa-stripe-s', color: '#008CDD', placeholder: 'Set up recurring payments' },
             { icon: 'fa-github', color: '#181717', placeholder: 'Create a new repository' },
-            { icon: 'fa-cloudflare', color: '#F38020', placeholder: 'Configure DNS settings' },
-            ...desktopLogos
+            { icon: 'fa-cloudflare', color: '#F38020', placeholder: 'Configure DNS settings' }
         ];
 
         let animationFrame;
@@ -536,6 +518,8 @@
             const query = encodeURIComponent(searchInput.value);
             window.location.href = `search.html?q=${query}`;
         }
+
+
 
         init();
     </script>

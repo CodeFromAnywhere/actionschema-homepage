@@ -114,6 +114,10 @@ class ChatComponent extends HTMLElement {
           background-color: #e2e8f0;
         }
       </style>
+
+      ${
+        window.localStorage.getItem("beta") === "true"
+          ? `
       <div class="container">
         <div class="top-gradient"></div>
         <div id="chat-container"></div>
@@ -121,7 +125,11 @@ class ChatComponent extends HTMLElement {
           <input id="user-input" type="text" placeholder="Type your message...">
           <button id="send-button"><i class="fas fa-paper-plane"></i></button>
         </div>
-      </div>
+      </div>`
+          : `<div class="container">
+        <div style="padding:20px">Coming soon!</div>
+      </div>`
+      }
     `;
   }
 
