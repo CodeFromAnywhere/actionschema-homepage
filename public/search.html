@@ -200,9 +200,13 @@
 
             if (openapiUrl) {
                 const apiViewer = document.createElement('elements-api');
+
+                // see https://github.com/stoplightio/elements/blob/main/docs/getting-started/elements/elements-options.md for the options. 
                 apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
                 apiViewer.setAttribute('router', 'hash');
                 apiViewer.setAttribute('layout', 'responsive');
+                // for now hide trying it, until I've set up a cors-proxy
+                apiViewer.setAttribute('hideTryIt', 'true');
 
                 document.getElementById('api-viewer').appendChild(apiViewer);
 
