@@ -8,7 +8,6 @@
     <script src="https://unpkg.com/@stoplight/elements/web-components.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@stoplight/elements/styles.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="search-results.js"></script>
@@ -19,6 +18,9 @@
             background-color: #f3f4f6;
             margin: 0;
             padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         header {
@@ -27,9 +29,14 @@
         }
 
         .container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
         .header-content {
@@ -99,10 +106,35 @@
             background-color: #ccc;
         }
 
+        .tab-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
         .tabcontent {
             display: none;
             border: 1px solid #ccc;
             border-top: none;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .tabcontent.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #api-viewer {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        chat-component {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         @media (max-width: 768px) {
@@ -130,7 +162,7 @@
                     <h1>ActionSchema</h1>
                 </a>
                 <form id="search-form">
-                    <input type="text" id="search-input" name="q" placeholder="What do you want to build?">
+                    <input type="text" id="search-input" name="q" placeholder="Search 5822+ Tools">
                 </form>
             </div>
         </div>
@@ -143,18 +175,18 @@
             <button class="tablinks" onclick="openTab('reference')">Reference</button>
         </div>
 
-        <div id="search" class="tabcontent">
-            <span></span>
-            <search-results />
-        </div>
+        <div class="tab-container">
+            <div id="search" class="tabcontent">
+                <search-results></search-results>
+            </div>
 
-        <div id="reference" class="tabcontent">
-            <div style="overflow-y:auto; max-height: 80vh;" id="api-viewer"></div>
-        </div>
+            <div id="reference" class="tabcontent">
+                <div id="api-viewer"></div>
+            </div>
 
-        <div id="chat" class="tabcontent">
-            <chat-component model="openai.gpt-4-mini">
-            </chat-component>
+            <div id="chat" class="tabcontent">
+                <chat-component model="openai.gpt-4-mini"></chat-component>
+            </div>
         </div>
     </div>
 
@@ -166,24 +198,19 @@
         });
 
         function openTab(tabName) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementsByClassName("tabcontent");
-            for (i = 0; i < tabcontent.length; i++) {
+            var tabcontent = document.getElementsByClassName("tabcontent");
+            for (var i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
             }
-            tablinks = document.getElementsByClassName("tablinks");
-            for (i = 0; i < tablinks.length; i++) {
+            var tablinks = document.getElementsByClassName("tablinks");
+            for (var i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
-            document.getElementById(tabName).style.display = "block";
-
-            // Find the button for this tab and make it active
-            var button = document.querySelector(`.tablinks[onclick*="${tabName}"]`);
-            if (button) {
-                button.className += " active";
-            }
+            document.getElementById(tabName).style.display = "flex";
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.className += " active";
         }
-
 
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
@@ -201,11 +228,9 @@
             if (openapiUrl) {
                 const apiViewer = document.createElement('elements-api');
 
-                // see https://github.com/stoplightio/elements/blob/main/docs/getting-started/elements/elements-options.md for the options. 
                 apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
                 apiViewer.setAttribute('router', 'hash');
                 apiViewer.setAttribute('layout', 'responsive');
-                // for now hide trying it, until I've set up a cors-proxy
                 apiViewer.setAttribute('hideTryIt', 'true');
 
                 document.getElementById('api-viewer').appendChild(apiViewer);
@@ -214,14 +239,12 @@
 
                 chat.setAttribute("openapiUrl", openapiUrl)
                 chat.setAttribute("threadId", Date.now())
-
             }
 
             if (searchQuery) {
                 document.getElementById('search-input').value = searchQuery;
                 searchComponent.setAttribute('q', searchQuery);
             }
-
         });
 
         // Update URL when search is performed
