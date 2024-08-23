@@ -12,6 +12,8 @@ class ChatComponent extends HTMLElement {
     if (oldValue !== newValue) {
       this[name] = newValue;
       this.render();
+      this.setupEventListeners();
+
       if (name === "thread-id") {
         this.loadExistingMessages();
       }
@@ -148,7 +150,7 @@ class ChatComponent extends HTMLElement {
     sendButton.addEventListener("click", () => this.sendMessage());
 
     userInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && !e.shiftKey) {
         this.sendMessage();
       }
     });
@@ -210,6 +212,7 @@ class ChatComponent extends HTMLElement {
   }
 
   async sendMessage() {
+    console.log("WANT TO SEND");
     const userInput = this.shadowRoot.getElementById("user-input");
     const message = userInput.value.trim();
 
