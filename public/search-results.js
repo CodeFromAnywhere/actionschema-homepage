@@ -12,16 +12,7 @@ class SearchResults extends HTMLElement {
   }
 
   connectedCallback() {
-    this.loadFontAwesome();
     this.render();
-  }
-
-  loadFontAwesome() {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href =
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css";
-    this.shadowRoot.appendChild(link);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -92,7 +83,6 @@ class SearchResults extends HTMLElement {
 
     for (const line of lines) {
       if (line.trim() === "[DONE]") {
-        // The previous message was the final result, so we don't need to do anything here
         continue;
       }
 
@@ -112,13 +102,46 @@ class SearchResults extends HTMLElement {
   setLoading(loading) {
     if (loading) {
       this.shadowRoot.innerHTML = `
-        <div id="loading" style="padding:20px;">
-          <i class="fas fa-spinner fa-spin"></i> Finding Your Actions
+        <style>
+          .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+          }
+          .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .loading-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+          }
+          #loading-details {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+          }
+        </style>
+        <div class="loading-container">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">Finding Your Actions</div>
           <div id="loading-details"></div>
         </div>
       `;
     } else {
-      const loadingElement = this.shadowRoot.querySelector("#loading");
+      const loadingElement =
+        this.shadowRoot.querySelector(".loading-container");
       if (loadingElement) {
         loadingElement.remove();
       }
@@ -136,8 +159,18 @@ class SearchResults extends HTMLElement {
 
   setError(error) {
     this.shadowRoot.innerHTML = `
+      <style>
+        .error-message {
+          color: #721c24;
+          background-color: #f8d7da;
+          border: 1px solid #f5c6cb;
+          border-radius: 0.25rem;
+          padding: 1rem;
+          margin-bottom: 1rem;
+        }
+      </style>
       <div class="error-message">
-        <i class="fas fa-exclamation-circle"></i> ${error}
+        ⚠️ ${error}
       </div>
     `;
   }
@@ -148,7 +181,6 @@ class SearchResults extends HTMLElement {
 
     const html = `
       <style>
-        /* Include your CSS styles here */
         .operations-list {
           list-style-type: none;
           padding: 0;
@@ -162,15 +194,42 @@ class SearchResults extends HTMLElement {
           padding: 1rem;
           transition: box-shadow 0.2s;
         }
-        .error-message {
-          color: #721c24;
-          background-color: #f8d7da;
-          border: 1px solid #f5c6cb;
-          border-radius: 0.25rem;
-          padding: 1rem;
-          margin-bottom: 1rem;
+        .operation-item:hover {
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        /* Add more styles as needed */
+        .operation-header {
+          margin-bottom: 0.5rem;
+        }
+        .operation-title {
+          margin: 0;
+          font-size: 1.2rem;
+          color: #2c3e50;
+        }
+        .operation-id {
+          font-size: 0.9rem;
+          color: #7f8c8d;
+          margin: 0.25rem 0;
+        }
+        .operation-summary {
+          margin: 0.5rem 0;
+          color: #34495e;
+        }
+        .operation-links {
+          margin-top: 0.5rem;
+        }
+        .operation-link {
+          display: inline-block;
+          margin-right: 0.5rem;
+          padding: 0.25rem 0.5rem;
+          background-color: #3498db;
+          color: white;
+          text-decoration: none;
+          border-radius: 0.25rem;
+          font-size: 0.9rem;
+        }
+        .operation-link:hover {
+          background-color: #2980b9;
+        }
       </style>
       <div style="padding:20px;">
         <h2>Operations</h2>
@@ -206,7 +265,7 @@ class SearchResults extends HTMLElement {
     return `
       <li class="operation-item">
         <div class="operation-header">
-          <a href="${providerUrl}" target="_blank" class="operation-link"><h3 class="operation-title">${providerSlug}</h3></a>
+          <a href="${providerUrl}" target="_blank"><h3 class="operation-title">${providerSlug}</h3></a>
         </div>
         <p class="operation-id">${operationId}</p>
         <p class="operation-summary">${summary || "No summary available"}</p>
