@@ -35,13 +35,18 @@ class SearchResults extends HTMLElement {
         const response = await fetch(`${baseUrl}/search/providers?q=${q}`);
         if (!response.ok) {
           if (response.status === 429) {
+            response.headers.forEach((value, key) => {
+              console.log({ key, value });
+            });
             const rateLimitData = {
               status: 429,
               limit: response.headers.get("x-ratelimit-limit-requests"),
               remaining: response.headers.get("x-ratelimit-remaining-requests"),
               reset: response.headers.get("x-ratelimit-reset-requests"),
             };
-            console.log("its happening! ", rateLimitData);
+
+            console.log("its happening! ", rateLimitData, response.headers);
+
             throw new Error("Rate limit exceeded", {
               cause: rateLimitData,
             });
@@ -195,7 +200,9 @@ class SearchResults extends HTMLElement {
   setRateLimitError(rateLimitData) {
     const resetTime = parseInt(rateLimitData.reset, 10);
     const countdownDate = new Date(Date.now() + resetTime * 1000);
+    //        <p class="countdown">Time until reset: <span id="countdown"></span></p>
 
+    console.log({ rateLimitData });
     const html = `
       <style>
         .error-container {
@@ -246,7 +253,6 @@ class SearchResults extends HTMLElement {
       <div class="error-container">
         <h2 class="error-title">Rate Limit Exceeded</h2>
         <p>You've reached the maximum number of requests. Please try again later.</p>
-        <p class="countdown">Time until reset: <span id="countdown"></span></p>
         <table class="pricing-table">
           <tr>
             <th>Plan</th>
@@ -255,7 +261,7 @@ class SearchResults extends HTMLElement {
           </tr>
           <tr>
             <td>Free (current)</td>
-            <td>${rateLimitData.limit}</td>
+            <td>25</td>
             <td>€0</td>
           </tr>
           <tr>
@@ -310,28 +316,19 @@ class SearchResults extends HTMLElement {
 
     waitingListBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("You've been added to the waiting list!");
+      window.location.href =
+        "https://docs.google.com/forms/d/10V-SOE4ec0WVUIZm9AAepzs9JhL2cpWutqJdB32zaBE/edit";
     });
 
     getInTouchBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      alert("Our team will contact you soon!");
+      window.location.href = "https://cal.com/karsens";
     });
 
     earlyAccessBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      this.handleEarlyAccess();
+      window.location.href = "https://buy.stripe.com/4gw4j43LF8695mqcdy";
     });
-  }
-
-  async handleEarlyAccess() {
-    try {
-      // Redirect to Stripe Checkout
-      window.location.href = "https://stripe.com";
-    } catch (error) {
-      console.error("Error creating Stripe session:", error);
-      alert("You'll be added to the early access program soon.");
-    }
   }
 
   renderResults(data) {
