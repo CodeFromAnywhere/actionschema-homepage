@@ -446,14 +446,12 @@ ${query}`;
 
           <a href="search.html?tab=reference&openapiUrl=${encodeURIComponent(
             prunedOpenapiUrl,
-          )}#/operations/${operationId}" target="_blank" class="operation-link">Reference</a>
+          )}#/operations/${operationId}" target="_blank" class="operation-link">Docs</a>
           <a href="${prunedOpenapiUrl}" target="_blank" class="operation-link">Source</a>
           ${
             beta
               ? `
               <a href="${loginUrl}" class="operation-link">Login</a>
-              <a href="${buildUrl}" target="_blank" class="operation-link">Build</a>
-              <a href="${prunedOpenapiUrl}" target="_blank" class="operation-link">Definition</a>
             `
               : ``
           }
