@@ -40,7 +40,11 @@ class SearchResults extends HTMLElement {
               remaining: response.headers.get("x-ratelimit-remaining-requests"),
               reset: response.headers.get("x-ratelimit-reset-requests"),
             };
-            throw new Error("Rate limit exceeded", { cause: rateLimitData });
+            console.log("its happening! ", rateLimitData);
+            throw new Error("Rate limit exceeded", {
+              cause: rateLimitData,
+              status: 429,
+            });
           }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -72,7 +76,7 @@ class SearchResults extends HTMLElement {
         }
       } catch (e) {
         console.error("Search error:", e);
-        if (e.cause && e.cause.reset) {
+        if (e.status === 429) {
           this.setRateLimitError(e.cause);
         } else {
           this.setError(`Search failed: ${e.message}`);
