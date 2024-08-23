@@ -5,7 +5,7 @@ class ChatComponent extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["openapiUrl", "threadId", "model"];
+    return ["openapiUrl", "threadId", "model", "q"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -22,6 +22,7 @@ class ChatComponent extends HTMLElement {
     this.openapiUrl = this.getAttribute("openapiUrl");
     this.threadId = this.getAttribute("threadId");
     this.model = this.getAttribute("model");
+    this.q = this.getAttribute("q");
 
     this.render();
     this.setupEventListeners();
