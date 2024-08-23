@@ -72,7 +72,7 @@ class SearchResults extends HTMLElement {
           this.setLoading(false);
           localStorage.setItem(storageKey, JSON.stringify(this._latestResult));
           this._searchResults = this._latestResult;
-          this.renderResults(this._latestResult);
+          this.renderResults(this._latestResult, query);
           this.dispatchEvent(
             new CustomEvent("searchCompleted", { detail: this._latestResult }),
           );
@@ -92,7 +92,7 @@ class SearchResults extends HTMLElement {
     } else {
       const result = JSON.parse(already);
       this._searchResults = result;
-      this.renderResults(result);
+      this.renderResults(result, query);
       this.dispatchEvent(
         new CustomEvent("searchCompleted", { detail: result }),
       );
@@ -331,7 +331,7 @@ class SearchResults extends HTMLElement {
     });
   }
 
-  renderResults(data) {
+  renderResults(data, query) {
     const beta = localStorage.getItem("beta") === "true";
     const operations = data.operations || [];
 
@@ -393,7 +393,9 @@ class SearchResults extends HTMLElement {
           operations.length > 0
             ? `
           <ul class="operations-list">
-            ${operations.map((op) => this.renderOperation(op, beta)).join("")}
+            ${operations
+              .map((op) => this.renderOperation(op, beta, query))
+              .join("")}
           </ul>
         `
             : `
@@ -406,7 +408,7 @@ class SearchResults extends HTMLElement {
     this.shadowRoot.innerHTML = html;
   }
 
-  renderOperation(op, beta) {
+  renderOperation(op, beta, query) {
     const {
       providerSlug,
       operationId,
@@ -418,6 +420,12 @@ class SearchResults extends HTMLElement {
       buildUrl,
     } = op;
 
+    const chatPrompt = `Definition: ${prunedOpenapiUrl}#/operations/${operationId}
+    
+User requirements: 
+
+${query}`;
+
     return `
       <li class="operation-item">
         <div class="operation-header">
@@ -426,9 +434,16 @@ class SearchResults extends HTMLElement {
         <p class="operation-id">${operationId}</p>
         <p class="operation-summary">${summary || "No summary available"}</p>
         <div class="operation-links">
-          <a href="search.html?tab=chat&openapiUrl=${encodeURIComponent(
-            prunedOpenapiUrl,
-          )}#/operations/${operationId}" target="_blank" class="operation-link">Chat</a>
+          
+        
+        <a href="search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&q=${encodeURIComponent(
+          chatPrompt,
+        )}" target="_blank" class="operation-link">Write Code</a>
+
+        <a href="search.html?tab=chat&openapiUrl=${encodeURIComponent(
+          prunedOpenapiUrl,
+        )}#/operations/${operationId}" target="_blank" class="operation-link">Chat</a>
+
           <a href="search.html?tab=reference&openapiUrl=${encodeURIComponent(
             prunedOpenapiUrl,
           )}#/operations/${operationId}" target="_blank" class="operation-link">Reference</a>
