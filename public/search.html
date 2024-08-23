@@ -191,6 +191,7 @@
             </div>
 
             <div id="chat" class="tabcontent">
+                <button onclick="setChat()">New</button>
                 <chat-component model="openai.gpt-4-mini"></chat-component>
             </div>
         </div>
@@ -218,11 +219,38 @@
             event.currentTarget.className += " active";
         }
 
+        function setChat() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            const chat = document.getElementsByTagName('chat-component').item(0)
+            const openapiUrl = urlParams.get('openapiUrl');
+            const input = urlParams.get('input');
+
+            chat.setAttribute("openapi-url", openapiUrl)
+            chat.setAttribute("input", input)
+            chat.setAttribute("thread-id", Date.now())
+
+        }
+        function setReference() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const openapiUrl = urlParams.get('openapiUrl');
+
+            const apiViewer = document.createElement('elements-api');
+
+            apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
+            apiViewer.setAttribute('router', 'hash');
+            apiViewer.setAttribute('layout', 'responsive');
+            // apiViewer.setAttribute('hideTryIt', 'true');
+
+            document.getElementById('api-viewer').replaceChildren(apiViewer);
+
+        }
         document.addEventListener('DOMContentLoaded', function () {
             const urlParams = new URLSearchParams(window.location.search);
             const openapiUrl = urlParams.get('openapiUrl');
             const tab = urlParams.get('tab');
             const searchQuery = urlParams.get('q');
+            const input = urlParams.get('input');
 
             if (tab) {
                 openTab(tab)
@@ -232,19 +260,8 @@
             }
 
             if (openapiUrl) {
-                const apiViewer = document.createElement('elements-api');
-
-                apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
-                apiViewer.setAttribute('router', 'hash');
-                apiViewer.setAttribute('layout', 'responsive');
-                //  apiViewer.setAttribute('hideTryIt', 'true');
-
-                document.getElementById('api-viewer').replaceChildren(apiViewer);
-
-                const chat = document.getElementsByTagName('chat-component').item(0)
-
-                chat.setAttribute("openapiUrl", openapiUrl)
-                chat.setAttribute("threadId", Date.now())
+                setReference()
+                setChat()
             }
 
             if (searchQuery) {

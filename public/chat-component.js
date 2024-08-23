@@ -5,22 +5,22 @@ class ChatComponent extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["openapiUrl", "threadId", "model", "input"];
+    return ["openapi-url", "thread-id", "model", "input"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
       this[name] = newValue;
       this.render();
-      if (name === "threadId") {
+      if (name === "thread-id") {
         this.loadExistingMessages();
       }
     }
   }
 
   connectedCallback() {
-    this.openapiUrl = this.getAttribute("openapiUrl");
-    this.threadId = this.getAttribute("threadId");
+    this["openapi-url"] = this.getAttribute("openapi-url");
+    this["thread-id"] = this.getAttribute("thread-id");
     this.model = this.getAttribute("model");
     this.input = this.getAttribute("input");
 
@@ -62,9 +62,10 @@ class ChatComponent extends HTMLElement {
           margin-bottom: 16px;
           overflow-y: auto;
         }
+
         .input-container {
           display: flex;
-          width: 100%;
+          width: 90%;
           padding: 16px;
         }
         #user-input {
@@ -114,39 +115,38 @@ class ChatComponent extends HTMLElement {
         .message-assistant .message-content {
           background-color: #e2e8f0;
         }
+        .message-system .message-content {
+          background-color: #ffcccc;
+        }
       </style>
 
+      <div class="container">
       ${
         window.localStorage.getItem("beta") !== "true"
-          ? `<div class="container">
-          <div style="padding:20px">Coming soon</div>
-        </div>`
-          : !this.threadId || !this.model
-          ? `<div class="container">
-          <div style="padding:20px">Invalid model/threadId</div>
-        </div>`
+          ? `<div style="padding:20px">Coming soon</div>`
+          : !this["thread-id"] || !this.model
+          ? `<div style="padding:20px">Invalid parameters ${this["thread-id"]} ${this.model}</div>`
           : `
-      <div class="container">
         <div class="top-gradient"></div>
         <div id="chat-container"></div>
-        <div class="input-container">
-          <input id="user-input" value="${
-            this.input || ""
-          }" type="text" placeholder="Type your message...">
-          <button id="send-button"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </div>`
+`
       }
+
+      <div class="input-container">
+          <textarea rows=5 id="user-input" type="text" placeholder="Type your message...">${
+            this.input || ""
+          }</textarea>
+          <button id="send-button"><i class="icon fas fa-paper-plane"></i>Send</button>
+        </div>
+        </div>
     `;
   }
 
   setupEventListeners() {
     const sendButton = this.shadowRoot.getElementById("send-button");
     const userInput = this.shadowRoot.getElementById("user-input");
+    sendButton.addEventListener("click", () => this.sendMessage());
 
-    if (sendButton) {
-      sendButton.addEventListener("click", () => this.sendMessage());
-    }
     userInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         this.sendMessage();
@@ -182,10 +182,14 @@ class ChatComponent extends HTMLElement {
     const threads = JSON.parse(localStorage.getItem("threads") || "{}");
 
     const messages =
-      (threads[this.threadId] || {}).messages ||
-      (await this.calculateSystemMessage(this.openapiUrl));
+      (threads[this["thread-id"]] || {}).messages ||
+      (await this.calculateSystemMessage(this["openapi-url"]));
 
     const chatContainer = this.shadowRoot.getElementById("chat-container");
+
+    if (!chatContainer) {
+      return;
+    }
     chatContainer.innerHTML = ""; // Clear existing messages
     messages.forEach((msg) => this.addMessageToChat(msg.role, msg.message));
   }
@@ -213,10 +217,13 @@ class ChatComponent extends HTMLElement {
       this.addMessageToChat("user", message);
 
       const threads = JSON.parse(localStorage.getItem("threads") || "{}");
-      if (!threads[this.threadId]) {
-        threads[this.threadId] = { messages: [] };
+      if (!threads[this["thread-id"]]) {
+        threads[this["thread-id"]] = { messages: [] };
       }
-      threads[this.threadId].messages.push({ role: "user", message: message });
+      threads[this["thread-id"]].messages.push({
+        role: "user",
+        message: message,
+      });
       localStorage.setItem("threads", JSON.stringify(threads));
 
       userInput.value = "";
@@ -226,7 +233,7 @@ class ChatComponent extends HTMLElement {
   }
 
   async fetchAssistantResponse() {
-    const openapiUrl = this.getAttribute("openapiUrl");
+    const openapiUrl = this["openapi-url"];
     if (!openapiUrl) {
       alert("No openapi");
       return;
@@ -240,7 +247,7 @@ class ChatComponent extends HTMLElement {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: threads[this.threadId].messages.map((msg) => ({
+          messages: threads[this["thread-id"]].messages.map((msg) => ({
             role: msg.role,
             content: msg.message,
           })),
@@ -285,7 +292,7 @@ class ChatComponent extends HTMLElement {
       }
     }
 
-    threads[this.threadId].messages.push({
+    threads[this["thread-id"]].messages.push({
       role: "assistant",
       message: assistantReply,
     });

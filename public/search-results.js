@@ -436,7 +436,7 @@ ${query}`;
         <div class="operation-links">
           
         
-        <a href="search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&q=${encodeURIComponent(
+        <a href="search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&input=${encodeURIComponent(
           chatPrompt,
         )}" target="_blank" class="operation-link">Write Code</a>
 
