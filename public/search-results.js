@@ -4,6 +4,7 @@ class SearchResults extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this._searchResults = null;
     this._latestResult = null;
+    this._buffer = "";
   }
 
   static get observedAttributes() {
@@ -44,36 +45,30 @@ class SearchResults extends HTMLElement {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const reader = response.body.getReader();
-        const decoder = new TextDecoder();
+        const decoder = new TextDecoder("utf-8");
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
-          const chunk = decoder.decode(value);
-          const lines = chunk.split("\n").filter((line) => line.trim() !== "");
+          this._buffer += decoder.decode(value, { stream: true });
+          this.processBuffer();
+        }
 
-          for (const line of lines) {
-            try {
-              const result = JSON.parse(line);
-              this._latestResult = result;
-              this.updateLoadingIndicator(result);
+        // Process any remaining data in the buffer
+        this._buffer += decoder.decode();
+        this.processBuffer();
 
-              if (result.status === "done") {
-                this.setLoading(false);
-                localStorage.setItem(storageKey, JSON.stringify(result));
-                this._searchResults = result;
-                this.renderResults(result);
-                this.dispatchEvent(
-                  new CustomEvent("searchCompleted", { detail: result }),
-                );
-                return;
-              }
-            } catch (e) {
-              console.error("Error parsing JSON:", e);
-              this.setError("Error processing search results");
-            }
-          }
+        if (this._latestResult) {
+          this.setLoading(false);
+          localStorage.setItem(storageKey, JSON.stringify(this._latestResult));
+          this._searchResults = this._latestResult;
+          this.renderResults(this._latestResult);
+          this.dispatchEvent(
+            new CustomEvent("searchCompleted", { detail: this._latestResult }),
+          );
+        } else {
+          throw new Error("No valid search results received");
         }
       } catch (e) {
         console.error("Search error:", e);
@@ -91,10 +86,33 @@ class SearchResults extends HTMLElement {
     }
   }
 
+  processBuffer() {
+    const lines = this._buffer.split("\n");
+    this._buffer = lines.pop(); // Keep the last incomplete line in the buffer
+
+    for (const line of lines) {
+      if (line.trim() === "[DONE]") {
+        // The previous message was the final result, so we don't need to do anything here
+        continue;
+      }
+
+      try {
+        const result = JSON.parse(line.replace("data: ", ""));
+        console.log(result);
+        if (result.status === "done") {
+          this._latestResult = result;
+        }
+        this.updateLoadingIndicator(result);
+      } catch (e) {
+        console.error("Error parsing JSON:", e, "Line:", line);
+      }
+    }
+  }
+
   setLoading(loading) {
     if (loading) {
       this.shadowRoot.innerHTML = `
-        <div id="loading">
+        <div id="loading" style="padding:20px;">
           <i class="fas fa-spinner fa-spin"></i> Finding Your Actions
           <div id="loading-details"></div>
         </div>

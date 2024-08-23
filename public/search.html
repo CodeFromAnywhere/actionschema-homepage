@@ -183,7 +183,8 @@
             <div id="reference" class="tabcontent">
                 <div id="api-viewer">
                     <!-- will be replaced if there's an openapiUrl in the query -->
-                    <p>Please select an operation reference to view first from your search result.</p>
+                    <p style="padding:20px;">Please select an operation reference to view first from your search result.
+                    </p>
                 </div>
             </div>
 
@@ -234,9 +235,9 @@
                 apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
                 apiViewer.setAttribute('router', 'hash');
                 apiViewer.setAttribute('layout', 'responsive');
-                apiViewer.setAttribute('hideTryIt', 'true');
+                //  apiViewer.setAttribute('hideTryIt', 'true');
 
-                document.getElementById('api-viewer').replaceChild(apiViewer);
+                document.getElementById('api-viewer').replaceChildren(apiViewer);
 
                 const chat = document.getElementsByTagName('chat-component').item(0)
 
