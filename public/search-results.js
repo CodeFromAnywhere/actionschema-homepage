@@ -36,6 +36,7 @@ class SearchResults extends HTMLElement {
         if (!response.ok) {
           if (response.status === 429) {
             const rateLimitData = {
+              status: 429,
               limit: response.headers.get("x-ratelimit-limit-requests"),
               remaining: response.headers.get("x-ratelimit-remaining-requests"),
               reset: response.headers.get("x-ratelimit-reset-requests"),
@@ -43,7 +44,6 @@ class SearchResults extends HTMLElement {
             console.log("its happening! ", rateLimitData);
             throw new Error("Rate limit exceeded", {
               cause: rateLimitData,
-              status: 429,
             });
           }
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -76,7 +76,7 @@ class SearchResults extends HTMLElement {
         }
       } catch (e) {
         console.error("Search error:", e);
-        if (e.status === 429) {
+        if (e.cause?.status === 429) {
           this.setRateLimitError(e.cause);
         } else {
           this.setError(`Search failed: ${e.message}`);
