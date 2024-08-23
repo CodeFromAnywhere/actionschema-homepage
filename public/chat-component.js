@@ -137,7 +137,9 @@ class ChatComponent extends HTMLElement {
     const sendButton = this.shadowRoot.getElementById("send-button");
     const userInput = this.shadowRoot.getElementById("user-input");
 
-    sendButton.addEventListener("click", () => this.sendMessage());
+    if (sendButton) {
+      sendButton.addEventListener("click", () => this.sendMessage());
+    }
     userInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") {
         this.sendMessage();
