@@ -5,7 +5,7 @@ class ChatComponent extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["openapiUrl", "threadId", "model", "q"];
+    return ["openapiUrl", "threadId", "model", "input"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -22,7 +22,7 @@ class ChatComponent extends HTMLElement {
     this.openapiUrl = this.getAttribute("openapiUrl");
     this.threadId = this.getAttribute("threadId");
     this.model = this.getAttribute("model");
-    this.q = this.getAttribute("q");
+    this.input = this.getAttribute("input");
 
     this.render();
     this.setupEventListeners();
@@ -117,18 +117,24 @@ class ChatComponent extends HTMLElement {
       </style>
 
       ${
-        window.localStorage.getItem("beta") === "true"
-          ? `
+        window.localStorage.getItem("beta") !== "true"
+          ? `<div class="container">
+          <div style="padding:20px">Coming soon</div>
+        </div>`
+          : !this.threadId || !this.model
+          ? `<div class="container">
+          <div style="padding:20px">Invalid model/threadId</div>
+        </div>`
+          : `
       <div class="container">
         <div class="top-gradient"></div>
         <div id="chat-container"></div>
         <div class="input-container">
-          <input id="user-input" type="text" placeholder="Type your message...">
+          <input id="user-input" value="${
+            this.input || ""
+          }" type="text" placeholder="Type your message...">
           <button id="send-button"><i class="fas fa-paper-plane"></i></button>
         </div>
-      </div>`
-          : `<div class="container">
-        <div style="padding:20px">Coming soon!</div>
       </div>`
       }
     `;
@@ -148,9 +154,37 @@ class ChatComponent extends HTMLElement {
     });
   }
 
-  loadExistingMessages() {
+  async calculateSystemMessage(openapiUrl) {
+    if (!openapiUrl) {
+      return [];
+    }
+
+    try {
+      const openapi = await fetch(openapiUrl).then((res) => res.json());
+      const firstServerUrl = openapi.servers?.[0]?.url || "";
+      const baseUrl =
+        firstServerUrl.startsWith("http://") ||
+        firstServerUrl.startsWith("https://")
+          ? firstServerUrl
+          : new URL(openapiUrl).origin + firstServerUrl;
+
+      const system = await fetch(`${baseUrl}/system.md`).then((res) =>
+        res.text(),
+      );
+      return [{ role: "system", message: system }];
+    } catch (e) {
+      console.log("Err fetching system", e);
+      return [];
+    }
+  }
+
+  async loadExistingMessages() {
     const threads = JSON.parse(localStorage.getItem("threads") || "{}");
-    const messages = (threads[this.threadId] || {}).messages || [];
+
+    const messages =
+      (threads[this.threadId] || {}).messages ||
+      (await this.calculateSystemMessage(this.openapiUrl));
+
     const chatContainer = this.shadowRoot.getElementById("chat-container");
     chatContainer.innerHTML = ""; // Clear existing messages
     messages.forEach((msg) => this.addMessageToChat(msg.role, msg.message));
