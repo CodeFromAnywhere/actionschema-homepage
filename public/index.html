@@ -401,7 +401,7 @@
 
             try {
                 // Send a POST request to the server
-                const response = await fetch(`${baseUrl}/api/audio/translations`, {
+                const response = await fetch(`${baseUrl}/audio/translations`, {
                     method: 'POST',
                     body: formData,
                     // You might need to include headers here if required by your server
@@ -493,7 +493,7 @@
                     const localStorageKey = `search.${q}`;
                     const already = localStorage.getItem(localStorageKey);
                     if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-                        const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(res => res.json())
+                        const result = await fetch(`${baseUrl}/search/providers?q=${q}`).then(res => res.json())
                         localStorage.setItem(localStorageKey, JSON.stringify(result));
                         // console.log(`searched and found: ` + q);
                     } else {

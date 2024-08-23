@@ -324,7 +324,7 @@
                 setLoading(true);
 
                 try {
-                    const result = await fetch(`${baseUrl}/api/search/providers?q=${q}`).then(
+                    const result = await fetch(`${baseUrl}/search/providers?q=${q}`).then(
                         (res) => res.json(),
                     );
 
