@@ -91,7 +91,7 @@ class SearchResults extends HTMLElement {
   }
 
   processBuffer() {
-    const lines = this._buffer.split("\n");
+    const lines = this._buffer.split("\n").filter((x) => x.trim() !== "");
     this._buffer = lines.pop(); // Keep the last incomplete line in the buffer
 
     for (const line of lines) {
@@ -322,36 +322,8 @@ class SearchResults extends HTMLElement {
 
   async handleEarlyAccess() {
     try {
-      const response = await fetch(
-        "https://api.stripe.com/v1/checkout/sessions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-            Authorization: "Bearer YOUR_STRIPE_SECRET_KEY",
-          },
-          body: new URLSearchParams({
-            "payment_method_types[]": "card",
-            "line_items[0][price_data][currency]": "eur",
-            "line_items[0][price_data][unit_amount]": 2000,
-            "line_items[0][price_data][product_data][name]":
-              "Early Access Program",
-            "line_items[0][quantity]": 1,
-            mode: "payment",
-            success_url: "https://yourwebsite.com/success",
-            cancel_url: "https://yourwebsite.com/cancel",
-          }),
-        },
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to create Stripe session");
-      }
-
-      const session = await response.json();
-
       // Redirect to Stripe Checkout
-      window.location.href = session.url;
+      window.location.href = "https://stripe.com";
     } catch (error) {
       console.error("Error creating Stripe session:", error);
       alert("You'll be added to the early access program soon.");
