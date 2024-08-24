@@ -2,10 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "rewrites": [
     {
-      "source": "/:path*.(png|svg|jpg)",
-      "destination": "/_vercel/image?url=/:path*&w=2048&q=100"
-    },
-    {
       "source": "/:path*",
       "destination": "/api/:path*"
     }
@@ -13,11 +9,6 @@
   "redirects": [
     { "source": "/pitchdeck", "destination": "/pitchdeck/index.html" }
   ],
-  "images": {
-    "dangerouslyAllowSVG": true,
-    "sizes": [256, 640, 1080, 2048, 3840],
-    "remotePatterns": []
-  },
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 60,

@@ -358,9 +358,8 @@ ${query}`;
     return `
       <li class="operation-item">
         <div class="operation-header">
-          <a href="${providerUrl}" target="_blank"><h3 class="operation-title">${providerSlug}</h3></a>
+          <h3 class="operation-title">${providerSlug}/${operationId}</h3>
         </div>
-        <p class="operation-id">${operationId}</p>
         <p class="operation-summary">${summary || "No summary available"}</p>
         <div class="operation-links">
           <a href="${docsUrl}" class="operation-link">Docs</a>
