@@ -45,7 +45,11 @@ class SearchResults extends HTMLElement {
               reset: response.headers.get("x-ratelimit-reset-requests"),
             };
 
-            console.log("its happening! ", rateLimitData, response.headers);
+            console.log(
+              "Rate limit exceeded: ",
+              rateLimitData,
+              response.headers,
+            );
 
             throw new Error("Rate limit exceeded", {
               cause: rateLimitData,
@@ -200,9 +204,7 @@ class SearchResults extends HTMLElement {
   setRateLimitError(rateLimitData) {
     const resetTime = parseInt(rateLimitData.reset, 10);
     const countdownDate = new Date(Date.now() + resetTime * 1000);
-    //        <p class="countdown">Time until reset: <span id="countdown"></span></p>
 
-    console.log({ rateLimitData });
     const html = `
       <style>
         .error-container {
@@ -219,116 +221,30 @@ class SearchResults extends HTMLElement {
           font-size: 24px;
           margin-bottom: 20px;
         }
-        .countdown {
-          font-size: 18px;
+        .error-message {
           margin-bottom: 20px;
         }
-        .pricing-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 20px;
-        }
-        .pricing-table th, .pricing-table td {
-          border: 1px solid #dee2e6;
-          padding: 10px;
-          text-align: left;
-        }
-        .pricing-table th {
-          background-color: #e9ecef;
-        }
-        .button {
+        .pricing-link {
           display: inline-block;
           padding: 10px 20px;
-          margin: 5px;
           background-color: #007bff;
           color: white;
           text-decoration: none;
           border-radius: 5px;
           transition: background-color 0.3s;
         }
-        .button:hover {
+        .pricing-link:hover {
           background-color: #0056b3;
         }
       </style>
       <div class="error-container">
         <h2 class="error-title">Rate Limit Exceeded</h2>
-        <p>You've reached the maximum number of requests. Please try again later.</p>
-        <table class="pricing-table">
-          <tr>
-            <th>Plan</th>
-            <th>Requests / 6h</th>
-            <th>Price</th>
-          </tr>
-          <tr>
-            <td>Free (current)</td>
-            <td>25</td>
-            <td>€0</td>
-          </tr>
-          <tr>
-            <td>Developer</td>
-            <td>1,000</td>
-            <td>€10/month</td>
-          </tr>
-          <tr>
-            <td>Enterprise</td>
-            <td>Custom</td>
-            <td>Contact us</td>
-          </tr>
-        </table>
-        <a href="#" class="button" id="waitingListBtn">Join Waiting List</a>
-        <a href="#" class="button" id="getInTouchBtn">Get in Touch</a>
-        <a href="#" class="button" id="earlyAccessBtn">Get Early Access</a>
+        <p class="error-message">You've reached the maximum number of requests. Please try again later or consider upgrading your plan.</p>
+        <a href="pricing.html" class="pricing-link">View Pricing Options</a>
       </div>
     `;
 
     this.shadowRoot.innerHTML = html;
-
-    this.startCountdown(countdownDate);
-    this.setupButtons();
-  }
-
-  startCountdown(countdownDate) {
-    const countdownElement = this.shadowRoot.getElementById("countdown");
-
-    this._countdownInterval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = countdownDate - now;
-
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdownElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
-
-      if (distance < 0) {
-        clearInterval(this._countdownInterval);
-        countdownElement.textContent = "You can now make new requests!";
-      }
-    }, 1000);
-  }
-
-  setupButtons() {
-    const waitingListBtn = this.shadowRoot.getElementById("waitingListBtn");
-    const getInTouchBtn = this.shadowRoot.getElementById("getInTouchBtn");
-    const earlyAccessBtn = this.shadowRoot.getElementById("earlyAccessBtn");
-
-    waitingListBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href =
-        "https://docs.google.com/forms/d/10V-SOE4ec0WVUIZm9AAepzs9JhL2cpWutqJdB32zaBE/edit";
-    });
-
-    getInTouchBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href = "https://cal.com/karsens";
-    });
-
-    earlyAccessBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      window.location.href = "https://buy.stripe.com/4gw4j43LF8695mqcdy";
-    });
   }
 
   renderResults(data, query) {
@@ -418,6 +334,8 @@ class SearchResults extends HTMLElement {
       providerUrl,
       loginUrl,
       buildUrl,
+      apiManagementUrl,
+      providerDescription,
     } = op;
 
     const chatPrompt = `Definition: ${prunedOpenapiUrl}#/operations/${operationId}
@@ -425,6 +343,17 @@ class SearchResults extends HTMLElement {
 User requirements: 
 
 ${query}`;
+    const writeCodeUrl = `search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&input=${encodeURIComponent(
+      chatPrompt,
+    )}`;
+    const chatUrl = `search.html?tab=chat&openapiUrl=${encodeURIComponent(
+      prunedOpenapiUrl,
+    )}#/operations/${operationId}`;
+    const docsUrl = `search.html?q=${encodeURIComponent(
+      query,
+    )}&tab=reference&openapiUrl=${encodeURIComponent(
+      prunedOpenapiUrl,
+    )}#/operations/${operationId}`;
 
     return `
       <li class="operation-item">
@@ -434,24 +363,18 @@ ${query}`;
         <p class="operation-id">${operationId}</p>
         <p class="operation-summary">${summary || "No summary available"}</p>
         <div class="operation-links">
-          
-        
-      
-          <a href="search.html?tab=reference&openapiUrl=${encodeURIComponent(
-            prunedOpenapiUrl,
-          )}#/operations/${operationId}" target="_blank" class="operation-link">Docs</a>
+          <a href="${docsUrl}" class="operation-link">Docs</a>
+          ${
+            apiManagementUrl
+              ? `<a href="${apiManagementUrl}" target="_blank" class="operation-link">API Key</a>`
+              : ""
+          }
           <a href="${prunedOpenapiUrl}" target="_blank" class="operation-link">Source</a>
           ${
             beta
-              ? `  <a href="search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&input=${encodeURIComponent(
-                  chatPrompt,
-                )}" target="_blank" class="operation-link">Write Code</a>
-
-        <a href="search.html?tab=chat&openapiUrl=${encodeURIComponent(
-          prunedOpenapiUrl,
-        )}#/operations/${operationId}" target="_blank" class="operation-link">Chat</a>
-
-        <a href="${loginUrl}" class="operation-link">Login</a>`
+              ? `<a href="${writeCodeUrl}" target="_blank" class="operation-link">Write Code</a>
+                 <a href="${chatUrl}" target="_blank" class="operation-link">Chat</a>
+                 <a href="${loginUrl}" class="operation-link">Login</a>`
               : ``
           }
         </div>

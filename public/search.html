@@ -173,8 +173,8 @@
 
         <div class="tab">
             <button id="defaultOpen" class="tablinks" onclick="openTab('search')">Search Results</button>
-            <button class="tablinks" onclick="openTab('chat')">Chat</button>
-            <button class="tablinks" onclick="openTab('reference')">Reference</button>
+            <!-- <button class="tablinks" onclick="openTab('chat')">Chat</button> -->
+            <button class="tablinks" onclick="openTab('reference')">Docs</button>
         </div>
 
         <div class="tab-container">
@@ -185,7 +185,7 @@
             <div id="reference" class="tabcontent">
                 <div id="api-viewer">
                     <!-- will be replaced if there's an openapiUrl in the query -->
-                    <p style="padding:20px;">Please select an operation reference to view first from your search result.
+                    <p style="padding:20px;">Please select an operation docs to view first from your search result.
                     </p>
                 </div>
             </div>
@@ -237,6 +237,7 @@
 
             const apiViewer = document.createElement('elements-api');
 
+            // https://github.com/stoplightio/elements/blob/main/docs/getting-started/elements/elements-options.md
             apiViewer.setAttribute('apiDescriptionUrl', openapiUrl);
             apiViewer.setAttribute('router', 'hash');
             apiViewer.setAttribute('layout', 'responsive');
