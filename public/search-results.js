@@ -343,12 +343,12 @@ class SearchResults extends HTMLElement {
 User requirements: 
 
 ${query}`;
-    const writeCodeUrl = `search.html?tab=chat&openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&input=${encodeURIComponent(
+    const writeCodeUrl = `https://chat.actionschema.com?openapiUrl=https://openapi-code-agent.vercel.app/openapi.json&q=${encodeURIComponent(
       chatPrompt,
     )}`;
-    const chatUrl = `search.html?tab=chat&openapiUrl=${encodeURIComponent(
+    const chatUrl = `https://chat.actionschema.com?openapiUrl=${encodeURIComponent(
       prunedOpenapiUrl,
-    )}#/operations/${operationId}`;
+    )}&q=test+this+action`;
     const docsUrl = `search.html?q=${encodeURIComponent(
       query,
     )}&tab=reference&openapiUrl=${encodeURIComponent(
