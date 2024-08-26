@@ -315,7 +315,8 @@ class SearchResults extends HTMLElement {
           </ul>
         `
             : `
-          <p>No operations found.</p>
+          <p>No tools found.</p>
+          <p>Please <a href="https://docs.google.com/forms/d/10V-SOE4ec0WVUIZm9AAepzs9JhL2cpWutqJdB32zaBE/edit?pli=1">fill in this form</a> to provide feedback on what you are looking for, and to request early access to beta features.</a>
         `
         }
       </div>
@@ -349,6 +350,7 @@ ${query}`;
     const chatUrl = `https://chat.actionschema.com?openapiUrl=${encodeURIComponent(
       prunedOpenapiUrl,
     )}&q=test+this+action`;
+
     const docsUrl = `search.html?q=${encodeURIComponent(
       query,
     )}&tab=reference&openapiUrl=${encodeURIComponent(
