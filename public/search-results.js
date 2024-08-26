@@ -304,7 +304,7 @@ class SearchResults extends HTMLElement {
         }
       </style>
       <div style="padding:20px;">
-        <h2>Operations</h2>
+        <h2>Tools</h2>
         ${
           operations.length > 0
             ? `
