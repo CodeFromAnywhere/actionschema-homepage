@@ -202,11 +202,12 @@ class SearchResults extends HTMLElement {
                 .map((result) => this.renderResult(result, query))
                 .join("")}
             </ul>
+
             <div class="timing-info">
               Search time: ${data.timing.total.toFixed(2)}ms 
               (Vector: ${data.timing.vector.toFixed(
                 2,
-              )}ms, Redis: ${data.timing.redis.toFixed(2)}ms)
+              )}ms, Data: ${data.timing.redis.toFixed(2)}ms)
             </div>
           `
               : `
@@ -230,6 +231,10 @@ class SearchResults extends HTMLElement {
       openapiUrl,
     )}#/operations/${operationId}`;
 
+    const operationOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${encodeURIComponent(
+      openapiUrl,
+    )}&operationIds=${operationId}`;
+
     return `
         <li class="result-item">
           <div class="result-header">
@@ -239,7 +244,10 @@ class SearchResults extends HTMLElement {
           <p class="result-summary">${summary || "No summary available"}</p>
           <div class="result-links">
             <a href="${docsUrl}" class="result-link">Docs</a>
-            <a href="${openapiUrl}" target="_blank" class="result-link">Source</a>
+            <a href="${operationOpenapiUrl}" target="_blank" class="result-link">Source</a>
+            <a href="https://chat.actionschema.com/${encodeURIComponent(
+              operationOpenapiUrl,
+            )}" target="_blank" class="result-link">Chat</a>
           </div>
           <div>Relevance Score: ${score.toFixed(2)}</div>
         </li>
