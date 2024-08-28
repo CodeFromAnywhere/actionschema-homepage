@@ -234,6 +234,7 @@ class SearchResults extends HTMLElement {
     const operationOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${encodeURIComponent(
       openapiUrl,
     )}&operationIds=${operationId}`;
+    // <a href="https://chat.actionschema.com/${encodeURIComponent(operationOpenapiUrl)}" target="_blank" class="result-link">Chat</a>
 
     return `
         <li class="result-item">
@@ -245,9 +246,7 @@ class SearchResults extends HTMLElement {
           <div class="result-links">
             <a href="${docsUrl}" class="result-link">Docs</a>
             <a href="${operationOpenapiUrl}" target="_blank" class="result-link">Source</a>
-            <a href="https://chat.actionschema.com/${encodeURIComponent(
-              operationOpenapiUrl,
-            )}" target="_blank" class="result-link">Chat</a>
+            
           </div>
           <div>Relevance Score: ${score.toFixed(2)}</div>
         </li>
