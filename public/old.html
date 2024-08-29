@@ -21,6 +21,8 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 
+
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- HTML Meta Tags -->
@@ -42,14 +44,12 @@
     <meta name="twitter:description" content="Instant access to thousands of tools for your next app or agent.">
     <meta name="twitter:image" content="https://actionschema.com/snapshot.png">
 
+
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" href="icon.png">
 
     <!-- scripts for the page -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="search-bar.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body,
         html {
@@ -120,6 +120,57 @@
             background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
             z-index: 1;
         }
+
+        #search-container {
+            position: relative;
+            max-width: 300px;
+            z-index: 20;
+        }
+
+        #search-input {
+            height: 40px;
+            font-size: 16px;
+            padding: 5px 40px 5px 10px;
+            border: 2px solid #4CAF50;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        #search-input:focus {
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        #mic-button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        #mic-button:hover {
+            background-color: #45a049;
+        }
+
+        #timer {
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #4CAF50;
+            display: none;
+        }
     </style>
 </head>
 
@@ -133,15 +184,32 @@
                     stroke-width="12" fill="none" />
             </svg>
         </div>
-        <search-bar></search-bar>
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search 5829+ Tools" autofocus>
+            <button id="mic-button"><i class="fas fa-microphone"></i></button>
+            <span id="timer">00:00</span>
+        </div>
     </div>
 
     <script>
+        const defaultPlaceholder = "Search 5829+ Tools";
         const container = document.getElementById('container');
         const svg = document.querySelector('svg');
         const center = document.getElementById('center');
+        const searchInput = document.getElementById('search-input');
+        const micButton = document.getElementById('mic-button');
+        const timer = document.getElementById('timer');
+        const baseUrl = `https://search.actionschema.com`;//`http://localhost:3001`;
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let startTime;
+        let timerInterval;
+        let isRecording = false;
+        let mimeType;
 
         const isMobile = window.innerWidth < 1024;
+
 
         const logos = isMobile ? [] : [
             { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for nearby restaurants' },
@@ -177,13 +245,11 @@
             container.appendChild(logoElement);
 
             logoElement.addEventListener('mouseenter', () => {
-                const searchInput = document.querySelector('search-bar');
-                searchInput.setAttribute('placeholder', logo.placeholder);
+                searchInput.placeholder = logo.placeholder;
             });
 
             logoElement.addEventListener('mouseleave', () => {
-                const searchInput = document.querySelector('search-bar');
-                searchInput.setAttribute('placeholder', 'Search 5829+ Tools');
+                searchInput.placeholder = defaultPlaceholder;
             });
         }
 
@@ -249,6 +315,132 @@
             animationFrame = requestAnimationFrame(() => autoAnimate(curves));
         }
 
+        function startRecording() {
+            // show a loading indicator
+            micButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            timer.style.display = 'inline';
+
+            navigator.mediaDevices.getUserMedia({ audio: true, })
+                .then(stream => {
+                    mediaRecorder = new MediaRecorder(stream, { mimeType: "audio/mp4" });
+                    mediaRecorder.start();
+                    isRecording = true;
+                    mimeType = mediaRecorder.mimeType
+
+                    audioChunks = [];
+                    mediaRecorder.addEventListener("dataavailable", event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    startTime = Date.now();
+                    updateTimer();
+                    timerInterval = setInterval(updateTimer, 1000);
+
+                    micButton.innerHTML = '<i class="fas fa-stop"></i>';
+
+                })
+                .catch(error => {
+                    console.error('Error accessing microphone:', error);
+
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    timer.style.display = 'none';
+
+                });
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.addEventListener("stop", async () => {
+
+                    micButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    const audioFile = new File(
+                        audioChunks,
+                        `file.${mimeType.split("/")[1]}`,
+                        { type: mimeType }
+                    );
+                    const transcript = await translateAudio(audioFile);
+                    const query = encodeURIComponent(transcript);
+                    window.location.href = `search.html?q=${query}`;
+
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+
+
+                });
+
+                mediaRecorder.stop();
+
+                isRecording = false;
+                clearInterval(timerInterval);
+                timer.style.display = 'none';
+                micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+            }
+        }
+
+        // Meta is Command on Mac and Windows key on Windows
+        const triggerKeys = ['Control'];//, 'Alt', 'Meta'];
+
+        document.addEventListener('keydown', function (event) {
+            if (triggerKeys.includes(event.key) && !isRecording) {
+                startRecording();
+            }
+        });
+
+        document.addEventListener('keyup', function (event) {
+            if (triggerKeys.includes(event.key) && isRecording) {
+                stopRecording();
+            }
+        });
+
+        function updateTimer() {
+            const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsedSeconds / 60);
+            const seconds = elapsedSeconds % 60;
+            timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        /**
+ * Sends an audio file to the server for translation and returns the English transcript.
+ * @param audioFile - The audio file to be translated (File object)
+ * @returns A promise that resolves to the English transcript
+ */
+        async function translateAudio(audioFile) {
+            // Create a FormData instance and append the audio file
+            const formData = new FormData();
+            formData.append('file', audioFile);
+
+            try {
+                // Send a POST request to the server
+                const response = await fetch(`${baseUrl}/audio/translations`, {
+                    method: 'POST',
+                    body: formData,
+                    // You might need to include headers here if required by your server
+                    // headers: {
+                    //   'Authorization': 'Bearer YOUR_API_KEY_IF_NEEDED',
+                    // },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server responded with status: ${response.status}`);
+                }
+
+                // Parse the JSON response
+                const result = await response.json();
+
+                // Check if the response has the expected structure
+                if (typeof result.transcript !== 'string') {
+                    throw new Error('Unexpected response format');
+                }
+
+                return result.transcript;
+
+            } catch (error) {
+                console.error('Error translating audio:', error);
+                throw error;
+            }
+        }
+
+
+
         function init() {
             const curves = createCurves();
             const centerX = window.innerWidth / 2;
@@ -291,7 +483,53 @@
 
             // Start with auto animation
             autoAnimate(curves);
+
+            const isQuerySearchableValidator = (q) => {
+                return true;
+            }
+
+            // Add event listener for search input
+            searchInput.addEventListener('keypress', async function (e) {
+                if (e.key === 'Enter') {
+                    handleSearch();
+                    return;
+                }
+                const isLetter = 'abcdefghijklmnopqrstuvwxyz'.split("").find(k => k === e.key.toLowerCase())
+
+
+                if (isQuerySearchableValidator(searchInput.value)) {
+                    // Do prefetch search
+                    const q = encodeURIComponent(searchInput.value + e.key).toLowerCase();
+                    const localStorageKey = `search.${q}`;
+                    const already = localStorage.getItem(localStorageKey);
+                    if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
+                        const result = await fetch(`https://search-operations.actionschema.com/search?q=${q}`).then(res => res.json())
+                        localStorage.setItem(localStorageKey, JSON.stringify(result));
+                        // console.log(`searched and found: ` + q);
+                    } else {
+                        // console.log("already have: " + q);
+                    }
+                }
+
+
+            });
+
+            // Add event listener for microphone button
+            micButton.addEventListener('click', function () {
+                if (isRecording) {
+                    stopRecording();
+                } else {
+                    startRecording();
+                }
+            });
         }
+
+        function handleSearch() {
+            const query = encodeURIComponent(searchInput.value);
+            window.location.href = `search.html?q=${query}`;
+        }
+
+
 
         init();
     </script>
