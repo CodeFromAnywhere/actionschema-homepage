@@ -292,6 +292,10 @@
             // Start with auto animation
             autoAnimate(curves);
         }
+        const beta = new URL(window.location.href).searchParams.get("beta")
+        if (beta) {
+            localStorage.setItem("beta", beta)
+        }
 
         init();
     </script>

@@ -255,7 +255,21 @@ class SearchResults extends HTMLElement {
     const operationOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${encodeURIComponent(
       openapiUrl,
     )}&operationIds=${operationId}`;
-    // <a href="https://chat.actionschema.com/${encodeURIComponent(operationOpenapiUrl)}" target="_blank" class="result-link">Chat</a>
+
+    const chatPrompt = `Definition: ${operationOpenapiUrl}
+    
+Please look up the definition using your fetch-url tool, and then build a website that demonstrates usage of the tool in the definition.
+
+User query:${query}`;
+    const writeCodeUrl = `https://chat.actionschema.com/${encodeURIComponent(
+      `https://openapi-code-agent.vercel.app/openapi.json`,
+    )}?q=${encodeURIComponent(chatPrompt)}`;
+
+    const chatUrl = `https://chat.actionschema.com/${encodeURIComponent(
+      operationOpenapiUrl,
+    )}?q=test+this+action`;
+
+    const isBeta = localStorage.getItem("beta") === "true";
 
     return `
         <li class="result-item">
@@ -265,8 +279,16 @@ class SearchResults extends HTMLElement {
           </div>
           <p class="result-summary">${summary || "No summary available"}</p>
           <div class="result-links">
+            ${
+              isBeta
+                ? `<a href="${writeCodeUrl}" class="result-link">Chat</a>`
+                : ""
+            }
+
             <a href="${docsUrl}" class="result-link">Docs</a>
+
             <a href="${operationOpenapiUrl}" target="_blank" class="result-link">Source</a>
+
             ${
               apiManagementUrl
                 ? `<a href="${apiManagementUrl}" target="_blank" class="result-link">API Key</a>`
