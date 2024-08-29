@@ -205,9 +205,7 @@ class SearchResults extends HTMLElement {
         </style>
         <div style="padding:20px;">
           <h2>Tools</h2>
-          ${
-            results.length > 0
-              ? `
+          
             <ul class="results-list">
               ${results
                 .map((result) => this.renderResult(result, query))
@@ -221,13 +219,9 @@ class SearchResults extends HTMLElement {
               )}ms, Data: ${data.timing.redis.toFixed(2)}ms)
             </div>
 
-            <div><a href="pricing.html">Need API Access or higher volume? See Pricing for more Info</a></div>
-          `
-              : `
-            <p>No tools found.</p>
-            <p>Please <a href="https://docs.google.com/forms/d/10V-SOE4ec0WVUIZm9AAepzs9JhL2cpWutqJdB32zaBE/edit?pli=1">fill in this form</a> to provide feedback on what you are looking for, and to request early access to beta features.</a>
-          `
-          }
+            <div>
+            <a href="pricing.html">Need API Access or higher volume? See Pricing for more Info</a>
+            </div>
         </div>
       `;
 
@@ -295,7 +289,7 @@ User query:${query}`;
                 : ""
             }
           </div>
-          <div>Relevance Score: ${score.toFixed(2)}</div>
+          <div style="font-size:9pt;">Relevance Score: ${score.toFixed(2)}</div>
         </li>
       `;
   }
