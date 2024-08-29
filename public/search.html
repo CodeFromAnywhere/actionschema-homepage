@@ -270,6 +270,7 @@
             const openapiUrl = urlParams.get('openapiUrl');
             const tab = urlParams.get('tab');
             const searchQuery = urlParams.get('q');
+            const category = urlParams.get('category');
             const input = urlParams.get('input');
 
             if (tab) {
@@ -287,6 +288,10 @@
             if (searchQuery) {
                 document.getElementById('search-input').value = searchQuery;
                 searchComponent.setAttribute('q', searchQuery);
+                searchComponent.setAttribute('q', searchQuery);
+            }
+            if (category) {
+                searchComponent.setAttribute('category', category);
             }
         });
 

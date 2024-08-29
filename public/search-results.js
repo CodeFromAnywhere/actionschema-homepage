@@ -7,7 +7,7 @@ class SearchResults extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["q"];
+    return ["q", "category"];
   }
 
   connectedCallback() {
@@ -20,9 +20,10 @@ class SearchResults extends HTMLElement {
     }
   }
 
-  async performSearch(query) {
+  async performSearch(query, category) {
     const baseUrl = `https://search-operations.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
+    const category = encodeURIComponent(category).toLowerCase();
     const storageKey = `search.${q}`;
     const cachedResult = localStorage.getItem(storageKey);
 
@@ -33,7 +34,9 @@ class SearchResults extends HTMLElement {
       this.setLoading(true);
 
       try {
-        const response = await fetch(`${baseUrl}/search?q=${q}`);
+        const response = await fetch(
+          `${baseUrl}/search?q=${q}${categorySuffix}`,
+        );
         if (!response.ok) {
           if (response.status === 422) {
             throw new Error("Invalid search query");
@@ -267,8 +270,9 @@ class SearchResults extends HTMLElement {
 
   render() {
     const query = this.getAttribute("q");
+    const category = this.getAttribute("category");
     if (query) {
-      this.performSearch(query);
+      this.performSearch(query, category);
     } else {
       this.shadowRoot.innerHTML =
         '<div style="margin-left:20px;margin-right:20px;"><p>No search query provided.</p></div>';
