@@ -230,6 +230,7 @@ class SearchResults extends HTMLElement {
       providerName,
       score,
       overview,
+      apiManagementUrl,
     } = result;
 
     const docsUrl = `search.html?q=${encodeURIComponent(
@@ -253,7 +254,11 @@ class SearchResults extends HTMLElement {
           <div class="result-links">
             <a href="${docsUrl}" class="result-link">Docs</a>
             <a href="${operationOpenapiUrl}" target="_blank" class="result-link">Source</a>
-            
+            ${
+              apiManagementUrl
+                ? `<a href="${apiManagementUrl}" target="_blank" class="result-link">API Key</a>`
+                : ""
+            }
           </div>
           <div>Relevance Score: ${score.toFixed(2)}</div>
         </li>
