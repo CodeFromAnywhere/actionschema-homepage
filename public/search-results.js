@@ -220,6 +220,8 @@ class SearchResults extends HTMLElement {
                 2,
               )}ms, Data: ${data.timing.redis.toFixed(2)}ms)
             </div>
+
+            <div><a href="pricing.html">Need API Access or higher volume? See Pricing for more Info</a></div>
           `
               : `
             <p>No tools found.</p>
