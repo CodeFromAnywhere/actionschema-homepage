@@ -7,7 +7,7 @@ class SearchResults extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["q", "category"];
+    return ["q"];
   }
 
   connectedCallback() {
@@ -20,12 +20,18 @@ class SearchResults extends HTMLElement {
     }
   }
 
-  async performSearch(query, category) {
+  async performSearch(query) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category");
+
     const baseUrl = `https://search-operations.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
+
     const categorySuffix = category
       ? `&category=${encodeURIComponent(category).toLowerCase()}`
       : "";
+
+    console.log({ category, categorySuffix });
     const storageKey = `search.${q}`;
     const cachedResult = localStorage.getItem(storageKey);
 
@@ -272,9 +278,8 @@ class SearchResults extends HTMLElement {
 
   render() {
     const query = this.getAttribute("q");
-    const category = this.getAttribute("category");
     if (query) {
-      this.performSearch(query, category);
+      this.performSearch(query);
     } else {
       this.shadowRoot.innerHTML =
         '<div style="margin-left:20px;margin-right:20px;"><p>No search query provided.</p></div>';
