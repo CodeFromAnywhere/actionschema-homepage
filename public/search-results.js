@@ -222,8 +222,15 @@ class SearchResults extends HTMLElement {
   }
 
   renderResult(result, query) {
-    const { id, operationId, openapiUrl, summary, providerName, score } =
-      result;
+    const {
+      id,
+      operationId,
+      openapiUrl,
+      summary,
+      providerName,
+      score,
+      overview,
+    } = result;
 
     const docsUrl = `search.html?q=${encodeURIComponent(
       query,
@@ -239,7 +246,7 @@ class SearchResults extends HTMLElement {
     return `
         <li class="result-item">
           <div class="result-header">
-            <h3 class="result-title">${providerName}/${operationId}</h3>
+            <h3 class="result-title" title="${overview}">${providerName}/${operationId}</h3>
             <div class="result-id">ID: ${id}</div>
           </div>
           <p class="result-summary">${summary || "No summary available"}</p>
