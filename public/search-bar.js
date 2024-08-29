@@ -70,7 +70,7 @@ class SearchBar extends HTMLElement {
           top: 100%;
           left: 0;
           right: 0;
-          background: #ffffffCC;
+          background: #ffffffdd;
           border: 1px solid #ddd;
           border-radius: 0 0 20px 20px;
           max-height: 200px;
@@ -86,7 +86,7 @@ class SearchBar extends HTMLElement {
         }
       </style>
       <div class="search-container">
-        <input type="text" placeholder="Search...">
+        <input type="text" placeholder="Search 5829+ Tools">
         <button class="mic-button"><i class="fas fa-microphone"></i></button>
         <span id="timer">00:00</span>
         <div class="suggestions"></div>
