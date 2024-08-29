@@ -23,7 +23,9 @@ class SearchResults extends HTMLElement {
   async performSearch(query, category) {
     const baseUrl = `https://search-operations.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
-    const category = encodeURIComponent(category).toLowerCase();
+    const categorySuffix = category
+      ? `&category=${encodeURIComponent(category).toLowerCase()}`
+      : "";
     const storageKey = `search.${q}`;
     const cachedResult = localStorage.getItem(storageKey);
 
