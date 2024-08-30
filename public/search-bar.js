@@ -34,7 +34,7 @@ class SearchBar extends HTMLElement {
           display: block;
           width: 100%;
           position: relative;
-          max-width: 300px;
+          max-width: 280px;
           font-family: Arial, sans-serif;
         }
         .search-container {
@@ -43,7 +43,8 @@ class SearchBar extends HTMLElement {
         }
         input {
           width: 100%;
-          padding: 10px 0px 10px 10px;
+          box-sizing: border-box;
+          padding: 10px 10px 10px 10px;
           font-size: 16px;
           border: 2px solid #4CAF50;
           border-radius: 5px;
@@ -54,7 +55,7 @@ class SearchBar extends HTMLElement {
         }
         .mic-button {
           position: absolute;
-          right: 0px;
+          right: 10px;
           top: 50%;
           transform: translateY(-50%);
           background: none;
@@ -77,13 +78,15 @@ class SearchBar extends HTMLElement {
           top: 100%;
           left: 0;
           right: 0;
+          width: 400px;
           background: #ffffffdd;
           border: 1px solid #ddd;
           border-radius: 0 0 20px 20px;
-          max-height: 200px;
+          max-height: 300px;
           overflow-y: auto;
           display: none;
         }
+          
         .suggestion-item {
           padding: 10px;
           cursor: pointer;
