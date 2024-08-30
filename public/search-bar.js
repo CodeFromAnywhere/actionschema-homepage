@@ -167,12 +167,13 @@ class SearchBar extends HTMLElement {
     }));
 
     if (query.length === 0) {
-      suggestions = [...recentSearches.slice(0, 7), ...apiSuggestions]
+      suggestions = [...recentSearches.slice(0, 5), ...apiSuggestions]
         .filter(
           onlyUnique((a, b) => a.query.toLowerCase() === b.query.toLowerCase()),
         )
         .slice(0, 12);
     } else {
+      // max 3 recent, the rest api matches and popular
       suggestions = [...recentSearches.slice(0, 3), ...apiSuggestions]
         .filter(
           onlyUnique((a, b) => a.query.toLowerCase() === b.query.toLowerCase()),
@@ -180,7 +181,7 @@ class SearchBar extends HTMLElement {
         .slice(0, 12);
     }
 
-    this.renderSuggestions(suggestions);
+    this.renderSuggestions(suggestions, query);
     suggestionsContainer.style.display =
       suggestions.length > 0 ? "block" : "none";
   }
@@ -216,15 +217,22 @@ class SearchBar extends HTMLElement {
     }
   }
 
-  renderSuggestions(suggestions) {
+  renderSuggestions(suggestions, query) {
     const suggestionsContainer = this.shadowRoot.querySelector(".suggestions");
     suggestionsContainer.innerHTML = suggestions
-      .map(
-        (suggestion) =>
-          `<div style="${
-            suggestion.type === "recent" ? "color:purple;" : ""
-          }" class="suggestion-item">${suggestion.query}</div>`,
-      )
+      .map((suggestion) => {
+        const isMatch = suggestion.query
+          .toLowerCase()
+          .startsWith(query.toLowerCase());
+
+        const style =
+          suggestion.type === "recent" ? "color:purple;" : isMatch ? "" : "";
+        const icon =
+          !isMatch && suggestion.type !== "recent"
+            ? '<i style="padding-right:4px; color: gold; font-size: 8pt;" class="fa-regular fa-star"></i>'
+            : "";
+        return `<div style="${style}" class="suggestion-item">${icon}${suggestion.query}</div>`;
+      })
       .join("");
 
     suggestionsContainer
