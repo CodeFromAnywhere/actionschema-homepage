@@ -33,52 +33,39 @@ class SearchResults extends HTMLElement {
 
     console.log({ category, categorySuffix });
     const storageKey = `search.${q}`;
-    const cachedResult = localStorage.getItem(storageKey);
 
-    if (
-      !cachedResult ||
-      JSON.parse(cachedResult).createdAt < Date.now() - 86400000
-    ) {
-      this.setLoading(true);
+    this.setLoading(true);
 
-      try {
-        const response = await fetch(
-          `${baseUrl}/search?q=${q}${categorySuffix}`,
-        );
-        if (!response.ok) {
-          if (response.status === 422) {
-            throw new Error("Invalid search query");
-          }
-          throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const fullUrl = `${baseUrl}/search?q=${q}${categorySuffix}`;
+      console.log({ fullUrl });
+      const response = await fetch(fullUrl);
+      if (!response.ok) {
+        if (response.status === 422) {
+          throw new Error("Invalid search query");
         }
-
-        const result = await response.json();
-        this.setLoading(false);
-
-        const resultWithTimestamp = {
-          ...result,
-          createdAt: Date.now(),
-        };
-
-        localStorage.setItem(storageKey, JSON.stringify(resultWithTimestamp));
-        this._searchResults = resultWithTimestamp;
-        this.renderResults(resultWithTimestamp, query);
-        this.dispatchEvent(
-          new CustomEvent("searchCompleted", { detail: resultWithTimestamp }),
-        );
-      } catch (e) {
-        console.error("Search error:", e);
-        this.setError(`Search failed: ${e.message}`);
-      } finally {
-        this.setLoading(false);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } else {
-      const result = JSON.parse(cachedResult);
-      this._searchResults = result;
-      this.renderResults(result, query);
+
+      const result = await response.json();
+      this.setLoading(false);
+
+      const resultWithTimestamp = {
+        ...result,
+        createdAt: Date.now(),
+      };
+
+      localStorage.setItem(storageKey, JSON.stringify(resultWithTimestamp));
+      this._searchResults = resultWithTimestamp;
+      this.renderResults(resultWithTimestamp, query);
       this.dispatchEvent(
-        new CustomEvent("searchCompleted", { detail: result }),
+        new CustomEvent("searchCompleted", { detail: resultWithTimestamp }),
       );
+    } catch (e) {
+      console.error("Search error:", e);
+      this.setError(`Search failed: ${e.message}`);
+    } finally {
+      this.setLoading(false);
     }
   }
 
