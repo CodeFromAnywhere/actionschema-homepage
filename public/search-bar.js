@@ -110,7 +110,13 @@ class SearchBar extends HTMLElement {
     const micButton = this.shadowRoot.querySelector(".mic-button");
     const timer = this.shadowRoot.querySelector("#timer");
 
+    input.focus();
+
+    // refetch ""
+    this.fetchSuggestions("", true);
+
     input.addEventListener("focus", () => this.showSuggestions());
+    input.addEventListener("click", () => this.showSuggestions());
     input.addEventListener("input", () => this.showSuggestions());
     input.addEventListener("keypress", async (e) => {
       if (e.key === "Enter") {
@@ -155,7 +161,6 @@ class SearchBar extends HTMLElement {
       .filter((q) => q.toLowerCase().startsWith(query || ""))
       .map((q) => ({ query: q, type: "recent" }));
 
-    console.log(recentSearches);
     const apiSuggestions = (await this.fetchSuggestions(query)).map((q) => ({
       type: "global",
       query: q,
@@ -180,15 +185,31 @@ class SearchBar extends HTMLElement {
       suggestions.length > 0 ? "block" : "none";
   }
 
-  async fetchSuggestions(query) {
+  async fetchSuggestions(query, force) {
+    const defaultSuggestions = JSON.parse(
+      localStorage.getItem("defaultSuggestions") || "[]",
+    );
+
+    if (query === "" && defaultSuggestions.length && !force) {
+      return defaultSuggestions;
+    }
+
     try {
       const response = await fetch(
         `https://search-operations.actionschema.com/suggest?q=${encodeURIComponent(
           query,
         )}`,
       );
+
       if (!response.ok) throw new Error("Network response was not ok");
-      return await response.json();
+      const json = await response.json();
+
+      if (query === "") {
+        // save for prefetch
+        localStorage.setItem("defaultSuggestions", JSON.stringify(json));
+      }
+
+      return json;
     } catch (error) {
       console.error("Error fetching suggestions:", error);
       return [];
