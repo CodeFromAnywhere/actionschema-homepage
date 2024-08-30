@@ -1,7 +1,3 @@
----
-date: 2024-08-22
----
-
 # ActionSchema is building an automated Search Engine for the AI Internet
 
 > by Wijnand Karsens, August 22nd, 2024.
@@ -12,4 +8,6 @@ But there's a lot of friction: APIs are hard to find, hard to get access to, and
 
 > "ActionSchema is like myelin in the brain - we're helping the individual cells connect to each other much faster. Where humans must now establish these connections manually through a GUI, ActionSchema will 100x reduce friction for this by making the process of finding the right tools highly automated." - Wijnand Karsens, Founder of ActionSchema
 
-There is much more to be done, but you can try ActionSchema today through [our website](https://actionschema.com) and sign up for our private early access program for our API and early access to next-level features.
+There is much more to be done, but you can try ActionSchema today through our website and sign up for our private early access program for our API and early access to next-level features.
+
+https://actionschema.com

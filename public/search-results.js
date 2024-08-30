@@ -194,9 +194,10 @@ class SearchResults extends HTMLElement {
             margin-top: 1rem;
           }
         </style>
+        
         <div style="padding:20px;">
-          <h2>Tools</h2>
-          <i>Each tool is a direct API endpoint with OpenAPI source and documentation, and can be used to build agents, backends, or websites in any framework</i>
+          <h2>Search Results</h2>
+          <i>Each tool is a direct API endpoint with OpenAPI source and documentation, and can be used to build agents, backends, or websites in any framework. For examples, <a  style="text-decoration:none;" href="announcement.html">read the announcement</a>. For elevated access <a href="pricing.html" style="text-decoration:none;">see pricing</a> .</i>
 
             <ul class="results-list">
               ${results
@@ -212,7 +213,7 @@ class SearchResults extends HTMLElement {
             </div>
 
             <div>
-            <a href="pricing.html">Need API Access or higher volume? See Pricing for more Info</a>
+            
             </div>
         </div>
       `;
