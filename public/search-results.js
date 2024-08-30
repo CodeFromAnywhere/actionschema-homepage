@@ -31,9 +31,6 @@ class SearchResults extends HTMLElement {
       ? `&category=${encodeURIComponent(category).toLowerCase()}`
       : "";
 
-    console.log({ category, categorySuffix });
-    const storageKey = `search.${q}`;
-
     this.setLoading(true);
 
     try {
@@ -55,7 +52,6 @@ class SearchResults extends HTMLElement {
         createdAt: Date.now(),
       };
 
-      localStorage.setItem(storageKey, JSON.stringify(resultWithTimestamp));
       this._searchResults = resultWithTimestamp;
       this.renderResults(resultWithTimestamp, query);
       this.dispatchEvent(
