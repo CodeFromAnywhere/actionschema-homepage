@@ -1,3 +1,10 @@
+const onlyUnique = (isEqualFn) => (value, index, self) => {
+  return (
+    self.findIndex((v) => (isEqualFn ? isEqualFn(v, value) : v === value)) ===
+    index
+  );
+};
+
 class SearchBar extends HTMLElement {
   constructor() {
     super();
@@ -141,17 +148,28 @@ class SearchBar extends HTMLElement {
     const query = input.value.trim();
 
     let suggestions = [];
-    const recentSearches = JSON.parse(localStorage.getItem("recent") || "[]");
-    const apiSuggestions = await this.fetchSuggestions(query);
+    const recentSearches = JSON.parse(localStorage.getItem("recent") || "[]")
+      .filter((q) => q.toLowerCase().startsWith(query || ""))
+      .map((q) => ({ query: q, type: "recent" }));
+
+    console.log(recentSearches);
+    const apiSuggestions = (await this.fetchSuggestions(query)).map((q) => ({
+      type: "global",
+      query: q,
+    }));
 
     if (query.length === 0) {
-      suggestions = [
-        ...new Set([...recentSearches.slice(0, 7), ...apiSuggestions]),
-      ].slice(0, 12);
+      suggestions = [...recentSearches.slice(0, 7), ...apiSuggestions]
+        .filter(
+          onlyUnique((a, b) => a.query.toLowerCase() === b.query.toLowerCase()),
+        )
+        .slice(0, 12);
     } else {
-      suggestions = [
-        ...new Set([...recentSearches.slice(0, 3), ...apiSuggestions]),
-      ].slice(0, 12);
+      suggestions = [...recentSearches.slice(0, 3), ...apiSuggestions]
+        .filter(
+          onlyUnique((a, b) => a.query.toLowerCase() === b.query.toLowerCase()),
+        )
+        .slice(0, 12);
     }
 
     this.renderSuggestions(suggestions);
@@ -177,7 +195,12 @@ class SearchBar extends HTMLElement {
   renderSuggestions(suggestions) {
     const suggestionsContainer = this.shadowRoot.querySelector(".suggestions");
     suggestionsContainer.innerHTML = suggestions
-      .map((suggestion) => `<div class="suggestion-item">${suggestion}</div>`)
+      .map(
+        (suggestion) =>
+          `<div style="${
+            suggestion.type === "recent" ? "color:purple;" : ""
+          }" class="suggestion-item">${suggestion.query}</div>`,
+      )
       .join("");
 
     suggestionsContainer
