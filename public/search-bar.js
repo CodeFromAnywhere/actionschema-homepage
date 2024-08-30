@@ -106,13 +106,6 @@ class SearchBar extends HTMLElement {
       if (e.key === "Enter") {
         this.handleSearch(input.value);
       }
-
-      // Do prefetch search
-      const q = encodeURIComponent(input.value + e.key).toLowerCase();
-      const result = await fetch(
-        `https://search-operations.actionschema.com/search?q=${q}`,
-      ).then((res) => res.json());
-      localStorage.setItem(localStorageKey, JSON.stringify(result));
     });
 
     document.addEventListener("click", (e) => {
