@@ -117,16 +117,20 @@ class SearchResults extends HTMLElement {
             color: #721c24;
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
+            margin-top:20px;
             border-radius: 0.25rem;
             padding: 1rem;
             margin-bottom: 1rem;
           }
         </style>
-        <div>
-            ${explainerHtml}
-        </div>
+
+          <div style="padding:20px;"> <h2>Search Results</h2>
+          ${explainerHtml}
+        
+          
         <div class="error-message">
           ⚠️ ${error}
+        </div>
         </div>
       `;
   }
