@@ -135,6 +135,7 @@ class SearchResults extends HTMLElement {
             list-style-type: none;
             padding: 0;
             margin: 0;
+            padding-top: 20px;
           }
           .result-item {
             background-color: white;
@@ -155,11 +156,7 @@ class SearchResults extends HTMLElement {
             font-size: 1.2rem;
             color: #2c3e50;
           }
-          .result-id {
-            font-size: 0.9rem;
-            color: #7f8c8d;
-            margin: 0.25rem 0;
-          }
+
           .result-summary {
             margin: 0.5rem 0;
             color: #34495e;
@@ -171,15 +168,26 @@ class SearchResults extends HTMLElement {
             display: inline-block;
             margin-right: 0.5rem;
             padding: 0.25rem 0.5rem;
-            background-color: #3498db;
-            color: white;
+            border: 0.5px solid #0E499B;
+            background-color: transparent;
+            color: black;
             text-decoration: none;
-            border-radius: 0.25rem;
+            border-radius: 0.15rem;
             font-size: 0.9rem;
           }
           .result-link:hover {
+            background-color: lightblue;
+
+          }
+          .result-link-primary {
+            color:white;
+            background-color: #3498db;
+          }
+          .result-link-primary:hover {
             background-color: #2980b9;
           }
+
+
           .timing-info {
             font-size: 0.8rem;
             color: #7f8c8d;
@@ -188,7 +196,8 @@ class SearchResults extends HTMLElement {
         </style>
         <div style="padding:20px;">
           <h2>Tools</h2>
-          
+          <i>Each tool is a direct API endpoint with OpenAPI source and documentation, and can be used to build agents, backends, or websites in any framework</i>
+
             <ul class="results-list">
               ${results
                 .map((result) => this.renderResult(result, query))
@@ -254,14 +263,13 @@ ${apiKeyPart}User query:${query}`;
     return `
         <li class="result-item">
           <div class="result-header">
-            <h3 class="result-title" title="${overview}">${providerName}/${operationId}</h3>
-            <div class="result-id">ID: ${id}</div>
+            <h3 class="result-title">${summary || operationId}</h3>
           </div>
-          <p class="result-summary">${summary || "No summary available"}</p>
+          <p class="result-summary">${providerName}</p>
           <div class="result-links">
             ${
               isBeta
-                ? `<a href="${writeCodeUrl}" class="result-link">Chat</a>`
+                ? `<a href="${writeCodeUrl}" class="result-link result-link-primary">Chat</a>`
                 : ""
             }
 
@@ -275,7 +283,9 @@ ${apiKeyPart}User query:${query}`;
                 : ""
             }
           </div>
-          <div style="font-size:9pt;">Relevance Score: ${score.toFixed(2)}</div>
+          <div title="${overview}" style="font-size:9pt; color: gray; margin-top:10px;">ID: ${id} - Relevance Score: ${score.toFixed(
+      2,
+    )}</div>
         </li>
       `;
   }
