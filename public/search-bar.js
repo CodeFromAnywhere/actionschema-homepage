@@ -238,12 +238,6 @@ class SearchBar extends HTMLElement {
   }
 
   handleSearch(query) {
-    const recentSearches = JSON.parse(localStorage.getItem("recent") || "[]");
-    recentSearches.unshift(query);
-    localStorage.setItem(
-      "recent",
-      JSON.stringify([...new Set(recentSearches)].slice(0, 10)),
-    );
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
   }
 

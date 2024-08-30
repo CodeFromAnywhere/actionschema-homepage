@@ -36,6 +36,13 @@ class SearchResults extends HTMLElement {
     this.setLoading(true);
 
     try {
+      const recentSearches = JSON.parse(localStorage.getItem("recent") || "[]");
+      recentSearches.unshift(query);
+      localStorage.setItem(
+        "recent",
+        JSON.stringify([...new Set(recentSearches)].slice(0, 10)),
+      );
+
       const fullUrl = `${baseUrl}/search?q=${q}${categorySuffix}`;
       console.log({ fullUrl });
       const response = await fetch(fullUrl);
