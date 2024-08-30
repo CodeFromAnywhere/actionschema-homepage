@@ -233,11 +233,14 @@ class SearchResults extends HTMLElement {
       openapiUrl,
     )}&operationIds=${operationId}`;
 
+    const apiKeyPart = apiManagementUrl
+      ? `API Management URL: ${apiManagementUrl}\n\n`
+      : "";
     const chatPrompt = `Definition: ${operationOpenapiUrl}
     
 Please look up the definition using your fetch-url tool, and then build a website that demonstrates usage of the tool in the definition.
 
-User query:${query}`;
+${apiKeyPart}User query:${query}`;
     const writeCodeUrl = `https://chat.actionschema.com/${encodeURIComponent(
       `https://openapi-code-agent.vercel.app/openapi.json`,
     )}?q=${encodeURIComponent(chatPrompt)}`;
