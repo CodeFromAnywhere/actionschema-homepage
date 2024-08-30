@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>ActionSchema - Pricing</title>
+	<title>ActionSchema - Announcement</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.3.0/marked.min.js"></script>
@@ -141,10 +141,6 @@
 
 	<main class="container">
 		<div id="announcement"></div>
-
-		<!-- Rest of the content remains the same -->
-		<!-- ... -->
-
 	</main>
 
 	<script>
@@ -178,38 +174,6 @@
 					});
 			});
 		}
-
-		// Store settings in localStorage
-		if (!localStorage.getItem('settings')) {
-			localStorage.setItem('settings', JSON.stringify({
-				theme: 'light',
-				fontSize: 'medium'
-			}));
-		}
-
-		function loadSettings() {
-			const settings = JSON.parse(localStorage.getItem('settings'));
-			// Apply settings (e.g., change theme, font size)
-			document.body.classList.toggle('dark-theme', settings.theme === 'dark');
-			document.body.style.fontSize = settings.fontSize;
-		}
-
-		loadSettings();
-
-		// Event listeners for buttons
-		['waitingListBtn', 'getInTouchBtn', 'getInTouchBtn2', 'earlyAccessBtn', 'learnMoreBtn'].forEach(id => {
-			document.getElementById(id)?.addEventListener('click', (e) => {
-				e.preventDefault();
-				const urls = {
-					'waitingListBtn': "https://docs.google.com/forms/d/10V-SOE4ec0WVUIZm9AAepzs9JhL2cpWutqJdB32zaBE/edit",
-					'getInTouchBtn': "https://cal.com/karsens",
-					'getInTouchBtn2': "https://cal.com/karsens",
-					'earlyAccessBtn': "https://buy.stripe.com/4gw4j43LF8695mqcdy",
-					'learnMoreBtn': 'https://search-operations.actionschema.com/openapi.html'
-				};
-				window.location.href = urls[id];
-			});
-		});
 
 		// Update URL when search is performed
 		document.getElementById('search-form').addEventListener('submit', function (e) {
