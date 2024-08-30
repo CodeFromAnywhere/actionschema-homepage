@@ -107,18 +107,12 @@ class SearchBar extends HTMLElement {
         this.handleSearch(input.value);
       }
 
-      if (this.isQuerySearchableValidator(input.value)) {
-        // Do prefetch search
-        const q = encodeURIComponent(input.value + e.key).toLowerCase();
-        const localStorageKey = `search.${q}`;
-        const already = localStorage.getItem(localStorageKey);
-        if (!already || JSON.parse(already).createdAt < Date.now() - 86400000) {
-          const result = await fetch(
-            `https://search-operations.actionschema.com/search?q=${q}`,
-          ).then((res) => res.json());
-          localStorage.setItem(localStorageKey, JSON.stringify(result));
-        }
-      }
+      // Do prefetch search
+      const q = encodeURIComponent(input.value + e.key).toLowerCase();
+      const result = await fetch(
+        `https://search-operations.actionschema.com/search?q=${q}`,
+      ).then((res) => res.json());
+      localStorage.setItem(localStorageKey, JSON.stringify(result));
     });
 
     document.addEventListener("click", (e) => {
@@ -146,10 +140,6 @@ class SearchBar extends HTMLElement {
         this.stopRecording();
       }
     });
-  }
-
-  isQuerySearchableValidator(q) {
-    return true;
   }
 
   async showSuggestions() {
