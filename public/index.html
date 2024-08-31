@@ -157,7 +157,7 @@
 
         const isMobile = window.innerWidth < 1024;
 
-        const logos = isMobile ? [] : [
+        const logos = [
             { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for images using a SERP provider' },
             { icon: 'fa-slack', color: '#4A154B', placeholder: 'Create a new channel' },
             { icon: 'fa-npm', color: '#CB3837', placeholder: 'Search for a package on npm' },
@@ -198,6 +198,11 @@
             const logoElement = document.createElement(logo.icon ? 'i' : 'img');
             logoElement.style.left = `${x}px`;
             logoElement.style.top = `${y}px`;
+            if (isMobile) {
+                logoElement.style.fontSize = '16px'
+                logoElement.style.width = '16px'
+                logoElement.style.height = '16px'
+            }
 
             if (logo.icon) {
 
