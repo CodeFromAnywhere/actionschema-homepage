@@ -328,16 +328,19 @@
                 autoAnimate(curves);
             });
 
-            window.addEventListener('resize', () => {
-                svg.innerHTML = '';
-                container.querySelectorAll('.logo').forEach(logo => logo.remove());
-                cancelAnimationFrame(animationFrame);
-                init();
-            });
+
 
             // Start with auto animation
             autoAnimate(curves);
         }
+
+        window.addEventListener('resize', () => {
+            svg.innerHTML = '';
+            container.querySelectorAll('.logo').forEach(logo => logo.remove());
+            container.querySelectorAll('.logo-image').forEach(logo => logo.remove());
+            cancelAnimationFrame(animationFrame);
+            init();
+        });
         const beta = new URL(window.location.href).searchParams.get("beta")
         if (beta) {
             localStorage.setItem("beta", beta)
