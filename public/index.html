@@ -95,7 +95,21 @@
             cursor: pointer;
         }
 
+        .logo-image {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+            z-index: 5;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+            cursor: pointer;
+        }
+
         .logo:hover {
+            transform: scale(1.2);
+        }
+
+        .logo-image:hover {
             transform: scale(1.2);
         }
 
@@ -144,23 +158,36 @@
         const isMobile = window.innerWidth < 1024;
 
         const logos = isMobile ? [] : [
-            { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for nearby restaurants' },
-            { icon: 'fa-apple', color: '#A2AAAD', placeholder: 'Check iPhone battery health' },
-            { icon: 'fa-microsoft', color: '#00A4EF', placeholder: 'Schedule a Teams meeting' },
-            { icon: 'fa-amazon', color: '#FF9900', placeholder: 'Track my package' },
+            { icon: 'fa-google', color: '#4285F4', placeholder: 'Search for images using a SERP provider' },
             { icon: 'fa-slack', color: '#4A154B', placeholder: 'Create a new channel' },
-            { icon: 'fa-jira', color: '#0052CC', placeholder: 'Create a new sprint' },
-            { icon: 'fa-trello', color: '#0052CC', placeholder: 'Add a new card to board' },
-            { icon: 'fa-aws', color: '#232F3E', placeholder: 'Launch an EC2 instance' },
-            { icon: 'fa-npm', color: '#CB3837', placeholder: 'Install a package' },
-            { icon: 'fa-twitter', color: '#1DA1F2', placeholder: 'Tweet about #TechTrends' },
-            { icon: 'fa-linkedin', color: '#0A66C2', placeholder: 'Update my work experience' },
-            { icon: 'fa-youtube', color: '#FF0000', placeholder: 'Upload a new video' },
-            { icon: 'fa-whatsapp', color: '#25D366', placeholder: 'Start a group video call' },
-            { icon: 'fa-spotify', color: '#1ED760', placeholder: 'Create a workout playlist' },
-            { icon: 'fa-stripe-s', color: '#008CDD', placeholder: 'Set up recurring payments' },
+            { icon: 'fa-npm', color: '#CB3837', placeholder: 'Search for a package on npm' },
+            { icon: 'fa-youtube', color: '#FF0000', placeholder: 'YouTube get videos of a channel' },
+            { icon: 'fa-twitter', color: '#1DA1F2', placeholder: 'Get all my tweets' },
+            { icon: 'fa-stripe-s', color: '#008CDD', placeholder: 'Create payment link on stripe' },
             { icon: 'fa-github', color: '#181717', placeholder: 'Create a new repository' },
-            { icon: 'fa-cloudflare', color: '#F38020', placeholder: 'Configure DNS settings' }
+            { icon: 'fa-cloudflare', color: '#F38020', placeholder: 'Configure DNS settings' },
+            { src: 'logos/vercel.svg', placeholder: 'Add a domain to a project on Vercel' },
+            { src: 'logos/anthropic.png', placeholder: 'Send a message to claude of Anthropic' },
+            { src: 'logos/groq.jpeg', placeholder: 'Create a groq chat completion for LLama 3.1' },
+            { src: 'logos/notion.png', placeholder: 'Create a new Notion Database' },
+            { src: 'logos/openai.svg', placeholder: 'Run text to speech on OpenAI' },
+            { src: 'logos/replicate.webp', placeholder: 'List all my models on Replicate' },
+            { src: 'logos/supabase.png', placeholder: 'Show my supabase projects' },
+            { src: 'logos/google-analytics.svg', placeholder: 'Find my realtime statistics' },
+            { src: 'logos/gmail.png', placeholder: 'List Gmail messages from a sender' },
+
+            // not good enough yet!
+
+            // { icon: 'fa-apple', color: '#A2AAAD', placeholder: 'Check iPhone battery health' },
+            // { icon: 'fa-microsoft', color: '#00A4EF', placeholder: 'Schedule a Teams meeting' },
+            // { icon: 'fa-amazon', color: '#FF9900', placeholder: 'Track my package' },
+            // { icon: 'fa-jira', color: '#0052CC', placeholder: 'Create a new sprint' },
+            // { icon: 'fa-trello', color: '#0052CC', placeholder: 'Add a new card to board' },
+            // { icon: 'fa-linkedin', color: '#0A66C2', placeholder: 'Update my work experience' },
+            // { icon: 'fa-whatsapp', color: '#25D366', placeholder: 'Start a group video call' },
+            // { icon: 'fa-spotify', color: '#1ED760', placeholder: 'Create a workout playlist' },
+            // { icon: 'fa-aws', color: '#232F3E', placeholder: 'Add a new object in simple storage service (s3)' },
+
         ];
 
         let animationFrame;
@@ -168,13 +195,27 @@
         let autoAnimationAngle = 0;
 
         function createLogo(logo, x, y) {
-            const logoElement = document.createElement('i');
-            logoElement.className = `fab ${logo.icon} logo`;
+            const logoElement = document.createElement(logo.icon ? 'i' : 'img');
             logoElement.style.left = `${x}px`;
             logoElement.style.top = `${y}px`;
-            logoElement.style.color = logo.color;
+
+            if (logo.icon) {
+
+                logoElement.className = `fab ${logo.icon} logo`;
+                logoElement.style.color = logo.color;
+            } else {
+                logoElement.src = logo.src;
+                logoElement.className = `logo-image`;
+            }
+
             logoElement.setAttribute('data-placeholder', logo.placeholder);
+
             container.appendChild(logoElement);
+
+            logoElement.addEventListener("click", () => {
+                const searchInput = document.querySelector('search-bar');
+                searchInput.setAttribute('value', logo.placeholder);
+            })
 
             logoElement.addEventListener('mouseenter', () => {
                 const searchInput = document.querySelector('search-bar');

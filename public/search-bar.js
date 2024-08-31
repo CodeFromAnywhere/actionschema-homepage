@@ -18,6 +18,22 @@ class SearchBar extends HTMLElement {
     this.baseUrl = `https://search.actionschema.com`;
   }
 
+  static get observedAttributes() {
+    return ["placeholder", "value"];
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === "placeholder" && oldValue !== newValue) {
+      const input = this.shadowRoot.querySelector("input");
+      input.setAttribute("placeholder", newValue);
+    }
+
+    if (name === "value") {
+      const input = this.shadowRoot.querySelector("input");
+      input.setAttribute("value", newValue);
+      this.handleSearch(newValue);
+    }
+  }
+
   connectedCallback() {
     this.render();
     this.setupEventListeners();
