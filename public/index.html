@@ -151,6 +151,20 @@
     </div>
 
     <script>
+        const beta = new URL(window.location.href).searchParams.get("beta")
+        if (beta) {
+            localStorage.setItem("beta", beta)
+        }
+
+        const isBeta = localStorage.getItem("beta")
+
+        if (!isBeta) {
+            const beta = document.createElement("div")
+            beta.id = 'coming'
+            beta.innerText = "Coming Soon...";
+            document.querySelector('search-bar').replaceWith(beta);
+        }
+
         const container = document.getElementById('container');
         const svg = document.querySelector('svg');
         const center = document.getElementById('center');
@@ -222,15 +236,34 @@
                 searchInput.setAttribute('value', logo.placeholder);
             })
 
-            logoElement.addEventListener('mouseenter', () => {
-                const searchInput = document.querySelector('search-bar');
-                searchInput.setAttribute('placeholder', logo.placeholder);
-            });
+            if (isBeta) {
 
-            logoElement.addEventListener('mouseleave', () => {
-                const searchInput = document.querySelector('search-bar');
-                searchInput.setAttribute('placeholder', 'Search 5829+ Tools');
-            });
+
+                logoElement.addEventListener('mouseenter', () => {
+
+
+                    const searchInput = document.querySelector('search-bar');
+                    searchInput.setAttribute('placeholder', logo.placeholder);
+                });
+
+                logoElement.addEventListener('mouseleave', () => {
+                    const searchInput = document.querySelector('search-bar');
+                    searchInput.setAttribute('placeholder', 'Search 5829+ Tools');
+                });
+            } else {
+
+                logoElement.addEventListener('mouseenter', () => {
+
+
+                    document.getElementById('coming').innerText = logo.placeholder;
+                });
+
+                logoElement.addEventListener('mouseleave', () => {
+                    document.getElementById('coming').innerText = 'Coming soon...';
+                });
+
+            }
+
         }
 
         function createCurves() {
@@ -341,10 +374,7 @@
             cancelAnimationFrame(animationFrame);
             init();
         });
-        const beta = new URL(window.location.href).searchParams.get("beta")
-        if (beta) {
-            localStorage.setItem("beta", beta)
-        }
+
 
         init();
     </script>
