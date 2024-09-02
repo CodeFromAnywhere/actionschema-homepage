@@ -23,7 +23,7 @@ class SearchResults extends HTMLElement {
   }
 
   async performSearch(query) {
-    const baseUrl = `https://search.actionschema.com`;
+    const baseUrl = `https://stt.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
     const storageKey = `search.${q}`;
     const already = localStorage.getItem(storageKey);

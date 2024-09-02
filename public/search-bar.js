@@ -15,7 +15,7 @@ class SearchBar extends HTMLElement {
     this.timerInterval = null;
     this.isRecording = false;
     this.mimeType = null;
-    this.baseUrl = `https://search.actionschema.com`;
+    this.baseUrl = `https://stt.actionschema.com`;
   }
 
   static get observedAttributes() {
