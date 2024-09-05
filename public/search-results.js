@@ -26,7 +26,7 @@ class SearchResults extends HTMLElement {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
 
-    const baseUrl = `https://search-operations.actionschema.com`;
+    const baseUrl = `https://search.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
 
     const categorySuffix = category
