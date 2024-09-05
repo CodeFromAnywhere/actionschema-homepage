@@ -222,10 +222,8 @@ class SearchResults extends HTMLElement {
             </ul>
 
             <div class="timing-info">
-              Search time: ${data.timing.total.toFixed(2)}ms 
-              (Vector: ${data.timing.vector.toFixed(
-                2,
-              )}ms, Data: ${data.timing.redis.toFixed(2)}ms)
+              Search time: ${data.duration.toFixed(2)}ms 
+              
             </div>
 
             <div>
@@ -238,16 +236,15 @@ class SearchResults extends HTMLElement {
   }
 
   renderResult(result, query) {
+    const { id, score, metadata } = result;
     const {
-      id,
       operationId,
       openapiUrl,
       summary,
       providerName,
-      score,
       overview,
       apiManagementUrl,
-    } = result;
+    } = metadata;
 
     const docsUrl = `search.html?q=${encodeURIComponent(
       query,
