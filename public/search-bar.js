@@ -213,7 +213,7 @@ class SearchBar extends HTMLElement {
 
     try {
       const response = await fetch(
-        `https://search-operations.actionschema.com/suggest?q=${encodeURIComponent(
+        `https://search.actionschema.com/suggest?q=${encodeURIComponent(
           query,
         )}`,
       );
