@@ -1,5 +1,26 @@
 const explainerHtml = `<i>Each tool is a direct API endpoint with OpenAPI source and documentation, and can be used to build agents, backends, or websites in any framework. For examples, <a  style="text-decoration:none;" href="announcement.html">read the announcement</a>. For elevated access <a href="pricing.html" style="text-decoration:none;">see pricing</a>.</i>`;
 
+function copyToClipboard(id) {
+  // Find the search-results element
+  const searchResults = document.querySelector("search-results");
+  if (!searchResults) return;
+
+  // Get the text field from within the shadow DOM
+  var copyText = searchResults.shadowRoot.getElementById("o_" + id);
+  if (!copyText) return;
+
+  console.log({ copyText });
+  // Select the text field
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); // For mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+
+  // Alert the copied text
+  alert("Copied ID: " + copyText.value);
+}
+
 class SearchResults extends HTMLElement {
   constructor() {
     super();
@@ -278,18 +299,28 @@ ${apiKeyPart}User query:${query}`;
 
     return `
         <li class="result-item">
+          <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: flex-start;">
+          
           <div class="result-header">
             <h3 class="result-title">${summary || operationId}</h3>
           </div>
+
+      <div title="${overview}" style="font-size:9pt; color: gray; margin-top:10px;">Relevance Score: ${score.toFixed(
+      2,
+    )}</div>
+</div>
+
+
           <p class="result-summary">${providerName}</p>
           <div class="result-links">
+
             ${
               isBeta
                 ? `<a href="${writeCodeUrl}" class="result-link result-link-primary">Chat</a>`
                 : ""
             }
 
-            <a href="${docsUrl}" class="result-link">Docs</a>
+            <a href="${docsUrl}" target="_blank" class="result-link">Docs</a>
 
             <a href="${operationOpenapiUrl}" target="_blank" class="result-link">Source</a>
 
@@ -298,10 +329,11 @@ ${apiKeyPart}User query:${query}`;
                 ? `<a href="${apiManagementUrl}" target="_blank" class="result-link">API Key</a>`
                 : ""
             }
+
+            <input id="o_${id}" style="cursor: pointer; font-size:9pt; color: gray; margin-top:10px;" onclick="copyToClipboard('${id}')" value="${id}"></input>
+
           </div>
-          <div title="${overview}" style="font-size:9pt; color: gray; margin-top:10px;">ID: ${id} - Relevance Score: ${score.toFixed(
-      2,
-    )}</div>
+
         </li>
       `;
   }
