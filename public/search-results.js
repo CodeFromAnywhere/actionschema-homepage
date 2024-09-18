@@ -245,15 +245,14 @@ class SearchResults extends HTMLElement {
       overview,
       apiManagementUrl,
     } = metadata;
+    const providerSlug = id.split("_")[0];
+    const operationOpenapiUrl = `https://openapisearch.com/api/${providerSlug}/openapi.json?operationIds=${operationId}`;
 
     const docsUrl = `search.html?q=${encodeURIComponent(
       query,
     )}&tab=reference&openapiUrl=${encodeURIComponent(
-      openapiUrl,
+      operationOpenapiUrl,
     )}#/operations/${operationId}`;
-
-    const providerSlug = id.split("_")[0];
-    const operationOpenapiUrl = `https://openapisearch.com/api/${providerSlug}/openapi.json?operationIds=${operationId}`;
 
     const apiKeyPart = apiManagementUrl
       ? `API Management URL: ${apiManagementUrl}\n\n`
