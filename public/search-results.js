@@ -248,11 +248,14 @@ class SearchResults extends HTMLElement {
     const providerSlug = id.split("_")[0];
     const operationOpenapiUrl = `https://openapisearch.com/api/${providerSlug}/openapi.json?operationIds=${operationId}`;
 
-    const docsUrl = `search.html?q=${encodeURIComponent(
-      query,
-    )}&tab=reference&openapiUrl=${encodeURIComponent(
-      operationOpenapiUrl,
-    )}#/operations/${operationId}`;
+    const docsUrl = `https://openapisearch.com/api/${providerSlug}/openapi.html#/operations/${operationId}`;
+
+    // TODO: fix stupid cors error. dunno why this happens, cors is set correctly
+    // const docsUrl = `search.html?q=${encodeURIComponent(
+    //   query,
+    // )}&tab=reference&openapiUrl=${encodeURIComponent(
+    //   operationOpenapiUrl,
+    // )}#/operations/${operationId}`;
 
     const apiKeyPart = apiManagementUrl
       ? `API Management URL: ${apiManagementUrl}\n\n`
