@@ -252,16 +252,15 @@ class SearchResults extends HTMLElement {
       openapiUrl,
     )}#/operations/${operationId}`;
 
-    const operationOpenapiUrl = `https://openapi-util.actionschema.com/pruneOpenapi?openapiUrl=${encodeURIComponent(
-      openapiUrl,
-    )}&operationIds=${operationId}`;
+    const operationOpenapiUrl = `https://openapisearch.com/${providerName}/openapi.json?operationIds=${operationId}`;
 
     const apiKeyPart = apiManagementUrl
       ? `API Management URL: ${apiManagementUrl}\n\n`
       : "";
+
     const chatPrompt = `Definition: ${operationOpenapiUrl}
     
-Please look up the definition using your fetch-url tool, and then build a website that demonstrates usage of the tool in the definition.
+Please look up the definition using your fetch-url tool, and then build an endpoint that demonstrates usage of the tool in the definition.
 
 ${apiKeyPart}User query:${query}`;
     const writeCodeUrl = `https://chat.actionschema.com/${encodeURIComponent(
