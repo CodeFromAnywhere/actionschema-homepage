@@ -46,12 +46,16 @@ class SearchResults extends HTMLElement {
   async performSearch(query) {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get("category");
+    const providerSlug = urlParams.get("providerSlug");
 
     const baseUrl = `https://search.actionschema.com`;
     const q = encodeURIComponent(query).toLowerCase();
 
     const categorySuffix = category
       ? `&category=${encodeURIComponent(category).toLowerCase()}`
+      : "";
+    const providerSlugSuffix = providerSlug
+      ? `&providerSlug=${encodeURIComponent(providerSlug).toLowerCase()}`
       : "";
 
     this.setLoading(true);
@@ -64,7 +68,7 @@ class SearchResults extends HTMLElement {
         JSON.stringify([...new Set(recentSearches)].slice(0, 10)),
       );
 
-      const fullUrl = `${baseUrl}/search?q=${q}${categorySuffix}`;
+      const fullUrl = `${baseUrl}/search?q=${q}${categorySuffix}${providerSlugSuffix}`;
       console.log({ fullUrl });
       const response = await fetch(fullUrl);
       if (!response.ok) {
